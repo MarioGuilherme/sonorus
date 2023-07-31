@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "6FQ7vyXZx+gu/py4NcI+vdcC9/kg4vi4UsAcvKioR9M=",
+  "Source": "Sonorus.AuthAPI",
+  "BasePath": "_content/Sonorus.AuthAPI",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

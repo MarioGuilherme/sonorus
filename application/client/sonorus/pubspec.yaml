@@ -1,0 +1,54 @@
+name: sonorus
+description: A new Flutter project.
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.5 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+  flutter_dotenv: ^5.1.0
+  flutter_mobx: ^2.0.6+5
+  dio: ^5.1.2
+  mobx: ^2.2.0
+  provider: ^6.0.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  build_runner: ^2.4.6
+  flutter_lints: ^2.0.0
+  mobx_codegen: ^2.3.0
+
+flutter:
+  assets:
+    - .env
+    - assets/images/
+
+  fonts:
+    - family: museoModerno
+      fonts:
+        - asset: assets/fonts/museoModerno/MuseoModerno-Thin.ttf
+          weight: 100
+        - asset: assets/fonts/museoModerno/MuseoModerno-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/museoModerno/MuseoModerno-Light.ttf
+          weight: 300
+        - asset: assets/fonts/museoModerno/MuseoModerno-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/museoModerno/MuseoModerno-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/museoModerno/MuseoModerno-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/museoModerno/MuseoModerno-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/museoModerno/MuseoModerno-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/museoModerno/MuseoModerno-Black.ttf
+          weight: 900
+
+  uses-material-design: true

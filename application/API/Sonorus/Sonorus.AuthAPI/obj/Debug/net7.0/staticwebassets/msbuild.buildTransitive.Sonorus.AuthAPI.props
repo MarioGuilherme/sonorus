@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\Sonorus.AuthAPI.props" />
+</Project>
