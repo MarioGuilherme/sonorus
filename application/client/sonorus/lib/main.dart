@@ -1,8 +1,10 @@
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
+import "package:flutter_modular/flutter_modular.dart";
 
-import "package:sonorus/app/core/env/env.dart";
-import "package:sonorus/app/sonorus_app.dart";
+import "package:sonorus/src/app_module.dart";
+import "package:sonorus/src/app_widget.dart";
+import "package:sonorus/src/core/env/env.dart";
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -10,5 +12,5 @@ void main() async {
     SystemChrome.setPreferredOrientations([ DeviceOrientation.portraitUp ]),
     Env.instance.load()
   ]);
-  runApp(const SonorusApp());
+  runApp(ModularApp(module: AppModule(), child: const AppWidget()));
 }
