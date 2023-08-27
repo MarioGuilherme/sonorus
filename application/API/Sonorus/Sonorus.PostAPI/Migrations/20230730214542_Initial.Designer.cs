@@ -10,7 +10,7 @@ using Sonorus.PostAPI.Data;
 
 namespace Sonorus.PostAPI.Migrations
 {
-    [DbContext(typeof(SonorusDbContext))]
+    [DbContext(typeof(PostAPIDbContext))]
     [Migration("20230730214542_Initial")]
     partial class Initial
     {

@@ -25,7 +25,7 @@ public class PostService : IPostService {
         Post? post = await this._postRepository.GetById(idPost);
 
         return post is null
-            ? throw new SonorusAPIException("Publicação não encontrada", 404)
+            ? throw new PostAPIException("Publicação não encontrada", 404)
             : this._mapper.Map<PostDTO>(post);
     }
 
@@ -35,7 +35,7 @@ public class PostService : IPostService {
         long? idPost = await this._postRepository.Create(postMapped);
 
         return idPost is null
-            ? throw new SonorusAPIException("Falha ao criar a publicação", 400)
+            ? throw new PostAPIException("Falha ao criar a publicação", 400)
             : (long) idPost;
     }
 
@@ -43,7 +43,7 @@ public class PostService : IPostService {
         bool postExists = await this._postRepository.PostExists(idPost);
 
         if (!postExists)
-            throw new SonorusAPIException("Publicação não encontrada", 404);
+            throw new PostAPIException("Publicação não encontrada", 404);
 
         await this._postRepository.Delete(idPost);
     }
@@ -52,7 +52,7 @@ public class PostService : IPostService {
         bool postExists = await this._postRepository.PostExists(post.IdPost);
 
         if (!postExists)
-            throw new SonorusAPIException("Publicação não encontrada", 404);
+            throw new PostAPIException("Publicação não encontrada", 404);
 
         Post postMapped = this._mapper.Map<Post>(post);
         await this._postRepository.Update(postMapped);

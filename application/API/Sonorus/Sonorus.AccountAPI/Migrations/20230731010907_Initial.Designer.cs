@@ -10,7 +10,7 @@ using Sonorus.AccountAPI.Data;
 
 namespace Sonorus.AccountAPI.Migrations
 {
-    [DbContext(typeof(SonorusDbContext))]
+    [DbContext(typeof(AccountAPIDbContext))]
     [Migration("20230731010907_Initial")]
     partial class Initial
     {

@@ -22,11 +22,12 @@ public class PostController : ControllerBase {
         try {
             response.Data = await this._postService.GetAll();
             return this.Ok(response);
-        } catch (SonorusAPIException exception) {
+        } catch (PostAPIException exception) {
             response.Message = exception.Message;
             return this.StatusCode(exception.StatusCode, response);
         }
     }
+
 
     [HttpGet("{idPost}", Name = "GetPost")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -36,7 +37,7 @@ public class PostController : ControllerBase {
         try {
             response.Data = await this._postService.GetPostById(idPost);
             return this.Ok(response);
-        } catch (SonorusAPIException exception) {
+        } catch (PostAPIException exception) {
             response.Message = exception.Message;
             return this.StatusCode(exception.StatusCode, response);
         }
@@ -50,7 +51,7 @@ public class PostController : ControllerBase {
         try {
             long idPost = await this._postService.Create(post);
             return this.CreatedAtRoute("GetPosts", new { idPost });
-        } catch (SonorusAPIException exception) {
+        } catch (PostAPIException exception) {
             response.Message = exception.Message;
             return this.StatusCode(exception.StatusCode, response);
         }
@@ -65,7 +66,7 @@ public class PostController : ControllerBase {
         try {
             await this._postService.Update(post);
             return this.NoContent();
-        } catch (SonorusAPIException exception) {
+        } catch (PostAPIException exception) {
             response.Message = exception.Message;
             return this.StatusCode(exception.StatusCode, response);
         }
@@ -79,7 +80,7 @@ public class PostController : ControllerBase {
         try {
             await this._postService.Delete(idPost);
             return this.NoContent();
-        } catch (SonorusAPIException exception) {
+        } catch (PostAPIException exception) {
             return this.StatusCode(exception.StatusCode, new RestResponse<object>() {
                 Message = exception.Message
             });

@@ -1,7 +1,7 @@
 ﻿namespace Sonorus.PostAPI.Exceptions;
 
-public class SonorusAPIException : Exception {
+public class PostAPIException : Exception {
     public int StatusCode { get; }
 
-    public SonorusAPIException(string message, int statusCode) : base(message) => this.StatusCode = statusCode;
+    public PostAPIException(string message, int statusCode) : base(message) => this.StatusCode = statusCode;
 }

@@ -14,8 +14,8 @@ public static class ConfigurerToken {
         })
         .AddJwtBearer(options => {
             options.RequireHttpsMetadata = false;
-            options.SaveToken = true;
             options.TokenValidationParameters = new() {
+                RequireExpirationTime = true,
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(key),
                 ValidateIssuer = false,

@@ -15,7 +15,7 @@ Environment.SetEnvironmentVariable("SECRET_JWT", builder.Configuration["JWTConfi
 builder.Services.ConfigureJWT();
 
 // Add services to the container.
-builder.Services.AddDbContext<SonorusDbContext>(
+builder.Services.AddDbContext<AccountAPIDbContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
@@ -24,6 +24,8 @@ builder.Services.AddSingleton(mapper);
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IInterestService, InterestService>();
+builder.Services.AddScoped<IInterestRepository, InterestRepository>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

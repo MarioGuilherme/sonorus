@@ -15,7 +15,7 @@ Environment.SetEnvironmentVariable("SECRET_JWT", builder.Configuration["JWTConfi
 builder.Services.ConfigureJWT();
 
 // Add services to the container.
-builder.Services.AddDbContext<SonorusDbContext>(
+builder.Services.AddDbContext<PostAPIDbContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 

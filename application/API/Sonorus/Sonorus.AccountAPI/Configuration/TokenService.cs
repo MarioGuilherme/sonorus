@@ -18,9 +18,7 @@ public static class TokenService {
             ),
             Subject = new(
                 new Claim[] {
-                    new(ClaimTypes.Name, user.FullName),
-                    new(ClaimTypes.Name, user.Nickname),
-                    new(ClaimTypes.Name, user.Email)
+                    new("IdUser", user.IdUser.ToString()!)
                 }
             )
         };
