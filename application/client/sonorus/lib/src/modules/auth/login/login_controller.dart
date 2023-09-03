@@ -1,10 +1,12 @@
+
 import "dart:developer";
 
 import "package:mobx/mobx.dart";
-import "package:shared_preferences/shared_preferences.dart";
-import "package:sonorus/src/models/auth_token_model.dart";
+import "package:sonorus/src/core/exceptions/invalid_credentials_exception.dart";
+import "package:sonorus/src/core/exceptions/repository_exception.dart";
+import "package:sonorus/src/core/exceptions/user_not_found_exception.dart";
 
-import "package:sonorus/src/repositories/auth/auth_repository.dart";
+import "package:sonorus/src/services/auth/auth_service.dart";
 
 part "login_controller.g.dart";
 
@@ -18,29 +20,44 @@ enum LoginStateStatus {
 class LoginController = LoginControllerBase with _$LoginController;
 
 abstract class LoginControllerBase with Store {
-  final AuthRepository _authRepository;
+  final AuthService _authService;
 
   @readonly
-  var _loginStatus = LoginStateStatus.initial;
+  LoginStateStatus _loginStatus = LoginStateStatus.initial;
 
   @readonly
   String? _errorMessage;
 
-  LoginControllerBase(this._authRepository);
+  @readonly
+  String? _loginInputErrors;
+
+  @readonly
+  String? _passwordInputErrors;
+
+  LoginControllerBase(this._authService);
 
   @action
   Future<void> login(String login, String password) async {
     try {
       this._loginStatus = LoginStateStatus.loading;
-      final AuthTokenModel authTokenModel = await this._authRepository.login(login, password);
-      final SharedPreferences sp = await SharedPreferences.getInstance();
-      sp.setString("accessToken", authTokenModel.accessToken!);
-      sp.setString("refreshToken", authTokenModel.refreshToken!);
+      await this._authService.login(login, password);
       this._loginStatus = LoginStateStatus.success;
-    } catch (e, s) {
-      log("Erro ao realizar login", error: e, stackTrace: s);
-      _errorMessage = "Tente novamente mais tarde";
-      _loginStatus = LoginStateStatus.error;
+    } on UserNotFoundException catch (exception, stackTrace) {
+      log(exception.message, error: exception, stackTrace: stackTrace);
+      this._errorMessage = exception.message;
+      this._loginInputErrors = null;
+      this._passwordInputErrors = null;
+      this._loginStatus = LoginStateStatus.error;
+    } on InvalidCredentialsException catch (exception, stackTrace) {
+      log(exception.message, error: exception, stackTrace: stackTrace);
+      this._errorMessage = exception.message;
+      this._loginInputErrors = exception.errors.where((element) => element.field == "login").fold(null, (previousValue, element) => previousValue == null ? element.error : previousValue + element.error);
+      this._passwordInputErrors = exception.errors.where((element) => element.field == "password").fold(null, (previousValue, element) => previousValue == null ? element.error : previousValue + element.error);
+      this._loginStatus = LoginStateStatus.error;
+    } on RepositoryException catch (exception, stackTrace) {
+      log("Erro ao realizar login", error: exception, stackTrace: stackTrace);
+      this._errorMessage = exception.message;
+      this._loginStatus = LoginStateStatus.error;
     }
   }
 }

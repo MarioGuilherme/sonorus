@@ -17,7 +17,7 @@ class HttpClient extends DioForNative {
       requestHeader: true,
       responseHeader: true
     ));
-    _authInterceptor = AuthInterceptor();
+    this._authInterceptor = AuthInterceptor();
   }
 
   HttpClient accountMicrosservice() {

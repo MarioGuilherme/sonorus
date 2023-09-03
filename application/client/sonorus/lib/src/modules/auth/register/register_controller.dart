@@ -1,10 +1,10 @@
 import "dart:developer";
 
-import "package:image_picker/image_picker.dart";
 import "package:mobx/mobx.dart";
-import "package:shared_preferences/shared_preferences.dart";
-import "package:sonorus/src/models/auth_token_model.dart";
-import "package:sonorus/src/repositories/auth/auth_repository.dart";
+import "package:sonorus/src/core/exceptions/invalid_credentials_exception.dart";
+import "package:sonorus/src/core/exceptions/repository_exception.dart";
+
+import "package:sonorus/src/services/auth/auth_service.dart";
 
 part "register_controller.g.dart";
 
@@ -18,29 +18,46 @@ enum RegisterStateStatus {
 class RegisterController = RegisterControllerBase with _$RegisterController;
 
 abstract class RegisterControllerBase with Store {
-  final AuthRepository _authRepository;
+  final AuthService _authService;
 
   @readonly
   RegisterStateStatus _registerStatus = RegisterStateStatus.initial;
 
   @readonly
   String? _errorMessage;
+
+  @readonly
+  String? _fullnameInputErrors;
+
+  @readonly
+  String? _nicknameInputErrors;
+
+  @readonly
+  String? _emailInputErrors;
+
+  @readonly
+  String? _passwordInputErrors;
   
-  RegisterControllerBase(this._authRepository);
+  RegisterControllerBase(this._authService);
 
   @action
   Future<void> register(String fullname, String nickname, String email, String password) async {
     try {
       this._registerStatus = RegisterStateStatus.loading;
-      final AuthTokenModel authTokenModel = await this._authRepository.register(fullname, nickname, email, password);
-      final SharedPreferences sp = await SharedPreferences.getInstance();
-      sp.setString("accessToken", authTokenModel.accessToken!);
-      sp.setString("refreshToken", authTokenModel.refreshToken!);
+      await this._authService.register(fullname, nickname, email, password);
       this._registerStatus = RegisterStateStatus.success;
-    } catch (e, s) {
-      log("Erro ao registar o usuário", error: e, stackTrace: s);
-      _errorMessage = "Tente novamente mais tarde";
-      _registerStatus = RegisterStateStatus.error;
+    } on InvalidCredentialsException catch (exception, stackTrace) {
+      log(exception.message, error: exception, stackTrace: stackTrace);
+      this._errorMessage = exception.message;
+      this._fullnameInputErrors = exception.errors.where((element) => element.field == "fullname").fold(null, (previousValue, element) => previousValue == null ? element.error : "$previousValue\n${element.error}");
+      this._nicknameInputErrors = exception.errors.where((element) => element.field == "nickname").fold(null, (previousValue, element) => previousValue == null ? element.error : "$previousValue\n${element.error}");
+      this._emailInputErrors = exception.errors.where((element) => element.field == "email").fold(null, (previousValue, element) => previousValue == null ? element.error : "$previousValue\n${element.error}");
+      this._passwordInputErrors = exception.errors.where((element) => element.field == "password").fold(null, (previousValue, element) => previousValue == null ? element.error : "$previousValue\n${element.error}");
+      this._registerStatus = RegisterStateStatus.error;
+    } on RepositoryException catch (exception, stackTrace) {
+      log("Erro ao registar o usuário", error: exception, stackTrace: stackTrace);
+      this._errorMessage = exception.message;
+      this._registerStatus = RegisterStateStatus.error;
     }
   }
 }

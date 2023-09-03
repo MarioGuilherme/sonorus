@@ -45,6 +45,43 @@ mixin _$LoginController on LoginControllerBase, Store {
     });
   }
 
+  late final _$_loginInputErrorsAtom =
+      Atom(name: 'LoginControllerBase._loginInputErrors', context: context);
+
+  String? get loginInputErrors {
+    _$_loginInputErrorsAtom.reportRead();
+    return super._loginInputErrors;
+  }
+
+  @override
+  String? get _loginInputErrors => loginInputErrors;
+
+  @override
+  set _loginInputErrors(String? value) {
+    _$_loginInputErrorsAtom.reportWrite(value, super._loginInputErrors, () {
+      super._loginInputErrors = value;
+    });
+  }
+
+  late final _$_passwordInputErrorsAtom =
+      Atom(name: 'LoginControllerBase._passwordInputErrors', context: context);
+
+  String? get passwordInputErrors {
+    _$_passwordInputErrorsAtom.reportRead();
+    return super._passwordInputErrors;
+  }
+
+  @override
+  String? get _passwordInputErrors => passwordInputErrors;
+
+  @override
+  set _passwordInputErrors(String? value) {
+    _$_passwordInputErrorsAtom.reportWrite(value, super._passwordInputErrors,
+        () {
+      super._passwordInputErrors = value;
+    });
+  }
+
   late final _$loginAsyncAction =
       AsyncAction('LoginControllerBase.login', context: context);
 

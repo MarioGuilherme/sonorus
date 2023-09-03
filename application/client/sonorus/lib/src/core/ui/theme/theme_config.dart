@@ -28,7 +28,8 @@ class ThemeConfig {
       enabledBorder: ThemeConfig._defaultInputBorder,
       focusedBorder: ThemeConfig._defaultInputBorder,
       labelStyle: TextStyles.instance.textMedium.copyWith(color: Colors.white, fontSize: 16),
-      errorStyle: TextStyles.instance.textRegular.copyWith(color: Colors.redAccent)
+      errorStyle: TextStyles.instance.textRegular.copyWith(color: const Color(0xFFFE2651), fontSize: 12),
+      errorMaxLines: 20
     )
   );
 }

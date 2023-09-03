@@ -1,13 +1,16 @@
-import "dart:developer";
-
 import "package:flutter/material.dart";
+import "package:flutter_mobx/flutter_mobx.dart";
 import "package:flutter_modular/flutter_modular.dart";
+import "package:flutter_screenutil/flutter_screenutil.dart";
 import "package:mobx/mobx.dart";
 
 import "package:sonorus/src/core/ui/styles/colors_app.dart";
 import "package:sonorus/src/core/ui/styles/text_styles.dart";
+import "package:sonorus/src/core/ui/utils/loader.dart";
+import "package:sonorus/src/core/ui/utils/messages.dart";
 import "package:sonorus/src/core/ui/utils/size_extensions.dart";
 import "package:sonorus/src/modules/auth/login/login_controller.dart";
+import "package:validatorless/validatorless.dart";
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -16,8 +19,8 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  final _nicknameOrEmailEC = TextEditingController();
+class _LoginPageState extends State<LoginPage> with Loader, Messages {
+  final _loginEC = TextEditingController();
   final _passwordEC = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   final _controller = Modular.get<LoginController>();
@@ -27,20 +30,17 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     this._statusReactionDisposer = reaction((_) => this._controller.loginStatus, (status) {
       switch (status) {
-        case LoginStateStatus.initial:
-          // TODO: Handle this case.
-          break;
+        case LoginStateStatus.initial: break;
         case LoginStateStatus.loading:
-          // showLoader();
+          this.showLoader();
           break;
         case LoginStateStatus.success:
-          log("Login certo");
-          // hideLoader();
-          // Modular.to.navigate("/");
+          this.hideLoader();
+          Modular.to.navigate("/timeline");
           break;
         case LoginStateStatus.error:
-          // hideLoader();
-          // showError(controller.errorMessage ?? 'Erro');
+          this.hideLoader();
+          this.showMessage("Ops", this._controller.errorMessage ?? "Erro não mapeado");
           break;
       }
     });
@@ -49,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void dispose() {
-    this._nicknameOrEmailEC.dispose();
+    this._loginEC.dispose();
     this._passwordEC.dispose();
     this._statusReactionDisposer();
     super.dispose();
@@ -84,37 +84,52 @@ class _LoginPageState extends State<LoginPage> {
                       Text(
                         "Olá, seja bem-vindo(a)",
                         textAlign: TextAlign.center,
-                        style: context.textStyles.textBold.copyWith(color: Colors.white)
+                        style: context.textStyles.textBold.copyWith(color: Colors.white, fontSize: 16.sp)
                       ),
                       const SizedBox(height: 18),
                       Form(
                         key: this._formKey,
                         child: Column(
                           children: [
-                            TextFormField(
-                              controller: this._nicknameOrEmailEC,
-                              style: context.textStyles.textRegular.copyWith(color: Colors.white),
-                              decoration: const InputDecoration(
-                                label: Text("Apelido ou e-mail"),
-                                prefixIcon: Icon(Icons.badge, color: Colors.white, size: 24),
-                                isDense: true
-                              )
+                            Observer(
+                              builder: (context) {
+                                return TextFormField(
+                                  controller: this._loginEC,
+                                  style: context.textStyles.textRegular.copyWith(color: Colors.white),
+                                  validator: Validatorless.required("Informe o seu apelido ou e-mail."),
+                                  decoration: InputDecoration(
+                                    errorText: this._controller.loginInputErrors,
+                                    label: const Text("Apelido ou e-mail"),
+                                    prefixIcon: const Icon(Icons.badge, color: Colors.white, size: 24),
+                                    isDense: true
+                                  )
+                                );
+                              }
                             ),
                             const SizedBox(height: 16),
-                            TextFormField(
-                              controller: this._passwordEC,
-                              obscureText: true,
-                              style: context.textStyles.textRegular.copyWith(color: Colors.white),
-                              decoration: InputDecoration(
-                                label: const Text("Senha"),
-                                isDense: true,
-                                prefixIcon: const Icon(Icons.lock, color: Colors.white, size: 24),
-                                suffixIcon: IconButton(
-                                  onPressed: () { },
-                                  icon: const Icon(Icons.visibility, size: 18),
-                                  color: Colors.white
-                                )
-                              )
+                            Observer(
+                              builder: (context) {
+                                return TextFormField(
+                                  controller: this._passwordEC,
+                                  obscureText: true,
+                                  style: context.textStyles.textRegular.copyWith(color: Colors.white),
+                                  validator: Validatorless.multiple([
+                                    Validatorless.required("Informe a sua senha."),
+                                    Validatorless.min(6, "A senha precisar ter no mínimo 6 caracteres")
+                                  ]),
+                                  decoration: InputDecoration(
+                                    errorText: this._controller.passwordInputErrors,
+                                    label: const Text("Senha"),
+                                    isDense: true,
+                                    prefixIcon: const Icon(Icons.lock, color: Colors.white, size: 24),
+                                    suffixIcon: IconButton(
+                                      onPressed: () { },
+                                      icon: const Icon(Icons.visibility, size: 18),
+                                      color: Colors.white
+                                    )
+                                  )
+                                );
+                              }
                             )
                           ]
                         )
@@ -127,7 +142,7 @@ class _LoginPageState extends State<LoginPage> {
                             final formValid = this._formKey.currentState?.validate() ?? false;
 
                             if (formValid)
-                              _controller.login(this._nicknameOrEmailEC.text, this._passwordEC.text);
+                              _controller.login(this._loginEC.text, this._passwordEC.text);
                           },
                           child: const Text("Entrar")
                         )

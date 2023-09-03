@@ -18,6 +18,9 @@ dependencies:
   flutter_modular: ^5.0.3
   shared_preferences: ^2.2.0
   image_picker: ^1.0.2
+  loading_animation_widget: ^1.2.0+4
+  flutter_screenutil: ^5.9.0
+  validatorless: ^1.2.3
   # video_player: ^2.7.0
   # mime: ^1.0.4
 

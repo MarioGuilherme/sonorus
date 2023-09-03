@@ -8,11 +8,14 @@ import "package:sonorus/src/modules/auth/register/register_controller.dart";
 import "package:sonorus/src/modules/auth/register/register_page.dart";
 import "package:sonorus/src/repositories/auth/auth_repository.dart";
 import "package:sonorus/src/repositories/auth/auth_repository_impl.dart";
+import "package:sonorus/src/services/auth/auth_service.dart";
+import "package:sonorus/src/services/auth/auth_service_impl.dart";
 
 class RegisterModule extends Module {
   @override
   List<Bind> get binds => [
     Bind.lazySingleton<AuthRepository>((i) => AuthRepositoryImpl(i())),
+    Bind.lazySingleton<AuthService>((i) => AuthServiceImpl(i())),
     Bind.lazySingleton((i) => RegisterController(i())),
     Bind.lazySingleton((i) => PictureController(i())),
     Bind.lazySingleton((i) => InterestsController(i())),
