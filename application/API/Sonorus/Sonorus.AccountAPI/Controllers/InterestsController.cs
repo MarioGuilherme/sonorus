@@ -7,13 +7,13 @@ using Sonorus.AccountAPI.Services.Interfaces;
 namespace Sonorus.AccountAPI.Controllers;
 
 [ApiController]
-[Route("api/v1")]
+[Route("api/v1/interest")]
 public class InterestsController : APIControllerBase {
     private readonly IInterestService _interestService;
 
     public InterestsController(IInterestService interestService) => this._interestService = interestService;
 
-    [HttpGet("interests", Name = "Interests")]
+    [HttpGet(Name = "Interests")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<RestResponse<List<InterestDTO>>>> GetAllInterests() {
         RestResponse<List<InterestDTO>> response = new();

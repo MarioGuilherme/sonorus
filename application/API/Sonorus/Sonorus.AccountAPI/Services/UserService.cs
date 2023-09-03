@@ -1,16 +1,13 @@
 ﻿using AutoMapper;
 using Azure.Storage.Blobs;
-using Azure.Storage.Blobs.Models;
-using FluentValidation;
 using FluentValidation.Results;
 using Sonorus.AccountAPI.Configuration;
 using Sonorus.AccountAPI.DTO;
 using Sonorus.AccountAPI.Exceptions;
+using Sonorus.AccountAPI.Extensions;
 using Sonorus.AccountAPI.Models;
 using Sonorus.AccountAPI.Repository.Interfaces;
 using Sonorus.AccountAPI.Services.Interfaces;
-using System.ComponentModel;
-using System.IO;
 using static BCrypt.Net.BCrypt;
 
 namespace Sonorus.AccountAPI.Services;
@@ -28,7 +25,7 @@ public class UserService : IUserService {
         ValidationResult result = new UserLoginDTOValidator().Validate(userLogin);
 
         if (!result.IsValid) 
-            throw new AccountAPIException("Alguns campos estão inválidos", 400, result.Errors.Select(error => error.ErrorMessage).ToList());
+            throw new AccountAPIException("Alguns campos estão inválidos", 400, result.ToFormErrorsDTO());
 
         User user = await this._userRepository.Login(userLogin.Email ?? userLogin.Nickname!) ??
             throw new AccountAPIException("Apelido/e-mail e senha não coincidem", 404);
@@ -45,7 +42,7 @@ public class UserService : IUserService {
         ValidationResult result = new UserRegisterDTOValidator().Validate(userRegister);
 
         if (!result.IsValid)
-            throw new AccountAPIException("Alguns campos estão inválidos", 400, result.Errors.Select(error => error.ErrorMessage).ToList());
+            throw new AccountAPIException("Alguns campos estão inválidos", 400, result.ToFormErrorsDTO());
 
         User user = this._mapper.Map<User>(userRegister);
         await this._userRepository.Register(user);
@@ -63,7 +60,7 @@ public class UserService : IUserService {
         });
 
         if (!result.IsValid)
-            throw new AccountAPIException("Alguns campos estão inválidos", 400, result.Errors.Select(error => error.ErrorMessage).ToList());
+            throw new AccountAPIException("Alguns campos estão inválidos", 400, result.ToFormErrorsDTO());
 
         List<Interest> interestsMapped = this._mapper.Map<List<Interest>>(interests);
 
