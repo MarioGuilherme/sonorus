@@ -10,6 +10,7 @@ public class AccountAPIDbContext : DbContext {
     protected override void OnModelCreating(ModelBuilder builder) {
         builder.Entity<User>().HasIndex(u => u.Email).IsUnique();
         builder.Entity<User>().HasIndex(u => u.Nickname).IsUnique();
+        builder.Entity<User>().Property(u => u.Picture).HasDefaultValue("defaultPicture.png");
         builder.Entity<User>()
         .HasMany(u => u.Interests)
         .WithMany(i => i.Users)

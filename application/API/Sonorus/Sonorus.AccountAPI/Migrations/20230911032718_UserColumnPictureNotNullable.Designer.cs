@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sonorus.AccountAPI.Data;
 
@@ -11,9 +12,11 @@ using Sonorus.AccountAPI.Data;
 namespace Sonorus.AccountAPI.Migrations
 {
     [DbContext(typeof(AccountAPIDbContext))]
-    partial class SonorusDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230911032718_UserColumnPictureNotNullable")]
+    partial class UserColumnPictureNotNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

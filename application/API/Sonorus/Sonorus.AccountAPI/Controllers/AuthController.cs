@@ -15,9 +15,11 @@ public class AuthController : APIControllerBase {
     public AuthController(IUserService userService) => this._userService = userService;
 
     [HttpPost("login", Name = "Login")]
+    [Produces("application/json")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(RestResponse<AuthToken>))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(RestResponse<AuthToken>))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(RestResponse<AuthToken>))]
     public async Task<ActionResult<RestResponse<AuthToken>>> Login(UserLoginDTO userLogin) {
         RestResponse<AuthToken> response = new();
         try {
@@ -27,22 +29,30 @@ public class AuthController : APIControllerBase {
             response.Message = exception.Message;
             response.Errors = exception.Errors;
             return this.StatusCode(exception.StatusCode, response);
+        } catch (Exception) {
+            response.Message = "Ocorreu um erro interno na aplicação, por favor, tente novamente mais tarde";
+            return this.StatusCode(500, response);
         }
     }
 
     [HttpPost("register", Name = "Register")]
+    [Produces("application/json")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(RestResponse<AuthToken>))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(RestResponse<AuthToken>))]
     public async Task<ActionResult<RestResponse<AuthToken>>> Register(UserRegisterDTO userRegister) {
         RestResponse<AuthToken> response = new();
         try {
-            userRegister.Nickname = "asdasd´sad´sadsa´dsa´dsadásdásdásdásd";
             response.Data = await this._userService.Register(userRegister);
             return this.Created(string.Empty, response);
         } catch (AccountAPIException exception) {
             response.Message = exception.Message;
             response.Errors = exception.Errors;
             return this.StatusCode(exception.StatusCode, response);
+        } catch (Exception) {
+            response.Message = "Ocorreu um erro interno na aplicação, por favor, tente novamente mais tarde";
+            return this.StatusCode(500, response);
         }
     }
 }

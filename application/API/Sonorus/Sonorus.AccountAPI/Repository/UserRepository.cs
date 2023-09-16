@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Sonorus.AccountAPI.Data;
+using Sonorus.AccountAPI.Exceptions;
 using Sonorus.AccountAPI.Models;
 using Sonorus.AccountAPI.Repository.Interfaces;
+using System.Runtime.Intrinsics.X86;
 
 namespace Sonorus.AccountAPI.Repository;
 
@@ -13,6 +15,10 @@ public class UserRepository : IUserRepository {
     public async Task<User?> Login(string login) => await this._dbContext.Users.FirstOrDefaultAsync(user => user.Email == login || user.Nickname == login);
 
     public async Task Register(User user) {
+        bool emailOrNicknameInUse = await this._dbContext.Users.AnyAsync(userDB => userDB.Email.ToUpper() == user.Email.ToUpper() || userDB.Nickname.ToUpper() == user.Nickname.ToUpper());
+
+        if (emailOrNicknameInUse) throw new AccountAPIException("Este e-mail ou apelido já está sendo utilizado", 409);
+
         await this._dbContext.Users.AddAsync(user);
         await this._dbContext.SaveChangesAsync();
     }
