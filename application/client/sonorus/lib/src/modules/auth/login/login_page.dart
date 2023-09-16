@@ -139,10 +139,10 @@ class _LoginPageState extends State<LoginPage> with Loader, Messages {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {
-                            final formValid = this._formKey.currentState?.validate() ?? false;
+                            final bool formValid = this._formKey.currentState?.validate() ?? false;
 
                             if (formValid)
-                              _controller.login(this._loginEC.text, this._passwordEC.text);
+                              this._controller.login(this._loginEC.text, this._passwordEC.text);
                           },
                           child: const Text("Entrar")
                         )
@@ -166,7 +166,7 @@ class _LoginPageState extends State<LoginPage> with Loader, Messages {
                           "Cadastre-se",
                           style: context.textStyles.textBold.copyWith(color: context.colors.primary)
                         ),
-                        onTap: () => Modular.to.navigate("/register/")
+                        onTap: () => Modular.to.navigate("/register")
                       )
                     ]
                   )
