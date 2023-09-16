@@ -89,12 +89,12 @@ mixin _$InterestsController on InterestsControllerBase, Store {
     return _$getAllInterestsAsyncAction.run(() => super.getAllInterests());
   }
 
-  late final _$addInterestAsyncAction =
-      AsyncAction('InterestsControllerBase.addInterest', context: context);
+  late final _$cAsyncAction =
+      AsyncAction('InterestsControllerBase.c', context: context);
 
   @override
-  Future<void> addInterest(InterestModel interest) {
-    return _$addInterestAsyncAction.run(() => super.addInterest(interest));
+  Future<void> c() {
+    return _$cAsyncAction.run(() => super.c());
   }
 
   late final _$saveInterestsAsyncAction =
@@ -103,6 +103,20 @@ mixin _$InterestsController on InterestsControllerBase, Store {
   @override
   Future<void> saveInterests() {
     return _$saveInterestsAsyncAction.run(() => super.saveInterests());
+  }
+
+  late final _$InterestsControllerBaseActionController =
+      ActionController(name: 'InterestsControllerBase', context: context);
+
+  @override
+  void selectInterest(InterestModel interest) {
+    final _$actionInfo = _$InterestsControllerBaseActionController.startAction(
+        name: 'InterestsControllerBase.selectInterest');
+    try {
+      return super.selectInterest(interest);
+    } finally {
+      _$InterestsControllerBaseActionController.endAction(_$actionInfo);
+    }
   }
 
   @override

@@ -1,3 +1,5 @@
+
+
 import "package:flutter/material.dart";
 import "package:flutter_mobx/flutter_mobx.dart";
 import "package:flutter_modular/flutter_modular.dart";
@@ -9,6 +11,7 @@ import "package:sonorus/src/core/ui/utils/loader.dart";
 import "package:sonorus/src/core/ui/utils/messages.dart";
 import "package:sonorus/src/core/ui/utils/size_extensions.dart";
 import "package:sonorus/src/modules/auth/register/register_controller.dart";
+import "package:validatorless/validatorless.dart";
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({ super.key });
@@ -18,6 +21,8 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> with Loader, Messages {
+  bool _showPassword = false;
+  bool _showConfirmPassword = false;
   final _fullnameEC = TextEditingController();
   final _nicknameEC = TextEditingController();
   final _emailEC = TextEditingController();
@@ -60,19 +65,19 @@ class _RegisterPageState extends State<RegisterPage> with Loader, Messages {
     super.dispose();
   }
 
+  Future<void> _submitForm() async {
+    final bool formValid = this._formKey.currentState?.validate() ?? false;
+    if (formValid)
+      await this._controller.register(
+        this._fullnameEC.text,
+        this._nicknameEC.text,
+        this._emailEC.text,
+        this._passwordEC.text
+      );
+  }
+
   @override
   Widget build(BuildContext context) {
-    this._fullnameEC.text = "Mário Guilherme de Andrade Rodrigues";
-    this._nicknameEC.text = "deme";
-    this._emailEC.text = "ma";
-    this._passwordEC.text = "12";
-    this._confirmPasswordEC.text = "123";
-    // this._fullnameEC.text = "Mário Guilherme de Andrade Rodrigues";
-    // this._nicknameEC.text = "dev.mario.guilherme";
-    // this._emailEC.text = "marioguilhermedev@gmail.com";
-    // this._passwordEC.text = "123123";
-    // this._confirmPasswordEC.text = "123123";
-
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -91,12 +96,9 @@ class _RegisterPageState extends State<RegisterPage> with Loader, Messages {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Expanded(
-                        child: Image.asset(
-                          "assets/images/logo.png",
-                          fit: BoxFit.cover,
-                          height: context.percentHeight(0.3)
-                        )
+                      SizedBox(
+                        height: context.percentHeight(.2),
+                        child: Image.asset("assets/images/logo.png", fit: BoxFit.cover)
                       ),
                       const SizedBox(height: 18),
                       Text(
@@ -105,101 +107,136 @@ class _RegisterPageState extends State<RegisterPage> with Loader, Messages {
                         style: context.textStyles.textBold.copyWith(color: Colors.white)
                       ),
                       const SizedBox(height: 18),
-                      Form(
-                        key: this._formKey,
-                        child: Column(
-                          children: [
-                            Builder(
-                              builder: (_) => TextFormField(
-                                controller: this._fullnameEC,
-                                style: context.textStyles.textRegular.copyWith(color: Colors.white),
-                                decoration: InputDecoration(
-                                  errorText: this._controller.fullnameInputErrors,
-                                  label: const Text("Nome completo"),
-                                  prefixIcon: const Icon(Icons.person, color: Colors.white, size: 24),
-                                  isDense: true
-                                )
-                              )
-                            ),
-                            const SizedBox(height: 16),
-                            Observer(
-                              builder: (_) => TextFormField(
-                                controller: this._nicknameEC,
-                                style: context.textStyles.textRegular.copyWith(color: Colors.white),
-                                decoration: InputDecoration(
-                                  errorText: this._controller.nicknameInputErrors,
-                                  label: const Text("Nome de usuário (apelido)"),
-                                  prefixIcon: const Icon(Icons.badge, color: Colors.white, size: 24),
-                                  isDense: true
-                                )
-                              )
-                            ),
-                            const SizedBox(height: 16),
-                            Observer(
-                              builder: (_) => TextFormField(
-                                controller: this._emailEC,
-                                style: context.textStyles.textRegular.copyWith(color: Colors.white),
-                                decoration: InputDecoration(
-                                  errorText: this._controller.nicknameInputErrors,
-                                  label: const Text("E-mail"),
-                                  prefixIcon: const Icon(Icons.mail, color: Colors.white, size: 24),
-                                  isDense: true
-                                )
-                              )
-                            ),
-                            const SizedBox(height: 16),
-                            Builder(
-                              builder: (_) => TextFormField(
-                                controller: this._passwordEC,
-                                obscureText: true,
-                                style: context.textStyles.textRegular.copyWith(color: Colors.white),
-                                decoration: InputDecoration(
-                                  errorText: this._controller.nicknameInputErrors,
-                                  label: const Text("Senha"),
-                                  isDense: true,
-                                  prefixIcon: const Icon(Icons.lock, color: Colors.white, size: 24),
-                                  suffixIcon: IconButton(
-                                    onPressed: () { },
-                                    icon: const Icon(Icons.visibility, size: 18),
-                                    color: Colors.white
+                      Expanded(
+                        child: Form(
+                          key: this._formKey,
+                          child: SingleChildScrollView(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              child: Column(
+                                children: [
+                                  Observer(
+                                    builder: (_) => TextFormField(
+                                      textInputAction: TextInputAction.next,
+                                      controller: this._fullnameEC,
+                                      style: context.textStyles.textRegular.copyWith(color: Colors.white),
+                                      validator: Validatorless.multiple([
+                                        Validatorless.required("O nome precisa ser informado."),
+                                        Validatorless.max(100, "O nome não pode exceder 100 caracteres.")
+                                      ]),
+                                      decoration: InputDecoration(
+                                        errorText: this._controller.fullnameInputErrors,
+                                        label: const Text("Nome completo"),
+                                        prefixIcon: const Icon(Icons.person, color: Colors.white, size: 24),
+                                        isDense: true
+                                      )
+                                    )
+                                  ),
+                                  const SizedBox(height: 16),
+                                  Observer(
+                                    builder: (_) => TextFormField(
+                                      textInputAction: TextInputAction.next,
+                                      controller: this._nicknameEC,
+                                      style: context.textStyles.textRegular.copyWith(color: Colors.white),
+                                      validator: Validatorless.multiple([
+                                        Validatorless.required("O apelido precisa ser informado."),
+                                        Validatorless.min(7, "O apelido precisa ter no mínimo 7 caracteres."),
+                                        Validatorless.max(25, "O apelido pode ter no máximo 25 caracteres."),
+                                        Validatorless.regex(RegExp(r"^[a-z0-9.]{7,25}$"), "O apelido deve conter apenas pontos, números e letras minúsculas sem acentos.")
+                                      ]),
+                                      decoration: InputDecoration(
+                                        errorText: this._controller.nicknameInputErrors,
+                                        label: const Text("Nome de usuário (apelido)"),
+                                        prefixIcon: const Icon(Icons.badge, color: Colors.white, size: 24),
+                                        isDense: true
+                                      )
+                                    )
+                                  ),
+                                  const SizedBox(height: 16),
+                                  Observer(
+                                    builder: (_) => TextFormField(
+                                      textInputAction: TextInputAction.next,
+                                      controller: this._emailEC,
+                                      style: context.textStyles.textRegular.copyWith(color: Colors.white),
+                                      validator: Validatorless.multiple([
+                                        Validatorless.required("O e-mail precisa ser informado."),
+                                        Validatorless.max(100, "O e-mail não pode exceder 100 caracteres."),
+                                        Validatorless.email("Informe um e-mail válido.")
+                                      ]),
+                                      decoration: InputDecoration(
+                                        errorText: this._controller.emailInputErrors,
+                                        label: const Text("E-mail"),
+                                        prefixIcon: const Icon(Icons.mail, color: Colors.white, size: 24),
+                                        isDense: true
+                                      )
+                                    )
+                                  ),
+                                  const SizedBox(height: 16),
+                                  Observer(
+                                    builder: (_) => StatefulBuilder(
+                                      builder: (context, setState) {
+                                        return TextFormField(
+                                          textInputAction: TextInputAction.next,
+                                          controller: this._passwordEC,
+                                          obscureText: !this._showPassword,
+                                          style: context.textStyles.textRegular.copyWith(color: Colors.white),
+                                          validator: Validatorless.multiple([
+                                            Validatorless.required("A senha precisa ser informada."),
+                                            Validatorless.min(6, "A senha precisa ter no mínimo 6 caracteres.")
+                                          ]),
+                                          decoration: InputDecoration(
+                                            errorText: this._controller.passwordInputErrors,
+                                            label: const Text("Senha"),
+                                            isDense: true,
+                                            prefixIcon: const Icon(Icons.lock, color: Colors.white, size: 24),
+                                            suffixIcon: IconButton(
+                                              onPressed: () => setState(() => this._showPassword = !this._showPassword),
+                                              icon: const Icon(Icons.visibility, size: 18),
+                                              color: Colors.white
+                                            )
+                                          )
+                                        );
+                                      }
+                                    )
+                                  ),
+                                  const SizedBox(height: 16),
+                                  StatefulBuilder(
+                                    builder: (context, setState) {
+                                      return TextFormField(
+                                        textInputAction: TextInputAction.send,
+                                        controller: this._confirmPasswordEC,
+                                        obscureText: !this._showConfirmPassword,
+                                        style: context.textStyles.textRegular.copyWith(color: Colors.white),
+                                        onFieldSubmitted: (_) => this._submitForm(),
+                                        validator: Validatorless.multiple([
+                                          Validatorless.required("A senha de confirmação precisa ser informada."),
+                                          Validatorless.min(6, "A senha precisa ter no mínimo 6 caracteres."),
+                                          Validatorless.compare(this._passwordEC, "A senhas não coincidem.")
+                                        ]),
+                                        decoration: InputDecoration(
+                                          label: const Text("Confirmar senha"),
+                                          isDense: true,
+                                          prefixIcon: const Icon(Icons.lock, color: Colors.white, size: 24),
+                                          suffixIcon: IconButton(
+                                            onPressed: () => setState(() => this._showConfirmPassword = !this._showConfirmPassword),
+                                            icon: const Icon(Icons.visibility, size: 18),
+                                            color: Colors.white
+                                          )
+                                        )
+                                      );
+                                    }
                                   )
-                                )
-                              )
-                            ),
-                            const SizedBox(height: 16),
-                            TextFormField(
-                              controller: this._confirmPasswordEC,
-                              obscureText: true,
-                              style: context.textStyles.textRegular.copyWith(color: Colors.white),
-                              decoration: InputDecoration(
-                                label: const Text("Confirmar senha"),
-                                isDense: true,
-                                prefixIcon: const Icon(Icons.lock, color: Colors.white, size: 24),
-                                suffixIcon: IconButton(
-                                  onPressed: () { },
-                                  icon: const Icon(Icons.visibility, size: 18),
-                                  color: Colors.white
-                                )
+                                ]
                               )
                             )
-                          ]
+                          )
                         )
                       ),
                       const SizedBox(height: 18),
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: () {
-                            final formValid = this._formKey.currentState?.validate() ?? false;
-
-                            if (formValid)
-                              _controller.register(
-                                this._fullnameEC.text,
-                                this._nicknameEC.text,
-                                this._emailEC.text,
-                                this._passwordEC.text
-                              );
-                          },
+                          onPressed: this._submitForm,
                           child: const Text("Cadastrar")
                         )
                       )
@@ -222,9 +259,7 @@ class _RegisterPageState extends State<RegisterPage> with Loader, Messages {
                           "Faça login",
                           style: context.textStyles.textBold.copyWith(color: context.colors.primary)
                         ),
-                        onTap: () {
-                          Navigator.of(context).popAndPushNamed("/login");
-                        }
+                        onTap: () => Modular.to.navigate("/login")
                       )
                     ]
                   )

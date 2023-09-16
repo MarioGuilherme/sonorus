@@ -45,6 +45,24 @@ mixin _$PictureController on PictureControllerBase, Store {
     });
   }
 
+  late final _$_pictureBytesAtom =
+      Atom(name: 'PictureControllerBase._pictureBytes', context: context);
+
+  Uint8List? get pictureBytes {
+    _$_pictureBytesAtom.reportRead();
+    return super._pictureBytes;
+  }
+
+  @override
+  Uint8List? get _pictureBytes => pictureBytes;
+
+  @override
+  set _pictureBytes(Uint8List? value) {
+    _$_pictureBytesAtom.reportWrite(value, super._pictureBytes, () {
+      super._pictureBytes = value;
+    });
+  }
+
   late final _$_errorMessageAtom =
       Atom(name: 'PictureControllerBase._errorMessage', context: context);
 

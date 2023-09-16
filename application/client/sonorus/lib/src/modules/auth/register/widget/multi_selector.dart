@@ -1,14 +1,16 @@
 import "package:flutter/material.dart";
+
 import "package:sonorus/src/core/ui/styles/colors_app.dart";
 import "package:sonorus/src/core/ui/styles/text_styles.dart";
 import "package:sonorus/src/models/interest_model.dart";
 
 class MultiSelector extends StatefulWidget {
   final String title;
-  final List<InterestModel> items;
+  final List<InterestModel> selecteds;
+  final List<InterestModel> allItens;
   final void Function(InterestModel) onSelected;
 
-  const MultiSelector({ super.key, required this.title, required this.items, required this.onSelected });
+  const MultiSelector({ super.key, required this.title, required this.selecteds, required this.allItens, required this.onSelected });
 
   @override
   State<MultiSelector> createState() => _MultiSelectorState();
@@ -20,7 +22,7 @@ class _MultiSelectorState extends State<MultiSelector> {
     return Container(
       decoration: BoxDecoration(border: Border.all(color: context.colors.primary, width: 1)),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
             color: context.colors.primary,
@@ -41,11 +43,13 @@ class _MultiSelectorState extends State<MultiSelector> {
           Container(
             height: 52,
             padding: const EdgeInsets.all(7.5),
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: this.widget.items.length,
-              itemBuilder: (context, index) => _MultiSelectorItem(data: this.widget.items[index], onSelected: this.widget.onSelected)
-            )
+            child: this.widget.allItens.isEmpty
+              ? const CircularProgressIndicator()
+              : ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: this.widget.allItens.length,
+                  itemBuilder: (context, index) => _MultiSelectorItem(data: this.widget.allItens[index], onSelected: this.widget.onSelected)
+                )
           )
         ]
       )
@@ -75,9 +79,7 @@ class _MultiSelectorItemState extends State<_MultiSelectorItem> {
         child: InkWell(
           onTap: () {
             this.widget.onSelected(this.widget.data);
-            setState(() {
-              this.isSelected = !this.isSelected;
-            });
+            setState(() => this.isSelected = !this.isSelected);
           },
           child: Ink(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),

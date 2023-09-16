@@ -1,6 +1,7 @@
 import "dart:developer";
 
 import "package:mobx/mobx.dart";
+import "package:sonorus/src/core/exceptions/email_or_nickname_in_use_exception.dart";
 import "package:sonorus/src/core/exceptions/invalid_credentials_exception.dart";
 import "package:sonorus/src/core/exceptions/repository_exception.dart";
 
@@ -53,6 +54,10 @@ abstract class RegisterControllerBase with Store {
       this._nicknameInputErrors = exception.errors.where((element) => element.field == "nickname").fold(null, (previousValue, element) => previousValue == null ? element.error : "$previousValue\n${element.error}");
       this._emailInputErrors = exception.errors.where((element) => element.field == "email").fold(null, (previousValue, element) => previousValue == null ? element.error : "$previousValue\n${element.error}");
       this._passwordInputErrors = exception.errors.where((element) => element.field == "password").fold(null, (previousValue, element) => previousValue == null ? element.error : "$previousValue\n${element.error}");
+      this._registerStatus = RegisterStateStatus.error;
+    } on EmailOrNicknameInUseException catch (exception, stackTrace) {
+      log(exception.message, error: exception, stackTrace: stackTrace);
+      this._errorMessage = exception.message;
       this._registerStatus = RegisterStateStatus.error;
     } on RepositoryException catch (exception, stackTrace) {
       log("Erro ao registar o usuário", error: exception, stackTrace: stackTrace);
