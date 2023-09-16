@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Caching.Memory;
 using Sonorus.AccountAPI.DTO;
 using Sonorus.AccountAPI.Models;
 using Sonorus.AccountAPI.Repository.Interfaces;
@@ -9,14 +10,20 @@ namespace Sonorus.AccountAPI.Services;
 public class InterestService : IInterestService {
     private readonly IInterestRepository _interestRepository;
     private readonly IMapper _mapper;
+    private readonly IMemoryCache _memoryCache;
 
-    public InterestService(IInterestRepository interestRepository, IMapper mapper) {
+    public InterestService(IInterestRepository interestRepository, IMapper mapper, IMemoryCache memoryCache) {
         this._interestRepository = interestRepository;
         this._mapper = mapper;
+        this._memoryCache = memoryCache;
     }
 
     public async Task<List<InterestDTO>> GetAll() {
-        List<Interest> interests = await this._interestRepository.GetAll();
+        List<Interest> interests = (await this._memoryCache.GetOrCreateAsync("INTERESTS", async entry => {
+            entry.SetPriority(CacheItemPriority.Normal);
+            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1);
+            return await this._interestRepository.GetAll();
+        }))!;
         return this._mapper.Map<List<InterestDTO>>(interests);
     }
 }

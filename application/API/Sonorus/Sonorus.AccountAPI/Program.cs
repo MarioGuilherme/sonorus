@@ -11,6 +11,7 @@ using Sonorus.AccountAPI.Services.Interfaces;
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 Environment.SetEnvironmentVariable("SECRET_JWT", builder.Configuration["JWTConfigs:Secret"]!);
+Environment.SetEnvironmentVariable("ConnectionStringBlobStorage", builder.Configuration["ConnectionStringBlobStorage"]!);
 
 builder.Services.ConfigureJWT();
 
@@ -30,6 +31,7 @@ builder.Services.AddScoped<IInterestRepository, InterestRepository>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddMemoryCache();
 
 WebApplication app = builder.Build();
 

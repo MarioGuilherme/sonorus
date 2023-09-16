@@ -72,7 +72,7 @@ public class UserService : IUserService {
 
     public async Task SavePicture(long idUser, IFormFile picture) {
         string pictureName = Guid.NewGuid().ToString() + Path.GetExtension(picture.FileName);
-        BlobClient blobClient = new ("DefaultEndpointsProtocol=https;AccountName=mgaroteste1;AccountKey=czanEfZHa2oE0tVipe6sRAGg9dU8DV3JlvLWiNvlB2KlizakfsyFk5/S7DjksuMePy4baOQ0uTkw+AStnY+Gkw==;EndpointSuffix=core.windows.net", "pictures-user", pictureName);
+        BlobClient blobClient = new(Environment.GetEnvironmentVariable("ConnectionStringBlobStorage")!, "pictures-user", pictureName);
         await blobClient.UploadAsync(picture.OpenReadStream());
         await this._userRepository.SavePicture(idUser, pictureName);
     }
