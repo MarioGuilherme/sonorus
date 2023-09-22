@@ -39,7 +39,7 @@ class _InterestsPageState extends State<InterestsPage> with Loader, Messages {
           break;
         case InterestStateStatus.savedInterests:
           this.hideLoader();
-          Modular.to.navigate("/timeline");
+          Modular.to.navigate("/");
           break;
         case InterestStateStatus.error:
           this.hideLoader();

@@ -9,9 +9,10 @@ class AppWidget extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    Modular.setInitialRoute("/login");
+    Modular.setInitialRoute("/timeline");
     return ScreenUtilInit(
       child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
         title: "Sonorus",
         theme: ThemeConfig.theme,
         routeInformationParser: Modular.routeInformationParser,

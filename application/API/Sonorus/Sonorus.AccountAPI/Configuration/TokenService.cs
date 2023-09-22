@@ -19,6 +19,9 @@ public static class TokenService {
             Subject = new(
                 new Claim[] {
                     new("IdUser", user.IdUser.ToString()!),
+                    new("Fullname", user.Fullname),
+                    new("Nickname", user.Nickname),
+                    new("Email", user.Email),
                     new("Picture", user.Picture)
                 }
             )

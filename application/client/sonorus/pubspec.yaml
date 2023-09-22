@@ -21,6 +21,8 @@ dependencies:
   loading_animation_widget: ^1.2.0+4
   flutter_screenutil: ^5.9.0
   validatorless: ^1.2.3
+  provider: ^6.0.5
+  jwt_decoder: ^2.0.1
   # video_player: ^2.7.0
   # mime: ^1.0.4
 

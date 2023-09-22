@@ -36,7 +36,7 @@ class _LoginPageState extends State<LoginPage> with Loader, Messages {
           break;
         case LoginStateStatus.success:
           this.hideLoader();
-          Modular.to.navigate("/timeline");
+          Modular.to.navigate("/");
           break;
         case LoginStateStatus.error:
           this.hideLoader();
@@ -55,8 +55,17 @@ class _LoginPageState extends State<LoginPage> with Loader, Messages {
     super.dispose();
   }
 
+  Future<void> _submitForm() async {
+    final bool formValid = this._formKey.currentState?.validate() ?? false;
+
+    if (formValid)
+      this._controller.login(this._loginEC.text, this._passwordEC.text);
+  }
+
   @override
   Widget build(BuildContext context) {
+    this._loginEC.text = "dev.mario.guilherme";
+    this._passwordEC.text = "123123123";
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -94,6 +103,7 @@ class _LoginPageState extends State<LoginPage> with Loader, Messages {
                             Observer(
                               builder: (context) {
                                 return TextFormField(
+                                  textInputAction: TextInputAction.next,
                                   controller: this._loginEC,
                                   style: context.textStyles.textRegular.copyWith(color: Colors.white),
                                   validator: Validatorless.required("Informe o seu apelido ou e-mail."),
@@ -110,6 +120,8 @@ class _LoginPageState extends State<LoginPage> with Loader, Messages {
                             Observer(
                               builder: (context) {
                                 return TextFormField(
+                                  textInputAction: TextInputAction.send,
+                                  onFieldSubmitted: (_) => this._submitForm(),
                                   controller: this._passwordEC,
                                   obscureText: true,
                                   style: context.textStyles.textRegular.copyWith(color: Colors.white),
@@ -138,12 +150,7 @@ class _LoginPageState extends State<LoginPage> with Loader, Messages {
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: () {
-                            final bool formValid = this._formKey.currentState?.validate() ?? false;
-
-                            if (formValid)
-                              this._controller.login(this._loginEC.text, this._passwordEC.text);
-                          },
+                          onPressed: this._submitForm,
                           child: const Text("Entrar")
                         )
                       )
