@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Sonorus.AccountAPI.Configuration;
+using Sonorus.AccountAPI.Core;
 using Sonorus.AccountAPI.DTO;
 using Sonorus.AccountAPI.Exceptions;
 using Sonorus.AccountAPI.Models;

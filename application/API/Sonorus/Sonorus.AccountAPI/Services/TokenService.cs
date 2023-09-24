@@ -2,12 +2,12 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using System.Security.Claims;
-using Sonorus.AccountAPI.Models;
+using Sonorus.AccountAPI.Data;
 
-namespace Sonorus.AccountAPI.Configuration;
+namespace Sonorus.AccountAPI.Services;
 
-public static class TokenService {
-    public static string GenerateToken(User user) {
+public class TokenService {
+    public string GenerateToken(User user) {
         byte[] key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("SECRET_JWT")!);
         JwtSecurityTokenHandler tokenHandler = new();
         SecurityTokenDescriptor tokenDescriptor = new() {

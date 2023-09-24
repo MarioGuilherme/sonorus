@@ -1,4 +1,4 @@
-﻿using Sonorus.AccountAPI.Models;
+﻿using Sonorus.AccountAPI.Data;
 
 namespace Sonorus.AccountAPI.Repository.Interfaces;
 

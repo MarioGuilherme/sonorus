@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Sonorus.AccountAPI.Configuration;
+using Sonorus.AccountAPI.Core;
 using Sonorus.AccountAPI.DTO;
 using Sonorus.AccountAPI.Exceptions;
+using Sonorus.AccountAPI.Models;
 using Sonorus.AccountAPI.Services.Interfaces;
 
 namespace Sonorus.AccountAPI.Controllers;
@@ -23,7 +24,7 @@ public class UserController : APIControllerBase {
     public async Task<ActionResult> SavePicture(IFormFile picture) {
         RestResponse<object> response = new();
         try {
-            await this._userService.SavePicture((long) this.TokenUser.IdUser!, picture);
+            await this._userService.SavePicture((long) this.TokenUser!.IdUser!, picture);
             return this.NoContent();
         } catch (AccountAPIException exception) {
             response.Message = exception.Message;
@@ -44,7 +45,7 @@ public class UserController : APIControllerBase {
     public async Task<ActionResult> SaveInterests(List<InterestDTO> interests) {
         RestResponse<object> response = new();
         try {
-            await this._userService.SaveInterests((long) this.TokenUser.IdUser!, interests);
+            await this._userService.SaveInterests((long) this.TokenUser!.IdUser!, interests);
             return this.NoContent();
         } catch (AccountAPIException exception) {
             response.Message = exception.Message;

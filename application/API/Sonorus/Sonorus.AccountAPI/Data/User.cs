@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using static BCrypt.Net.BCrypt;
 
-namespace Sonorus.AccountAPI.Models;
+namespace Sonorus.AccountAPI.Data;
 
 [Table("Users")]
 public class User {
@@ -26,8 +26,8 @@ public class User {
     [Required]
     [StringLength(60)]
     public string Password {
-        get => this._password;
-        set => this._password = HashPassword(value);
+        get => _password;
+        set => _password = HashPassword(value);
     }
 
     [Required]

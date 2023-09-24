@@ -1,31 +1,34 @@
 ﻿using AutoMapper;
 using Azure.Storage.Blobs;
-using FluentValidation.Results;
-using Sonorus.AccountAPI.Configuration;
+using Sonorus.AccountAPI.Core;
+using Sonorus.AccountAPI.Data;
 using Sonorus.AccountAPI.DTO;
 using Sonorus.AccountAPI.Exceptions;
-using Sonorus.AccountAPI.Extensions;
 using Sonorus.AccountAPI.Models;
 using Sonorus.AccountAPI.Repository.Interfaces;
 using Sonorus.AccountAPI.Services.Interfaces;
+using Sonorus.AccountAPI.Services.Validator;
 using static BCrypt.Net.BCrypt;
 
 namespace Sonorus.AccountAPI.Services;
 
-public class UserService : IUserService {
+public class UserService : BaseService, IUserService {
+    private readonly TokenService _tokenService;
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
 
-    public UserService(IUserRepository userRepository, IMapper mapper) {
+    public UserService(
+        TokenService tokenService,
+        IUserRepository userRepository,
+        IMapper mapper
+    ) {
+        this._tokenService = tokenService;
         this._userRepository = userRepository;
         this._mapper = mapper;
     }
 
     public async Task<AuthToken> Login(UserLoginDTO userLogin) {
-        ValidationResult result = new UserLoginDTOValidator().Validate(userLogin);
-
-        if (!result.IsValid) 
-            throw new AccountAPIException("Alguns campos estão inválidos", 400, result.ToFormErrorsDTO());
+        this.Validate<UserLoginValidator, UserLoginDTO>(userLogin);
 
         User user = await this._userRepository.Login(userLogin.Email ?? userLogin.Nickname!) ??
             throw new AccountAPIException("Apelido/e-mail e senha não coincidem", 404);
@@ -34,33 +37,24 @@ public class UserService : IUserService {
             throw new AccountAPIException("Apelido/e-mail e senha não coincidem", 404);
 
         return new() {
-            AccessToken = TokenService.GenerateToken(user)
+            AccessToken = this._tokenService.GenerateToken(user)
         };
     }
 
     public async Task<AuthToken> Register(UserRegisterDTO userRegister) {
-        ValidationResult result = new UserRegisterDTOValidator().Validate(userRegister);
-
-        if (!result.IsValid)
-            throw new AccountAPIException("Alguns campos estão inválidos", 400, result.ToFormErrorsDTO());
+        this.Validate<UserRegisterValidator, UserRegisterDTO>(userRegister);
 
         User user = this._mapper.Map<User>(userRegister);
         await this._userRepository.Register(user);
 
         return new() {
-            AccessToken = TokenService.GenerateToken(user),
+            AccessToken = this._tokenService.GenerateToken(user),
             RefreshToken = ""
         };
     }
 
     public async Task SaveInterests(long idUser, List<InterestDTO> interests) {
-        ValidationResult result = new UserInterestsDTOValidator().Validate(new UserInterestsDTO() {
-            IdUser = idUser,
-            Interests = interests
-        });
-
-        if (!result.IsValid)
-            throw new AccountAPIException("Alguns campos estão inválidos", 400, result.ToFormErrorsDTO());
+        this.Validate<UserInterestsValidator, UserInterestsDTO>(new UserInterestsDTO() { IdUser = idUser, Interests = interests });
 
         List<Interest> interestsMapped = this._mapper.Map<List<Interest>>(interests);
 

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Sonorus.AccountAPI.Data;
+using Sonorus.AccountAPI.Data.Context;
 using Sonorus.AccountAPI.Exceptions;
-using Sonorus.AccountAPI.Models;
 using Sonorus.AccountAPI.Repository.Interfaces;
 using System.Runtime.Intrinsics.X86;
 

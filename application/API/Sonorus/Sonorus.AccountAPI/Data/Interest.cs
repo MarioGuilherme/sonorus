@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Sonorus.AccountAPI.Models;
 
-namespace Sonorus.AccountAPI.Models;
+namespace Sonorus.AccountAPI.Data;
 
 [Table("Interests")]
 public class Interest {

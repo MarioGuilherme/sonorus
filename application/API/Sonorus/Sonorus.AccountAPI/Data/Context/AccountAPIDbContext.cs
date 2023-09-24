@@ -1,8 +1,6 @@
-﻿using Azure;
-using Microsoft.EntityFrameworkCore;
-using Sonorus.AccountAPI.Models;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace Sonorus.AccountAPI.Data;
+namespace Sonorus.AccountAPI.Data.Context;
 
 public class AccountAPIDbContext : DbContext {
     public AccountAPIDbContext(DbContextOptions options) : base(options) { }
