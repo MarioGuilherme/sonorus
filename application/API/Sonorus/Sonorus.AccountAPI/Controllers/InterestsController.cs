@@ -23,7 +23,7 @@ public class InterestsController : APIControllerBase {
         try {
             response.Data = await this._interestService.GetAll();
             return this.Ok(response);
-        } catch (AccountAPIException exception) {
+        } catch (SonorusAccountAPIException exception) {
             response.Message = exception.Message;
             response.Errors = exception.Errors;
             return this.StatusCode(exception.StatusCode, response);

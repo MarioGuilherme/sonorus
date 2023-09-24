@@ -25,7 +25,7 @@ public class AuthController : APIControllerBase {
         try {
             response.Data = await this._userService.Login(userLogin);
             return this.Ok(response);
-        } catch (AccountAPIException exception) {
+        } catch (SonorusAccountAPIException exception) {
             response.Message = exception.Message;
             response.Errors = exception.Errors;
             return this.StatusCode(exception.StatusCode, response);
@@ -46,7 +46,7 @@ public class AuthController : APIControllerBase {
         try {
             response.Data = await this._userService.Register(userRegister);
             return this.Created(string.Empty, response);
-        } catch (AccountAPIException exception) {
+        } catch (SonorusAccountAPIException exception) {
             response.Message = exception.Message;
             response.Errors = exception.Errors;
             return this.StatusCode(exception.StatusCode, response);

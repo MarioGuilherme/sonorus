@@ -31,10 +31,10 @@ public class UserService : BaseService, IUserService {
         this.Validate<UserLoginValidator, UserLoginDTO>(userLogin);
 
         User user = await this._userRepository.Login(userLogin.Email ?? userLogin.Nickname!) ??
-            throw new AccountAPIException("Apelido/e-mail e senha não coincidem", 404);
+            throw new SonorusAccountAPIException("Apelido/e-mail e senha não coincidem", 404);
 
         if (!Verify(userLogin.Password, user.Password))
-            throw new AccountAPIException("Apelido/e-mail e senha não coincidem", 404);
+            throw new SonorusAccountAPIException("Apelido/e-mail e senha não coincidem", 404);
 
         return new() {
             AccessToken = this._tokenService.GenerateToken(user)

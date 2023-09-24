@@ -26,7 +26,7 @@ public class UserController : APIControllerBase {
         try {
             await this._userService.SavePicture((long) this.TokenUser!.IdUser!, picture);
             return this.NoContent();
-        } catch (AccountAPIException exception) {
+        } catch (SonorusAccountAPIException exception) {
             response.Message = exception.Message;
             response.Errors = exception.Errors;
             return this.StatusCode(exception.StatusCode, response);
@@ -47,7 +47,7 @@ public class UserController : APIControllerBase {
         try {
             await this._userService.SaveInterests((long) this.TokenUser!.IdUser!, interests);
             return this.NoContent();
-        } catch (AccountAPIException exception) {
+        } catch (SonorusAccountAPIException exception) {
             response.Message = exception.Message;
             response.Errors = exception.Errors;
             return this.StatusCode(exception.StatusCode, response);

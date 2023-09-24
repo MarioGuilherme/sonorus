@@ -10,7 +10,7 @@ public abstract class BaseService {
         ValidationResult resultValidation = ((AbstractValidator<TInstance>) Activator.CreateInstance(typeof(TValidator))!).Validate(instance);
 
         if (!resultValidation.IsValid)
-            throw new AccountAPIException(
+            throw new SonorusAccountAPIException(
                 "Alguns campos estão inválidos",
                 400,
                 resultValidation.Errors.Select(error => new FieldError {

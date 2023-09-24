@@ -17,7 +17,7 @@ public class UserRepository : IUserRepository {
     public async Task Register(User user) {
         bool emailOrNicknameInUse = await this._dbContext.Users.AnyAsync(userDB => userDB.Email.ToUpper() == user.Email.ToUpper() || userDB.Nickname.ToUpper() == user.Nickname.ToUpper());
 
-        if (emailOrNicknameInUse) throw new AccountAPIException("Este e-mail ou apelido já está sendo utilizado", 409);
+        if (emailOrNicknameInUse) throw new SonorusAccountAPIException("Este e-mail ou apelido já está sendo utilizado", 409);
 
         await this._dbContext.Users.AddAsync(user);
         await this._dbContext.SaveChangesAsync();
