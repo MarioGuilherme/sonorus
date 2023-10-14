@@ -3,6 +3,7 @@ import "package:flutter_mobx/flutter_mobx.dart";
 import "package:flutter_modular/flutter_modular.dart";
 import "package:flutter_screenutil/flutter_screenutil.dart";
 import "package:mobx/mobx.dart";
+import "package:validatorless/validatorless.dart";
 
 import "package:sonorus/src/core/ui/styles/colors_app.dart";
 import "package:sonorus/src/core/ui/styles/text_styles.dart";
@@ -10,7 +11,6 @@ import "package:sonorus/src/core/ui/utils/loader.dart";
 import "package:sonorus/src/core/ui/utils/messages.dart";
 import "package:sonorus/src/core/ui/utils/size_extensions.dart";
 import "package:sonorus/src/modules/auth/login/login_controller.dart";
-import "package:validatorless/validatorless.dart";
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -23,11 +23,15 @@ class _LoginPageState extends State<LoginPage> with Loader, Messages {
   final _loginEC = TextEditingController();
   final _passwordEC = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  final _controller = Modular.get<LoginController>();
+  late final LoginController _controller = Modular.get<LoginController>();
   late final ReactionDisposer _statusReactionDisposer;
 
   @override
   void initState() {
+    this._controller.isAuthenticated().then((isAuthenticated) {
+      // if (isAuthenticated)
+      //   Modular.to.navigate("/");
+    });
     this._statusReactionDisposer = reaction((_) => this._controller.loginStatus, (status) {
       switch (status) {
         case LoginStateStatus.initial: break;

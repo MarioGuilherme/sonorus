@@ -1,12 +1,10 @@
-﻿using Sonorus.PostAPI.Models;
+﻿using Sonorus.PostAPI.Data.Entities;
 
 namespace Sonorus.PostAPI.Repository.Interfaces;
 
 public interface IPostRepository {
-    Task<List<Post>> GetAll();
-    Task<Post?> GetById(long idPost);
-    Task<long?> Create(Post post);
-    Task Delete(long idPost);
-    Task Update(Post postForm);
-    Task<bool> PostExists(long idPost);
+    Task<List<Post>> GetAllAsync(List<long> idsInterests);
+    Task<List<Comment>> GetAllCommentsByPostAsync(long postId);
+    Task<long> LikeAsync(long idUser, long idPost);
+    Task<long> LikeCommentByIdAsync(long userId, long commentId);
 }

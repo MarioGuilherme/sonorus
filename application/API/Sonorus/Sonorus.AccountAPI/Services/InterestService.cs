@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Caching.Memory;
-using Sonorus.AccountAPI.Data;
+using Sonorus.AccountAPI.Data.Entities;
 using Sonorus.AccountAPI.DTO;
 using Sonorus.AccountAPI.Repository.Interfaces;
 using Sonorus.AccountAPI.Services.Interfaces;

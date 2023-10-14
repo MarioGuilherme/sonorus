@@ -2,9 +2,9 @@ import "package:flutter_modular/flutter_modular.dart";
 
 import "package:sonorus/src/modules/auth/login/login_module.dart";
 import "package:sonorus/src/modules/auth/register/register_module.dart";
-import "package:sonorus/src/modules/base/base_layout.dart";
+import "package:sonorus/src/modules/base/base_module.dart";
+import "package:sonorus/src/modules/base/chat/realtime/chat_realtime_module.dart";
 import "package:sonorus/src/modules/core/core_module.dart";
-import "package:sonorus/src/modules/timeline/timeline_module.dart";
 
 class AppModule extends Module {
   @override
@@ -13,19 +13,10 @@ class AppModule extends Module {
   ];
 
   @override
-  List<ModularRoute> get routes => [
-    ChildRoute(
-      "/",
-      child: (context, args) => const BaseLayout(body: RouterOutlet()),
-      transition: TransitionType.noTransition,
-      children: [
-        ModuleRoute(
-          "/timeline/",
-          module: TimelineModule()
-        )
-      ]
-    ),
-    ModuleRoute("/login/", module: LoginModule()),
-    ModuleRoute("/register/", module: RegisterModule())
-  ];
+  void routes(r) {
+    r.module("/", module: BaseModule());
+    r.module("/chat/", module: ChatRealtimeModule());
+    r.module("/login/", module: LoginModule());
+    r.module("/register/", module: RegisterModule());
+  }
 }

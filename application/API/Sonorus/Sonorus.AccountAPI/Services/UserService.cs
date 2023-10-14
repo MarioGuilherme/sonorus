@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Azure.Storage.Blobs;
 using Sonorus.AccountAPI.Core;
-using Sonorus.AccountAPI.Data;
+using Sonorus.AccountAPI.Data.Entities;
 using Sonorus.AccountAPI.DTO;
 using Sonorus.AccountAPI.Exceptions;
 using Sonorus.AccountAPI.Models;
@@ -36,6 +36,10 @@ public class UserService : BaseService, IUserService {
         if (!Verify(userLogin.Password, user.Password))
             throw new SonorusAccountAPIException("Apelido/e-mail e senha não coincidem", 404);
 
+        user.Picture = user.Picture is null
+            ? "https://mgaroteste1.blob.core.windows.net/pictures-user/defaultPicture.png"
+            : "https://mgaroteste1.blob.core.windows.net/pictures-user/" + user.Picture;
+
         return new() {
             AccessToken = this._tokenService.GenerateToken(user)
         };
@@ -47,6 +51,8 @@ public class UserService : BaseService, IUserService {
         User user = this._mapper.Map<User>(userRegister);
         await this._userRepository.Register(user);
 
+        user.Picture ??= "https://mgaroteste1.blob.core.windows.net/pictures-user/defaultPicture.png";
+
         return new() {
             AccessToken = this._tokenService.GenerateToken(user),
             RefreshToken = ""
@@ -54,14 +60,19 @@ public class UserService : BaseService, IUserService {
     }
 
     public async Task SaveInterests(long idUser, List<InterestDTO> interests) {
-        this.Validate<UserInterestsValidator, UserInterestsDTO>(new UserInterestsDTO() { IdUser = idUser, Interests = interests });
+        this.Validate<UserInterestsValidator, UserInterestsDTO>(new UserInterestsDTO() { UserId = idUser, Interests = interests });
 
         List<Interest> interestsMapped = this._mapper.Map<List<Interest>>(interests);
 
         foreach (Interest interest in interestsMapped)
-            interest.IdInterest ??= await this._userRepository.CreateInterest(interest);
+            interest.InterestId ??= await this._userRepository.CreateInterest(interest);
 
         await this._userRepository.SaveInterests(idUser, interestsMapped);
+    }
+
+    public async Task<List<InterestDTO>> GetInterests(long idUser) {
+        List<Interest> interests = await this._userRepository.GetInterests(idUser);
+        return this._mapper.Map<List<InterestDTO>>(interests);
     }
 
     public async Task SavePicture(long idUser, IFormFile picture) {
@@ -69,5 +80,14 @@ public class UserService : BaseService, IUserService {
         BlobClient blobClient = new(Environment.GetEnvironmentVariable("ConnectionStringBlobStorage")!, "pictures-user", pictureName);
         await blobClient.UploadAsync(picture.OpenReadStream());
         await this._userRepository.SavePicture(idUser, pictureName);
+    }
+
+    public List<UserDTO> GetUsersById(List<long> idsUser) {
+        List<UserDTO> usersMapped = this._mapper.Map<List<UserDTO>>(this._userRepository.GetUsersById(idsUser));
+        usersMapped.ForEach(usersMapped => usersMapped.Picture = usersMapped.Picture is null
+            ? "https://mgaroteste1.blob.core.windows.net/pictures-user/defaultPicture.png"
+            : "https://mgaroteste1.blob.core.windows.net/pictures-user/" + usersMapped.Picture
+        );
+        return usersMapped;
     }
 }

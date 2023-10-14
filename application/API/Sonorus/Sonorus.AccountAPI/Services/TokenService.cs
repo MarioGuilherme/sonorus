@@ -2,7 +2,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using System.Security.Claims;
-using Sonorus.AccountAPI.Data;
+using Sonorus.AccountAPI.Data.Entities;
 
 namespace Sonorus.AccountAPI.Services;
 
@@ -18,11 +18,11 @@ public class TokenService {
             ),
             Subject = new(
                 new Claim[] {
-                    new("IdUser", user.IdUser.ToString()!),
+                    new("UserId", user.UserId.ToString()!),
                     new("Fullname", user.Fullname),
                     new("Nickname", user.Nickname),
                     new("Email", user.Email),
-                    new("Picture", user.Picture)
+                    new("Picture", user.Picture!)
                 }
             )
         };

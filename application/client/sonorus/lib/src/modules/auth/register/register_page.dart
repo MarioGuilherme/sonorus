@@ -76,6 +76,12 @@ class _RegisterPageState extends State<RegisterPage> with Loader, Messages {
 
   @override
   Widget build(BuildContext context) {
+    this._fullnameEC.text = "Mário Guilherme de Andrade Rodrigues";
+    this._emailEC.text = "marioguilhermedev@gmail.com";
+    this._nicknameEC.text = "dev.mario.guilherme";
+    this._passwordEC.text = "123123123";
+    this._confirmPasswordEC.text = "123123123";
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -172,29 +178,27 @@ class _RegisterPageState extends State<RegisterPage> with Loader, Messages {
                                   const SizedBox(height: 16),
                                   Observer(
                                     builder: (_) => StatefulBuilder(
-                                      builder: (context, setState) {
-                                        return TextFormField(
-                                          textInputAction: TextInputAction.next,
-                                          controller: this._passwordEC,
-                                          obscureText: !this._showPassword,
-                                          style: context.textStyles.textRegular.copyWith(color: Colors.white),
-                                          validator: Validatorless.multiple([
-                                            Validatorless.required("A senha precisa ser informada."),
-                                            Validatorless.min(6, "A senha precisa ter no mínimo 6 caracteres.")
-                                          ]),
-                                          decoration: InputDecoration(
-                                            errorText: this._controller.passwordInputErrors,
-                                            label: const Text("Senha"),
-                                            isDense: true,
-                                            prefixIcon: const Icon(Icons.lock, color: Colors.white, size: 24),
-                                            suffixIcon: IconButton(
-                                              onPressed: () => setState(() => this._showPassword = !this._showPassword),
-                                              icon: const Icon(Icons.visibility, size: 18),
-                                              color: Colors.white
-                                            )
+                                      builder: (context, setState) => TextFormField(
+                                        textInputAction: TextInputAction.next,
+                                        controller: this._passwordEC,
+                                        obscureText: !this._showPassword,
+                                        style: context.textStyles.textRegular.copyWith(color: Colors.white),
+                                        validator: Validatorless.multiple([
+                                          Validatorless.required("A senha precisa ser informada."),
+                                          Validatorless.min(6, "A senha precisa ter no mínimo 6 caracteres.")
+                                        ]),
+                                        decoration: InputDecoration(
+                                          errorText: this._controller.passwordInputErrors,
+                                          label: const Text("Senha"),
+                                          isDense: true,
+                                          prefixIcon: const Icon(Icons.lock, color: Colors.white, size: 24),
+                                          suffixIcon: IconButton(
+                                            onPressed: () => setState(() => this._showPassword = !this._showPassword),
+                                            icon: const Icon(Icons.visibility, size: 18),
+                                            color: Colors.white
                                           )
-                                        );
-                                      }
+                                        )
+                                      )
                                     )
                                   ),
                                   const SizedBox(height: 16),

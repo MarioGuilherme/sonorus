@@ -5,7 +5,7 @@ namespace Sonorus.AccountAPI.Services.Validator;
 
 public class UserInterestsValidator : AbstractValidator<UserInterestsDTO> {
     public UserInterestsValidator() {
-        RuleFor(user => user.IdUser)
+        RuleFor(user => user.UserId)
             .NotNull().WithMessage("O Id do usuário precisa ser informado")
             .GreaterThanOrEqualTo(1).WithMessage("O Id do usuário precisa ser maior que 0");
 

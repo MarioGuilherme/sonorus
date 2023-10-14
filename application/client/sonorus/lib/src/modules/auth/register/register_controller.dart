@@ -4,7 +4,6 @@ import "package:mobx/mobx.dart";
 import "package:sonorus/src/core/exceptions/email_or_nickname_in_use_exception.dart";
 import "package:sonorus/src/core/exceptions/invalid_credentials_exception.dart";
 import "package:sonorus/src/core/exceptions/repository_exception.dart";
-
 import "package:sonorus/src/services/auth/auth_service.dart";
 
 part "register_controller.g.dart";

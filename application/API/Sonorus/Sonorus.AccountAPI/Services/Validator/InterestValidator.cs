@@ -5,7 +5,7 @@ namespace Sonorus.AccountAPI.Services.Validator;
 
 public class InterestValidator : AbstractValidator<InterestDTO> {
     public InterestValidator() {
-        When(interest => interest.IdInterest is null, () => {
+        When(interest => interest.InterestId is null, () => {
             RuleFor(user => user.Key)
                 .NotNull().WithMessage("A tag do interesse precisa ser informado")
                 .MaximumLength(60).WithMessage("A chave tag do interesse não pode exceder 60 caracteres");

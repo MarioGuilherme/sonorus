@@ -1,11 +1,11 @@
 name: sonorus
 description: A new Flutter project.
-publish_to: 'none'
+publish_to: "none"
 
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.0.5 <4.0.0'
+  sdk: ">=3.0.5 <4.0.0"
 
 dependencies:
   flutter:
@@ -15,7 +15,7 @@ dependencies:
   flutter_mobx: ^2.0.6+5
   dio: ^5.1.2
   mobx: ^2.2.0
-  flutter_modular: ^5.0.3
+  flutter_modular: ^6.3.2
   shared_preferences: ^2.2.0
   image_picker: ^1.0.2
   loading_animation_widget: ^1.2.0+4
@@ -23,6 +23,10 @@ dependencies:
   validatorless: ^1.2.3
   provider: ^6.0.5
   jwt_decoder: ^2.0.1
+  carousel_slider: ^4.2.1
+  signalr_core: ^1.1.1
+  flutter_native_splash: ^2.3.3
+  shimmer: ^3.0.0
   # video_player: ^2.7.0
   # mime: ^1.0.4
 
@@ -33,10 +37,15 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   mobx_codegen: ^2.3.0
 
+flutter_native_splash:
+  color: "#16161F"
+  image: assets/images/logo.png
+
 flutter:
   assets:
     - .env
     - assets/images/
+    - assets/images/icons/
 
   fonts:
     - family: museoModerno

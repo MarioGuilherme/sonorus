@@ -1,37 +1,37 @@
 import "dart:convert";
 
 class InterestModel {
-  int? idInterest;
-  String? key;
-  String? value;
-  InterestType? type;
+  final int interestId;
+  final String key;
+  final String value;
+  final InterestType type;
 
   InterestModel({
-    this.idInterest,
-    this.key,
-    this.value,
-    this.type
+    required this.interestId,
+    required this.key,
+    required this.value,
+    required this.type
   });
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      "idInterest": idInterest,
+      "interestId": interestId,
       "key": key,
       "value": value,
-      "type": type?.id,
+      "type": type.id
     };
   }
 
   factory InterestModel.fromMap(Map<String, dynamic> map) {
     return InterestModel(
-      idInterest: map["idInterest"] != null ? map["idInterest"] as int : null,
-      key: map["key"] != null ? map["key"] as String : null,
-      value: map["value"] != null ? map["value"] as String : null,
+      interestId: map["interestId"] as int,
+      key: map["key"] as String,
+      value: map["value"] as String,
       type: InterestType.parse(map["type"])
     );
   }
 
-  String toJson() => json.encode(toMap());
+  String toJson() => json.encode(this.toMap());
 
   factory InterestModel.fromJson(String source) => InterestModel.fromMap(json.decode(source) as Map<String, dynamic>);
 }

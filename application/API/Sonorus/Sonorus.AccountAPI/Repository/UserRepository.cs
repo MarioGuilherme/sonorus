@@ -1,9 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Sonorus.AccountAPI.Data;
 using Sonorus.AccountAPI.Data.Context;
+using Sonorus.AccountAPI.Data.Entities;
 using Sonorus.AccountAPI.Exceptions;
 using Sonorus.AccountAPI.Repository.Interfaces;
-using System.Runtime.Intrinsics.X86;
 
 namespace Sonorus.AccountAPI.Repository;
 
@@ -26,10 +25,10 @@ public class UserRepository : IUserRepository {
     public async Task SaveInterests(long idUser, List<Interest> interests) {
         User user = await this._dbContext.Users
             .Include(user => user.Interests)
-            .FirstAsync(user => user.IdUser == idUser);
+            .FirstAsync(user => user.UserId == idUser);
 
         foreach (Interest interest in interests) {
-            Interest interestDB = await this._dbContext.Interests.FirstAsync(i => i.IdInterest == interest.IdInterest);
+            Interest interestDB = await this._dbContext.Interests.FirstAsync(i => i.InterestId == interest.InterestId);
             user.Interests.Add(interestDB);
         }
 
@@ -39,12 +38,23 @@ public class UserRepository : IUserRepository {
     public async Task<long> CreateInterest(Interest interest) {
         await this._dbContext.Interests.AddAsync(interest);
         await this._dbContext.SaveChangesAsync();
-        return (long) interest.IdInterest!;
+        return (long) interest.InterestId!;
     }
 
     public async Task SavePicture(long idUser, string pictureName) {
-        User user = await this._dbContext.Users.FirstAsync(user => user.IdUser == idUser);
+        User user = await this._dbContext.Users.FirstAsync(user => user.UserId == idUser);
         user.Picture = pictureName;
         await this._dbContext.SaveChangesAsync();
     }
+
+    public async Task<List<Interest>> GetInterests(long userId) =>
+        (await this._dbContext.Users
+            .AsNoTracking()
+            .Include(user => user.Interests
+        ).FirstAsync(user => user.UserId == userId)).Interests.ToList();
+
+    public List<User> GetUsersById(List<long> idsUser) => this._dbContext.Users
+        .AsNoTracking()
+        .Where(user => idsUser.Contains(user.UserId!.Value!))
+        .ToList();
 }

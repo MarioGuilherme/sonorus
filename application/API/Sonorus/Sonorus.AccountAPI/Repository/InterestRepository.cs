@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Sonorus.AccountAPI.Data;
 using Sonorus.AccountAPI.Data.Context;
+using Sonorus.AccountAPI.Data.Entities;
 using Sonorus.AccountAPI.Repository.Interfaces;
 
 namespace Sonorus.AccountAPI.Repository;

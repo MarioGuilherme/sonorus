@@ -1,7 +1,6 @@
 import "dart:developer";
 
 import "package:mobx/mobx.dart";
-
 import "package:sonorus/src/models/interest_model.dart";
 import "package:sonorus/src/repositories/auth/auth_repository.dart";
 
@@ -55,7 +54,7 @@ abstract class InterestsControllerBase with Store {
   }
 
   @action
-  void selectInterest(InterestModel interest) => this._selectedInterests.any((i) => i.idInterest == interest.idInterest)
+  void selectInterest(InterestModel interest) => this._selectedInterests.any((i) => i.interestId == interest.interestId)
       ? this._selectedInterests.remove(interest)
       : this._selectedInterests.add(interest);
 

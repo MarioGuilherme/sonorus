@@ -3,12 +3,12 @@ import "package:flutter_mobx/flutter_mobx.dart";
 import "package:flutter_modular/flutter_modular.dart";
 import "package:image_picker/image_picker.dart";
 import "package:mobx/mobx.dart";
-
 import "package:sonorus/src/core/ui/styles/colors_app.dart";
 import "package:sonorus/src/core/ui/styles/text_styles.dart";
 import "package:sonorus/src/core/ui/utils/loader.dart";
 import "package:sonorus/src/core/ui/utils/messages.dart";
 import "package:sonorus/src/core/ui/utils/size_extensions.dart";
+
 import "package:sonorus/src/modules/auth/register/picture_controller.dart";
 
 class PicturePage extends StatefulWidget {

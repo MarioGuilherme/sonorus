@@ -2,10 +2,10 @@
 import "dart:developer";
 
 import "package:mobx/mobx.dart";
+import "package:shared_preferences/shared_preferences.dart";
 import "package:sonorus/src/core/exceptions/invalid_credentials_exception.dart";
 import "package:sonorus/src/core/exceptions/repository_exception.dart";
 import "package:sonorus/src/core/exceptions/user_not_found_exception.dart";
-
 import "package:sonorus/src/services/auth/auth_service.dart";
 
 part "login_controller.g.dart";
@@ -59,5 +59,11 @@ abstract class LoginControllerBase with Store {
       this._errorMessage = exception.message;
       this._loginStatus = LoginStateStatus.error;
     }
+  }
+
+  @action
+  Future<bool> isAuthenticated() async {
+    final SharedPreferences sp = await SharedPreferences.getInstance();
+    return (sp.getString("accessToken") != null);
   }
 }

@@ -3,12 +3,9 @@ using Sonorus.AccountAPI.DTO;
 
 namespace Sonorus.AccountAPI.Services.Validator;
 
-public class UserLoginValidator : AbstractValidator<UserLoginDTO>
-{
-    public UserLoginValidator()
-    {
-        RuleFor(user => user).Custom((user, context) =>
-        {
+public class UserLoginValidator : AbstractValidator<UserLoginDTO> {
+    public UserLoginValidator() {
+        RuleFor(user => user).Custom((user, context) => {
             if (user.Email is null && user.Nickname is null)
                 context.AddFailure("Informe pelo menos o seu e-mail ou seu apelido.");
 

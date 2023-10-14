@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Sonorus.AccountAPI.Data;
 using Sonorus.AccountAPI.Repository.Interfaces;
 using Sonorus.AccountAPI.Repository;
 using Sonorus.AccountAPI.Services.Interfaces;
@@ -10,6 +9,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Sonorus.AccountAPI.Data.Context;
+using Sonorus.AccountAPI.Data.Entities;
+using Microsoft.OpenApi.Models;
 
 namespace Sonorus.AccountAPI.Configuration;
 
@@ -35,6 +36,39 @@ public static class ConfigureApplication {
             };
         });
 
+        builder.Services.AddSwaggerGen(options => {
+            options.SwaggerDoc("v1", new () {
+                Title = "Sonorus - Account API",
+                Description = "Developed by Mário Guilherme de Andrade Rodrigues",
+                Version = "v1",
+                Contact = new() {
+                    Name = "Mário Guilherme de Andrade Rodrigues",
+                    Email = "marioguilhermedev@gmail.com"
+                },
+                License = new() {
+                    Name = "MIT",
+                    Url = new("https://opensource.org/licenses/MIT")
+                }
+            });
+            options.AddSecurityDefinition("Bearer", new() {
+                Name = "Authorization",
+                Type = SecuritySchemeType.ApiKey,
+                Scheme = "Bearer",
+                BearerFormat = "JWT",
+                In = ParameterLocation.Header,
+                Description = "Insira o token JWT desta maneira: Bearer {seu token}"
+            });
+            options.AddSecurityRequirement(new() { {
+                new() {
+                    Reference = new() {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                },
+                Array.Empty<string>()
+            }});
+        });
+
         builder.Services.AddDbContext<AccountAPIDbContext>(
             options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
         );
@@ -49,6 +83,7 @@ public static class ConfigureApplication {
     }
 
     public static MapperConfiguration RegisterMaps() => new(config => {
+        config.CreateMap<User, UserDTO>().ReverseMap();
         config.CreateMap<User, UserRegisterDTO>().ReverseMap();
         config.CreateMap<User, UserLoginDTO>().ReverseMap();
         config.CreateMap<Interest, InterestDTO>().ReverseMap();

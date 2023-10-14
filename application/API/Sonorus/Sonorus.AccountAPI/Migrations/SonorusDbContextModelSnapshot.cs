@@ -22,13 +22,13 @@ namespace Sonorus.AccountAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Sonorus.AccountAPI.Models.Interest", b =>
+            modelBuilder.Entity("Sonorus.AccountAPI.Data.Entities.Interest", b =>
                 {
-                    b.Property<long?>("IdInterest")
+                    b.Property<long?>("InterestId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long?>("IdInterest"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long?>("InterestId"));
 
                     b.Property<string>("Key")
                         .IsRequired()
@@ -43,21 +43,58 @@ namespace Sonorus.AccountAPI.Migrations
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 
-                    b.HasKey("IdInterest");
+                    b.HasKey("InterestId");
 
                     b.HasIndex("Key")
                         .IsUnique();
 
                     b.ToTable("Interests");
+
+                    b.HasData(
+                        new
+                        {
+                            InterestId = 1L,
+                            Key = "rhcp",
+                            Type = 0,
+                            Value = "Red Hot Chili Peppers"
+                        },
+                        new
+                        {
+                            InterestId = 2L,
+                            Key = "nirvana",
+                            Type = 0,
+                            Value = "Nirvana"
+                        },
+                        new
+                        {
+                            InterestId = 3L,
+                            Key = "queen",
+                            Type = 0,
+                            Value = "Queen"
+                        },
+                        new
+                        {
+                            InterestId = 4L,
+                            Key = "guitar",
+                            Type = 2,
+                            Value = "Guitarra"
+                        },
+                        new
+                        {
+                            InterestId = 5L,
+                            Key = "acoustic-guitar",
+                            Type = 2,
+                            Value = "Violão"
+                        });
                 });
 
-            modelBuilder.Entity("Sonorus.AccountAPI.Models.User", b =>
+            modelBuilder.Entity("Sonorus.AccountAPI.Data.Entities.User", b =>
                 {
-                    b.Property<long?>("IdUser")
+                    b.Property<long?>("UserId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long?>("IdUser"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long?>("UserId"));
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -80,13 +117,10 @@ namespace Sonorus.AccountAPI.Migrations
                         .HasColumnType("nvarchar(60)");
 
                     b.Property<string>("Picture")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
                         .HasMaxLength(41)
-                        .HasColumnType("nvarchar(41)")
-                        .HasDefaultValue("defaultPicture.png");
+                        .HasColumnType("nvarchar(41)");
 
-                    b.HasKey("IdUser");
+                    b.HasKey("UserId");
 
                     b.HasIndex("Email")
                         .IsUnique();
@@ -114,13 +148,13 @@ namespace Sonorus.AccountAPI.Migrations
 
             modelBuilder.Entity("UsersInterests", b =>
                 {
-                    b.HasOne("Sonorus.AccountAPI.Models.Interest", null)
+                    b.HasOne("Sonorus.AccountAPI.Data.Entities.Interest", null)
                         .WithMany()
                         .HasForeignKey("InterestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Sonorus.AccountAPI.Models.User", null)
+                    b.HasOne("Sonorus.AccountAPI.Data.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

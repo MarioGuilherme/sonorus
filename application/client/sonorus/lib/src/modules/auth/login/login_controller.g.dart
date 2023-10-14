@@ -90,6 +90,14 @@ mixin _$LoginController on LoginControllerBase, Store {
     return _$loginAsyncAction.run(() => super.login(login, password));
   }
 
+  late final _$isAuthenticatedAsyncAction =
+      AsyncAction('LoginControllerBase.isAuthenticated', context: context);
+
+  @override
+  Future<bool> isAuthenticated() {
+    return _$isAuthenticatedAsyncAction.run(() => super.isAuthenticated());
+  }
+
   @override
   String toString() {
     return '''

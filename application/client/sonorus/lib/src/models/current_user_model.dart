@@ -1,12 +1,12 @@
 class CurrentUserModel {
-  int? idUser;
+  int? userId;
   String? fullName;
   String? nickname;
   String? email;
   String? picture;
 
   CurrentUserModel({
-    this.idUser,
+    this.userId,
     this.fullName,
     this.nickname,
     this.email,
@@ -14,7 +14,7 @@ class CurrentUserModel {
   });
 
   void setCurrentUser(Map<String, dynamic> userJson) {
-    this.idUser = int.parse(userJson["IdUser"]);
+    this.userId = int.parse(userJson["UserId"]);
     this.fullName = userJson["Fullname"];
     this.nickname = userJson["Nickname"];
     this.email = userJson["Email"];

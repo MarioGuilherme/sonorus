@@ -3,7 +3,7 @@
 namespace Sonorus.AccountAPI.DTO;
 
 public class InterestDTO {
-    public long? IdInterest { get; set; }
+    public long? InterestId { get; set; }
 
     public string? Key { get; set; }
 

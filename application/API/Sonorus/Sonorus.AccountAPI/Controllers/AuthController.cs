@@ -50,7 +50,7 @@ public class AuthController : APIControllerBase {
             response.Message = exception.Message;
             response.Errors = exception.Errors;
             return this.StatusCode(exception.StatusCode, response);
-        } catch (Exception) {
+        } catch (Exception error) {
             response.Message = "Ocorreu um erro interno na aplicação, por favor, tente novamente mais tarde";
             return this.StatusCode(500, response);
         }
