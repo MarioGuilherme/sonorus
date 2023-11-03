@@ -9,7 +9,7 @@ class TimelineServiceImpl implements TimelineService {
   TimelineServiceImpl(this._timelineRepository);
 
   @override
-  Future<List<PostModel>> getPosts() async => this._timelineRepository.getPosts();
+  Future<List<PostModel>> getPosts(bool contentByPreference) async => this._timelineRepository.getPosts(contentByPreference);
   
   @override
   Future<int> likePostById(int idPost) async => this._timelineRepository.likePostAsync(idPost);
@@ -19,4 +19,7 @@ class TimelineServiceImpl implements TimelineService {
 
   @override
   Future<List<CommentModel>> loadComments(int idPost) async => this._timelineRepository.loadCommentsAsync(idPost);
+
+  @override
+  Future<CommentModel> saveComment(int postId, String content) async => this._timelineRepository.saveComment(postId, content);
 }

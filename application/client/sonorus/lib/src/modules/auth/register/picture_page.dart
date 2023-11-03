@@ -1,3 +1,5 @@
+import "dart:developer";
+
 import "package:flutter/material.dart";
 import "package:flutter_mobx/flutter_mobx.dart";
 import "package:flutter_modular/flutter_modular.dart";
@@ -8,8 +10,10 @@ import "package:sonorus/src/core/ui/styles/text_styles.dart";
 import "package:sonorus/src/core/ui/utils/loader.dart";
 import "package:sonorus/src/core/ui/utils/messages.dart";
 import "package:sonorus/src/core/ui/utils/size_extensions.dart";
+import "package:sonorus/src/core/utils/routes.dart";
 
 import "package:sonorus/src/modules/auth/register/picture_controller.dart";
+import "package:sonorus/src/modules/base/widgets/picture_user.dart";
 
 class PicturePage extends StatefulWidget {
   const PicturePage({ super.key });
@@ -34,7 +38,7 @@ class _PicturePageState extends State<PicturePage> with Loader, Messages {
           break;
         case PictureStateStatus.success:
           this.hideLoader();
-          Modular.to.navigate("/register/interests");
+          Modular.to.navigate(Routes.interestsPage);
           break;
         case PictureStateStatus.error:
           this.hideLoader();
@@ -80,24 +84,36 @@ class _PicturePageState extends State<PicturePage> with Loader, Messages {
                         )
                       ),
                       Observer(
-                        builder: (_) => this._controller.pictureBytes == null
-                          ? ClipRRect(
-                            borderRadius: BorderRadius.circular(300),
-                            child: CircleAvatar(
-                              radius: context.percentHeight(.225),
-                              backgroundColor: Colors.white,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8),
-                                child: Image.network("https://cdn-icons-png.flaticon.com/512/1077/1077114.png")
+                        builder: (_) => Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            PictureUser(
+                              picture: this._controller.pictureBytes == null
+                                ? Image.network(
+                                    "https://cdn-icons-png.flaticon.com/512/1077/1077114.png",
+                                    width: context.percentHeight(.35),
+                                    height: context.percentHeight(.35),
+                                    fit: BoxFit.cover
+                                  )
+                                : Image.memory(
+                                    this._controller.pictureBytes!,
+                                    width: context.percentHeight(.35),
+                                    height: context.percentHeight(.35),
+                                    fit: BoxFit.cover
+                                  )
+                            ),
+                            if (this._controller.pictureBytes != null)
+                              Align(
+                                widthFactor: context.percentWidth(.01),
+                                heightFactor: context.percentHeight(.007),
+                                alignment: Alignment.bottomRight,
+                                child: ElevatedButton(
+                                  onPressed: this._controller.removePicture,
+                                  child: const Icon(Icons.delete)
+                                )
                               )
-                            )
-                          )
-                          : CircleAvatar(
-                              radius: context.percentHeight(.225),
-                              foregroundImage: MemoryImage(this._controller.pictureBytes!),
-                              backgroundColor: Colors.white,
-                              child: const CircularProgressIndicator()
-                            )
+                          ]
+                        )
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -157,26 +173,25 @@ class _PicturePageState extends State<PicturePage> with Loader, Messages {
                 height: 140,
                 child: Padding(
                   padding: const EdgeInsets.all(12),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () async {
-                          if (this._controller.picture != null)
-                            await this._controller.savePicture();
-                          else
-                            Modular.to.navigate("/register/interests");
-                        },
-                        child: const Text("Confirmar")
-                      ),
-                      const SizedBox(width: 20),
-                      Text(
-                        "Você pode definir isto depois",
-                        textAlign: TextAlign.center,
-                        style: context.textStyles.textSemiBold.copyWith(fontSize: 16, color: context.colors.primary)
-                      )
-                    ]
+                  child: Observer(
+                    builder: (context) {
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          if (this._controller.pictureBytes != null)
+                            ElevatedButton(
+                              onPressed: this._controller.savePicture,
+                              child: const Text("Confirmar")
+                            ),
+                          const SizedBox(width: 20),
+                          OutlinedButton(
+                            onPressed: () => Modular.to.navigate(Routes.interestsPage),
+                            child: const Text("Definir isto depois")
+                          )
+                        ]
+                      );
+                    }
                   )
                 )
               )

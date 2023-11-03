@@ -41,6 +41,9 @@ abstract class PictureControllerBase with Store {
   }
 
   @action
+  void removePicture() => this._pictureBytes = null;
+
+  @action
   Future<void> savePicture() async {
     try {
       this._pictureStatus = PictureStateStatus.loading;

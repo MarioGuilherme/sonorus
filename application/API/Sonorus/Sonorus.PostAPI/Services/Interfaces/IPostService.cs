@@ -1,11 +1,10 @@
-﻿using Sonorus.PostAPI.DTO;
+﻿using Microsoft.Extensions.Primitives;
+using Sonorus.PostAPI.DTO;
 using Sonorus.PostAPI.Models;
 
 namespace Sonorus.PostAPI.Services.Interfaces;
 
 public interface IPostService {
-    Task<List<PostDTO>> GetAll(CurrentUser user);
-    Task<List<CommentDTO>> GetAllCommentsByPostAsync(CurrentUser user, long postId);
-    Task<long> LikeAsync(long idUser, long idPost);
-    Task<long> LikeCommentByIdAsync(long userId, long commentId);
+    Task<List<PostDTO>> GetAllAsync(CurrentUser user, StringValues contentByPreferenceRaw);
+    Task<long> LikeByPostIdAsync(long postId, long userId);
 }

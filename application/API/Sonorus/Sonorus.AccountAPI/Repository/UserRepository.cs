@@ -11,9 +11,25 @@ public class UserRepository : IUserRepository {
 
     public UserRepository(AccountAPIDbContext dbContext) => this._dbContext = dbContext;
 
-    public async Task<User?> Login(string login) => await this._dbContext.Users.FirstOrDefaultAsync(user => user.Email == login || user.Nickname == login);
+    public async Task<User?> GetByLoginAsync(string login) => await this._dbContext.Users
+        .AsNoTracking()
+        .FirstOrDefaultAsync(user => user.Email == login || user.Nickname == login);
 
-    public async Task Register(User user) {
+    public async Task<User> GetByUserIdAsync(long userId) => await this._dbContext.Users
+        .AsNoTracking()
+        .FirstAsync(user => user.UserId == userId);
+
+    public async Task<List<Interest>> GetInterestsByUserIdAsync(long userId) => (await this._dbContext.Users
+        .AsNoTracking()
+        .Include(user => user.Interests
+    ).FirstAsync(user => user.UserId == userId)).Interests.ToList();
+
+    public List<User> GetUsersByUserIdAsync(List<long> userIds) => this._dbContext.Users
+        .AsNoTracking()
+        .Where(user => userIds.Contains(user.UserId!.Value!))
+        .ToList();
+
+    public async Task RegisterAsync(User user) {
         bool emailOrNicknameInUse = await this._dbContext.Users.AnyAsync(userDB => userDB.Email.ToUpper() == user.Email.ToUpper() || userDB.Nickname.ToUpper() == user.Nickname.ToUpper());
 
         if (emailOrNicknameInUse) throw new SonorusAccountAPIException("Este e-mail ou apelido já está sendo utilizado", 409);
@@ -22,10 +38,10 @@ public class UserRepository : IUserRepository {
         await this._dbContext.SaveChangesAsync();
     }
 
-    public async Task SaveInterests(long idUser, List<Interest> interests) {
+    public async Task SaveInterestsByUserIdAsync(long userId, List<Interest> interests) {
         User user = await this._dbContext.Users
             .Include(user => user.Interests)
-            .FirstAsync(user => user.UserId == idUser);
+            .FirstAsync(user => user.UserId == userId);
 
         foreach (Interest interest in interests) {
             Interest interestDB = await this._dbContext.Interests.FirstAsync(i => i.InterestId == interest.InterestId);
@@ -35,26 +51,18 @@ public class UserRepository : IUserRepository {
         await this._dbContext.SaveChangesAsync();
     }
 
-    public async Task<long> CreateInterest(Interest interest) {
-        await this._dbContext.Interests.AddAsync(interest);
-        await this._dbContext.SaveChangesAsync();
-        return (long) interest.InterestId!;
-    }
-
-    public async Task SavePicture(long idUser, string pictureName) {
-        User user = await this._dbContext.Users.FirstAsync(user => user.UserId == idUser);
+    public async Task SavePictureByUserIdAsync(long userId, string pictureName) {
+        User user = await this._dbContext.Users.FirstAsync(user => user.UserId == userId);
         user.Picture = pictureName;
         await this._dbContext.SaveChangesAsync();
     }
 
-    public async Task<List<Interest>> GetInterests(long userId) =>
-        (await this._dbContext.Users
-            .AsNoTracking()
-            .Include(user => user.Interests
-        ).FirstAsync(user => user.UserId == userId)).Interests.ToList();
-
-    public List<User> GetUsersById(List<long> idsUser) => this._dbContext.Users
-        .AsNoTracking()
-        .Where(user => idsUser.Contains(user.UserId!.Value!))
-        .ToList();
+    public async Task UpdateAsync(User user) {
+        User? userDb = await this._dbContext.Users.FirstOrDefaultAsync(u => u.UserId == user.UserId);
+        userDb.Fullname = user.Fullname;
+        userDb.Email = user.Email;
+        userDb.Nickname = user.Nickname;
+        userDb.Picture = user.Picture;
+        await this._dbContext.SaveChangesAsync();
+    }
 }

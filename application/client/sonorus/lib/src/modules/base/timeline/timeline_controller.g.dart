@@ -63,6 +63,43 @@ mixin _$TimelineController on TimelineControllerBase, Store {
     });
   }
 
+  late final _$_commentsOfOpenedPostAtom = Atom(
+      name: 'TimelineControllerBase._commentsOfOpenedPost', context: context);
+
+  List<CommentModel> get commentsOfOpenedPost {
+    _$_commentsOfOpenedPostAtom.reportRead();
+    return super._commentsOfOpenedPost;
+  }
+
+  @override
+  List<CommentModel> get _commentsOfOpenedPost => commentsOfOpenedPost;
+
+  @override
+  set _commentsOfOpenedPost(List<CommentModel> value) {
+    _$_commentsOfOpenedPostAtom.reportWrite(value, super._commentsOfOpenedPost,
+        () {
+      super._commentsOfOpenedPost = value;
+    });
+  }
+
+  late final _$getPostsAsyncAction =
+      AsyncAction('TimelineControllerBase.getPosts', context: context);
+
+  @override
+  Future<void> getPosts({bool contentByPreference = true}) {
+    return _$getPostsAsyncAction
+        .run(() => super.getPosts(contentByPreference: contentByPreference));
+  }
+
+  late final _$saveCommentAsyncAction =
+      AsyncAction('TimelineControllerBase.saveComment', context: context);
+
+  @override
+  Future<void> saveComment(int postId, String content) {
+    return _$saveCommentAsyncAction
+        .run(() => super.saveComment(postId, content));
+  }
+
   late final _$likePostByIdAsyncAction =
       AsyncAction('TimelineControllerBase.likePostById', context: context);
 
@@ -84,7 +121,7 @@ mixin _$TimelineController on TimelineControllerBase, Store {
       AsyncAction('TimelineControllerBase.loadComments', context: context);
 
   @override
-  Future<List<CommentModel>> loadComments(int postId) {
+  Future<void> loadComments(int postId) {
     return _$loadCommentsAsyncAction.run(() => super.loadComments(postId));
   }
 

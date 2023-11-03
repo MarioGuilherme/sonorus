@@ -11,7 +11,11 @@ public class Media {
 
     [Required]
     [StringLength(maximumLength: 41)]
-    public string Path { get; set; } = null!;
+    public string Path {
+        get => $"{Environment.GetEnvironmentVariable("StorageBaseURL")}{Environment.GetEnvironmentVariable("StorageContainer")}/{this._path}";
+        set => this._path = value;
+    }
+    private string _path = null!;
 
     public Post Post { get; set; } = null!;
 }

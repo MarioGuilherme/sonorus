@@ -3,5 +3,5 @@
 namespace Sonorus.AccountAPI.Services.Interfaces;
 
 public interface IInterestService {
-    Task<List<InterestDTO>> GetAll();
+    Task<List<InterestDTO>> GetAllAsync();
 }

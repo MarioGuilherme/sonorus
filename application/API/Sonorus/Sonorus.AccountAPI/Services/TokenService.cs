@@ -3,17 +3,19 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using System.Security.Claims;
 using Sonorus.AccountAPI.Data.Entities;
+using System.Security.Cryptography;
 
 namespace Sonorus.AccountAPI.Services;
 
 public class TokenService {
+    private readonly byte[] _key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("SECRET_JWT")!);
+
     public string GenerateToken(User user) {
-        byte[] key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("SECRET_JWT")!);
         JwtSecurityTokenHandler tokenHandler = new();
         SecurityTokenDescriptor tokenDescriptor = new() {
             Expires = DateTime.UtcNow.AddHours(1),
             SigningCredentials = new(
-                key: new SymmetricSecurityKey(key),
+                key: new SymmetricSecurityKey(this._key),
                 algorithm: SecurityAlgorithms.HmacSha256Signature
             ),
             Subject = new(
@@ -28,5 +30,26 @@ public class TokenService {
         };
         SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
         return tokenHandler.WriteToken(token);
+    }
+
+    public string GenerateToken(IEnumerable<Claim> claims) {
+        JwtSecurityTokenHandler tokenHandler = new();
+        SecurityTokenDescriptor tokenDescriptor = new() {
+            Expires = DateTime.UtcNow.AddHours(1),
+            Subject = new ClaimsIdentity(claims),
+            SigningCredentials = new(
+                key: new SymmetricSecurityKey(this._key),
+                algorithm: SecurityAlgorithms.HmacSha256Signature
+            )
+        };
+        SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
+        return tokenHandler.WriteToken(token);
+    }
+
+    public string GenerateRefreshToken() {
+        byte[] randomNumber = new byte[32];
+        using RandomNumberGenerator rng = RandomNumberGenerator.Create();
+        rng.GetBytes(randomNumber);
+        return Convert.ToBase64String(randomNumber);
     }
 }

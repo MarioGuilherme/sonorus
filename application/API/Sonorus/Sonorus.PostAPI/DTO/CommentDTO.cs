@@ -1,6 +1,4 @@
-﻿using Sonorus.PostAPI.DTO;
-
-namespace Sonorus.PostAPI.DTO;
+﻿namespace Sonorus.PostAPI.DTO;
 
 public class CommentDTO {
     public long? CommentId { get; set; }

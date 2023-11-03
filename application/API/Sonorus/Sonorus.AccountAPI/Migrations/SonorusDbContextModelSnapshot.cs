@@ -88,6 +88,27 @@ namespace Sonorus.AccountAPI.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Sonorus.AccountAPI.Data.Entities.RefreshToken", b =>
+                {
+                    b.Property<long>("RefreshTokenId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("RefreshTokenId"));
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasMaxLength(45)
+                        .HasColumnType("nvarchar(45)");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("RefreshTokenId");
+
+                    b.ToTable("RefreshTokens");
+                });
+
             modelBuilder.Entity("Sonorus.AccountAPI.Data.Entities.User", b =>
                 {
                     b.Property<long?>("UserId")

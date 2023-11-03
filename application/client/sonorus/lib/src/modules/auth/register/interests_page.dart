@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter_mobx/flutter_mobx.dart";
 import "package:flutter_modular/flutter_modular.dart";
+import "package:flutter_screenutil/flutter_screenutil.dart";
 import "package:mobx/mobx.dart";
 
 import "package:sonorus/src/core/ui/styles/colors_app.dart";
@@ -8,7 +9,9 @@ import "package:sonorus/src/core/ui/styles/text_styles.dart";
 
 import "package:sonorus/src/core/ui/utils/loader.dart";
 import "package:sonorus/src/core/ui/utils/messages.dart";
+import "package:sonorus/src/core/utils/routes.dart";
 import "package:sonorus/src/models/interest_model.dart";
+import "package:sonorus/src/models/intesrest_type.dart";
 import "package:sonorus/src/modules/auth/register/interests_controller.dart";
 import "package:sonorus/src/modules/auth/register/widget/multi_selector.dart";
 
@@ -40,7 +43,7 @@ class _InterestsPageState extends State<InterestsPage> with Loader, Messages {
           break;
         case InterestStateStatus.savedInterests:
           this.hideLoader();
-          Modular.to.navigate("/");
+          Modular.to.navigate(Routes.timelinePage);
           break;
         case InterestStateStatus.error:
           this.hideLoader();
@@ -79,7 +82,7 @@ class _InterestsPageState extends State<InterestsPage> with Loader, Messages {
               Observer(
                 builder: (_) => MultiSelector(
                   title: "Gêneros Musicais",
-                  allItens: this._controller.interests.where((interest) => interest.type == InterestType.musicalGenre).toList(),
+                  allItens: this._controller.interests?.where((interest) => interest.type == InterestType.musicalGenre).toList(),
                   selecteds: this._controller.selectedInterests.where((interest) => interest.type == InterestType.musicalGenre).toList(),
                   onSelected: (interest) => this._controller.selectInterest(interest)
                 )
@@ -87,7 +90,7 @@ class _InterestsPageState extends State<InterestsPage> with Loader, Messages {
               Observer(
                 builder: (_) => MultiSelector(
                   title: "Bandas",
-                  allItens: this._controller.interests.where((interest) => interest.type == InterestType.band).toList(),
+                  allItens: this._controller.interests?.where((interest) => interest.type == InterestType.band).toList(),
                   selecteds: this._controller.selectedInterests.where((interest) => interest.type == InterestType.band).toList(),
                   onSelected: (interest) => this._controller.selectInterest(interest)
                 )
@@ -95,7 +98,7 @@ class _InterestsPageState extends State<InterestsPage> with Loader, Messages {
               Observer(
                 builder: (_) => MultiSelector(
                   title: "Habilidades",
-                  allItens: this._controller.interests.where((interest) => interest.type == InterestType.skill).toList(),
+                  allItens: this._controller.interests?.where((interest) => interest.type == InterestType.skill).toList(),
                   selecteds: this._controller.selectedInterests.where((interest) => interest.type == InterestType.skill).toList(),
                   onSelected: (interest) => this._controller.selectInterest(interest)
                 )
@@ -107,15 +110,25 @@ class _InterestsPageState extends State<InterestsPage> with Loader, Messages {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    ElevatedButton(
-                      onPressed: this._controller.saveInterests,
-                      child: const Text("Salvar interesses")
+                    Observer(
+                      builder: (context) {
+                        return ElevatedButton(
+                          onPressed: this._controller.selectedInterests.length < 3
+                            ? null
+                            : this._controller.saveInterests,
+                          style: ElevatedButton.styleFrom(
+                            disabledBackgroundColor: context.colors.primary.withAlpha(50),
+                            disabledForegroundColor: context.colors.primary.withAlpha(150)
+                          ),
+                          child: const Text("Salvar interesses")
+                        );
+                      }
                     ),
                     const SizedBox(height: 15),
                     Text(
-                      "Você pode definir isto depois",
+                      "Selecione no mínimo 3 items do seu interesses",
                       textAlign: TextAlign.center,
-                      style: context.textStyles.textSemiBold.copyWith(fontSize: 16, color: context.colors.primary)
+                      style: context.textStyles.textExtraBold.copyWith(color: context.colors.primary, fontSize: 12.sp)
                     )
                   ]
                 )

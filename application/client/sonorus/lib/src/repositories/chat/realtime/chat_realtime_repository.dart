@@ -3,4 +3,5 @@ import "package:sonorus/src/models/message_model.dart";
 
 abstract interface class ChatRealtimeRepository {
   Future<List<MessageModel>> getMessages(String chatId);
+  Future<List<MessageModel>> getMessagesByFriendId(int friendId);
 }

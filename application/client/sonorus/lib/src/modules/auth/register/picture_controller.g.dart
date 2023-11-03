@@ -98,6 +98,20 @@ mixin _$PictureController on PictureControllerBase, Store {
     return _$savePictureAsyncAction.run(() => super.savePicture());
   }
 
+  late final _$PictureControllerBaseActionController =
+      ActionController(name: 'PictureControllerBase', context: context);
+
+  @override
+  void removePicture() {
+    final _$actionInfo = _$PictureControllerBaseActionController.startAction(
+        name: 'PictureControllerBase.removePicture');
+    try {
+      return super.removePicture();
+    } finally {
+      _$PictureControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''

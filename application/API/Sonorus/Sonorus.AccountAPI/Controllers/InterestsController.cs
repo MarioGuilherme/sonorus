@@ -21,7 +21,7 @@ public class InterestsController : APIControllerBase {
     public async Task<ActionResult<RestResponse<List<InterestDTO>>>> GetAllInterests() {
         RestResponse<List<InterestDTO>> response = new();
         try {
-            response.Data = await this._interestService.GetAll();
+            response.Data = await this._interestService.GetAllAsync();
             return this.Ok(response);
         } catch (SonorusAccountAPIException exception) {
             response.Message = exception.Message;

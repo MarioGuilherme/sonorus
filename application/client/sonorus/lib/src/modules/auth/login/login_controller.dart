@@ -1,11 +1,12 @@
-
 import "dart:developer";
 
 import "package:mobx/mobx.dart";
 import "package:shared_preferences/shared_preferences.dart";
+
 import "package:sonorus/src/core/exceptions/invalid_credentials_exception.dart";
 import "package:sonorus/src/core/exceptions/repository_exception.dart";
 import "package:sonorus/src/core/exceptions/user_not_found_exception.dart";
+import "package:sonorus/src/core/extensions/list_errors.dart";
 import "package:sonorus/src/services/auth/auth_service.dart";
 
 part "login_controller.g.dart";
@@ -51,8 +52,8 @@ abstract class LoginControllerBase with Store {
     } on InvalidCredentialsException catch (exception, stackTrace) {
       log(exception.message, error: exception, stackTrace: stackTrace);
       this._errorMessage = exception.message;
-      this._loginInputErrors = exception.errors.where((element) => element.field == "login").fold(null, (previousValue, element) => previousValue == null ? element.error : previousValue + element.error);
-      this._passwordInputErrors = exception.errors.where((element) => element.field == "password").fold(null, (previousValue, element) => previousValue == null ? element.error : previousValue + element.error);
+      this._loginInputErrors = exception.errors.errorsByFieldName("login");
+      this._passwordInputErrors = exception.errors.errorsByFieldName("password");
       this._loginStatus = LoginStateStatus.error;
     } on RepositoryException catch (exception, stackTrace) {
       log("Erro ao realizar login", error: exception, stackTrace: stackTrace);
@@ -63,7 +64,13 @@ abstract class LoginControllerBase with Store {
 
   @action
   Future<bool> isAuthenticated() async {
-    final SharedPreferences sp = await SharedPreferences.getInstance();
-    return (sp.getString("accessToken") != null);
+    try {
+      return await this._authService.isAuthenticated();
+    } on Exception {
+      // log("Erro ao realizar login", error: exception, stackTrace: stackTrace);
+      // // this._errorMessage = exception.message;
+      // this._loginStatus = LoginStateStatus.error;
+      return false;
+    }
   }
 }

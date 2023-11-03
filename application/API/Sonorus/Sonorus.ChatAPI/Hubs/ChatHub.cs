@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using Sonorus.ChatAPI.Data.Write;
+using Sonorus.ChatAPI.Data;
 using Sonorus.ChatAPI.DTO;
 using Sonorus.ChatAPI.Services.Interfaces;
 
@@ -10,23 +10,23 @@ public class ChatHub : Hub {
 
     public ChatHub(IChatService chatService) => this._chatService = chatService;
 
-    public async Task SendMessage(long userId, long friendId, string contentMessage) {
-        try {
-            Message message = new() {
-                Content = contentMessage,
-                SentAt = DateTime.Now,
-                SentByUserId = userId
-            };
-            MessageDTO messageDTO = new() {
-                Content = contentMessage,
-                IsSentByMe = true,
-                SentAt = message.SentAt,
-                MessageId = message.MessageId
-            };
-            await this._chatService.AddMessageAsync(userId, friendId, message);
-            await Clients.All.SendAsync("ReceiveMessage", messageDTO);
-        } catch (Exception ex) {
+    public override Task OnConnectedAsync() {
+        return base.OnConnectedAsync();
+    }
 
-        }
+    public async Task SendMessage(string chatId, long sentByUserId, string content) {
+        Message message = new() {
+            Content = content,
+            SentAt = DateTime.Now,
+            SentByUserId = sentByUserId
+        };
+        await this._chatService.AddMessageAsync(Guid.Parse(chatId), message);
+        MessageDTO messageDTO = new() {
+            Content = message.Content,
+            SentAt = message.SentAt
+        };
+        await Clients.Others.SendAsync("ReceiveMessage", messageDTO);
+        messageDTO.IsSentByMe = true;
+        await Clients.Caller.SendAsync("MessageSent", messageDTO);
     }
 }

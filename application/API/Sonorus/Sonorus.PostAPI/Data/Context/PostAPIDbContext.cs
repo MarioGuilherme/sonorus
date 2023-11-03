@@ -1,7 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Sonorus.PostAPI.Data.Entities;
-using System.Reflection.Emit;
-using System.Reflection.Metadata;
 
 namespace Sonorus.PostAPI.Data.Context;
 
@@ -26,6 +24,24 @@ public class PostAPIDbContext : DbContext {
         builder.Entity<Comment>()
             .Property(b => b.CommentedAt)
             .HasDefaultValue(DateTime.Now);
+
+        builder.Entity<Post>()
+        .HasMany(p => p.Interests)
+        .WithMany(i => i.Posts)
+        .UsingEntity(
+            "InterestsPosts",
+            l => l.HasOne(typeof(Interest)).WithMany().HasForeignKey("InterestId").HasPrincipalKey(nameof(Interest.InterestId)),
+            r => r.HasOne(typeof(Post)).WithMany().HasForeignKey("PostId").HasPrincipalKey(nameof(Post.PostId)),
+            j => j.HasKey("PostId", "InterestId")
+        );
+
+        builder.Entity<Interest>().HasData(new Interest[] {
+            new() { InterestId = 1 },
+            new() { InterestId = 2 },
+            new() { InterestId = 3 },
+            new() { InterestId = 4 },
+            new() { InterestId = 5 }
+        });
     }
 
     public DbSet<Post> Posts { get; set; }

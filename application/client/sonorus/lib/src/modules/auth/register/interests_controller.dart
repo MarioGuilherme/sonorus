@@ -24,9 +24,10 @@ abstract class InterestsControllerBase with Store {
   InterestStateStatus _interestStatus = InterestStateStatus.initial;
 
   @readonly
-  List<InterestModel> _interests = <InterestModel>[];
+  List<InterestModel>? _interests;
   
   @readonly
+  // ignore: prefer_final_fields
   ObservableList<InterestModel> _selectedInterests = ObservableList<InterestModel>();
 
   @readonly
@@ -38,6 +39,7 @@ abstract class InterestsControllerBase with Store {
   Future<void> getAllInterests() async {
     try {
       this._interestStatus = InterestStateStatus.loadingInterests;
+      this._interests = <InterestModel>[];
       this._interests = this._interests = await this._authRepository.getInterests();
       this._interestStatus = InterestStateStatus.loadedInterests;
     } catch (e, s) {
@@ -48,12 +50,6 @@ abstract class InterestsControllerBase with Store {
   }
 
   @action
-  Future<void> c() async {
-    this._selectedInterests = ObservableList<InterestModel>();
-    this._interests = [];
-  }
-
-  @action
   void selectInterest(InterestModel interest) => this._selectedInterests.any((i) => i.interestId == interest.interestId)
       ? this._selectedInterests.remove(interest)
       : this._selectedInterests.add(interest);
@@ -61,6 +57,9 @@ abstract class InterestsControllerBase with Store {
   @action
   Future<void> saveInterests() async {
     try {
+      if (this._selectedInterests.isEmpty) {
+        
+      }
       this._interestStatus = InterestStateStatus.savingInterests;
       await this._authRepository.saveInterests(this._selectedInterests.toList());
       this._interestStatus = InterestStateStatus.savedInterests;

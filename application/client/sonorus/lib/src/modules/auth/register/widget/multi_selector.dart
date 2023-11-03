@@ -1,16 +1,24 @@
 import "package:flutter/material.dart";
+import "package:flutter_screenutil/flutter_screenutil.dart";
 
 import "package:sonorus/src/core/ui/styles/colors_app.dart";
 import "package:sonorus/src/core/ui/styles/text_styles.dart";
+import "package:sonorus/src/core/ui/utils/size_extensions.dart";
 import "package:sonorus/src/models/interest_model.dart";
 
 class MultiSelector extends StatefulWidget {
   final String title;
-  final List<InterestModel> selecteds;
-  final List<InterestModel> allItens;
+  final List<InterestModel>? selecteds;
+  final List<InterestModel>? allItens;
   final void Function(InterestModel) onSelected;
 
-  const MultiSelector({ super.key, required this.title, required this.selecteds, required this.allItens, required this.onSelected });
+  const MultiSelector({
+    super.key,
+    required this.title,
+    required this.selecteds,
+    this.allItens,
+    required this.onSelected
+  });
 
   @override
   State<MultiSelector> createState() => _MultiSelectorState();
@@ -25,31 +33,28 @@ class _MultiSelectorState extends State<MultiSelector> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
+            width: double.infinity,
             color: context.colors.primary,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 5),
-                  child: Text(
-                    this.widget.title,
-                    style: context.textStyles.textSemiBold.copyWith(fontSize: 20, color: Colors.white)
-                  )
-                ),
-                IconButton(icon: const Icon(Icons.search, color: Colors.white), onPressed: () {})
-              ]
+            child: Padding(
+              padding: const EdgeInsets.only(left: 5),
+              child: Text(
+                this.widget.title,
+                style: context.textStyles.textSemiBold.copyWith(fontSize: 20.sp, color: Colors.white)
+              )
             )
           ),
           Container(
             height: 52,
             padding: const EdgeInsets.all(7.5),
-            child: this.widget.allItens.isEmpty
+            child: this.widget.allItens == null
               ? const CircularProgressIndicator()
-              : ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: this.widget.allItens.length,
-                  itemBuilder: (context, index) => _MultiSelectorItem(data: this.widget.allItens[index], onSelected: this.widget.onSelected)
-                )
+              : this.widget.allItens!.isEmpty
+                  ? Center(child: Text("Nenhum item deste tipo encontrado", style: context.textStyles.textMedium.copyWith(color: Colors.white)))
+                  : ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: this.widget.allItens!.length,
+                      itemBuilder: (context, index) => _MultiSelectorItem(data: this.widget.allItens![index], onSelected: this.widget.onSelected)
+                    )
           )
         ]
       )
@@ -89,7 +94,7 @@ class _MultiSelectorItemState extends State<_MultiSelectorItem> {
               border: Border.all(color: context.colors.primary.withOpacity(this.isSelected ? .25 : .6), width: 2)
             ),
             child: Text(
-              this.widget.data.value!,
+              this.widget.data.value,
               style: context.textStyles.textSemiBold.copyWith(fontSize: 16, color: Colors.white)
             )
           )

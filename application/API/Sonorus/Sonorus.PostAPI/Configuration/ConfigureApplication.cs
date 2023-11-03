@@ -11,16 +11,15 @@ using Sonorus.PostAPI.Services.Interfaces;
 using Sonorus.PostAPI.Repository.Interfaces;
 using Sonorus.PostAPI.Repository;
 using Microsoft.OpenApi.Models;
-using static System.Net.Mime.MediaTypeNames;
-using System.Diagnostics.Metrics;
-using System.Reflection.Metadata;
 
 namespace Sonorus.PostAPI.Configuration;
 
 public static class ConfigureApplication {
     public static void ConfigureHost(this WebApplicationBuilder builder) {
         Environment.SetEnvironmentVariable("SECRET_JWT", builder.Configuration["JWTConfigs:Secret"]!);
-        Environment.SetEnvironmentVariable("ConnectionStringBlobStorage", builder.Configuration["ConnectionStringBlobStorage"]!);
+        Environment.SetEnvironmentVariable("StorageBaseURL", builder.Configuration["AzureBlobStorage:BaseURL"]!);
+        Environment.SetEnvironmentVariable("StorageConnectionString", builder.Configuration["AzureBlobStorage:ConnectionString"]!);
+        Environment.SetEnvironmentVariable("StorageContainer", builder.Configuration["AzureBlobStorage:Container"]!);
 
         byte[] key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("SECRET_JWT")!);
 
@@ -81,6 +80,10 @@ public static class ConfigureApplication {
         builder.Services.AddHttpClient<IPostService, PostService>(
             c => c.BaseAddress = new Uri(builder.Configuration["ServiceUrls:AccountAPI"]!)
         );
+        builder.Services.AddHttpClient<ICommentService, CommentService>(
+            c => c.BaseAddress = new Uri(builder.Configuration["ServiceUrls:AccountAPI"]!)
+        );
+        builder.Services.AddScoped<ICommentRepository, CommentRepository>();
         builder.Services.AddScoped<IPostRepository, PostRepository>();
     }
 

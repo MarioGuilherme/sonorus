@@ -21,17 +21,20 @@ public class User {
     [StringLength(100)]
     public string Email { get; set; } = null!;
 
-    private string _password = null!;
-
     [Required]
     [StringLength(60)]
     public string Password {
-        get => _password;
-        set => _password = HashPassword(value);
+        get => this._password;
+        set => this._password = HashPassword(value);
     }
+    private string _password = null!;
 
     [StringLength(maximumLength: 41)]
-    public string? Picture { get; set; }
+    public string? Picture {
+        get => $"{Environment.GetEnvironmentVariable("StorageBaseURL")}{Environment.GetEnvironmentVariable("StorageContainer")}/{this._picture ?? "defaultPicture.png"}";
+        set => this._picture = value;
+    }
+    private string? _picture;
 
     public ICollection<Interest> Interests { get; set; } = new List<Interest>();
 }

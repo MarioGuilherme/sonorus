@@ -30,16 +30,16 @@ mixin _$InterestsController on InterestsControllerBase, Store {
   late final _$_interestsAtom =
       Atom(name: 'InterestsControllerBase._interests', context: context);
 
-  List<InterestModel> get interests {
+  List<InterestModel>? get interests {
     _$_interestsAtom.reportRead();
     return super._interests;
   }
 
   @override
-  List<InterestModel> get _interests => interests;
+  List<InterestModel>? get _interests => interests;
 
   @override
-  set _interests(List<InterestModel> value) {
+  set _interests(List<InterestModel>? value) {
     _$_interestsAtom.reportWrite(value, super._interests, () {
       super._interests = value;
     });
@@ -87,14 +87,6 @@ mixin _$InterestsController on InterestsControllerBase, Store {
   @override
   Future<void> getAllInterests() {
     return _$getAllInterestsAsyncAction.run(() => super.getAllInterests());
-  }
-
-  late final _$cAsyncAction =
-      AsyncAction('InterestsControllerBase.c', context: context);
-
-  @override
-  Future<void> c() {
-    return _$cAsyncAction.run(() => super.c());
   }
 
   late final _$saveInterestsAsyncAction =

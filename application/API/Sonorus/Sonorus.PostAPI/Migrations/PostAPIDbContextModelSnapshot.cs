@@ -22,19 +22,19 @@ namespace Sonorus.PostAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("InterestPost", b =>
+            modelBuilder.Entity("InterestsPosts", b =>
                 {
-                    b.Property<long>("InterestsInterestId")
+                    b.Property<long>("PostId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("PostsPostId")
+                    b.Property<long>("InterestId")
                         .HasColumnType("bigint");
 
-                    b.HasKey("InterestsInterestId", "PostsPostId");
+                    b.HasKey("PostId", "InterestId");
 
-                    b.HasIndex("PostsPostId");
+                    b.HasIndex("InterestId");
 
-                    b.ToTable("InterestPost");
+                    b.ToTable("InterestsPosts");
                 });
 
             modelBuilder.Entity("Sonorus.PostAPI.Data.Entities.Comment", b =>
@@ -46,9 +46,9 @@ namespace Sonorus.PostAPI.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long?>("CommentId"));
 
                     b.Property<DateTime>("CommentedAt")
-                        .ValueGeneratedOnAddOrUpdate()
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 10, 12, 19, 16, 4, 5, DateTimeKind.Local).AddTicks(8085));
+                        .HasDefaultValue(new DateTime(2023, 11, 2, 23, 22, 35, 472, DateTimeKind.Local).AddTicks(9558));
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -97,6 +97,28 @@ namespace Sonorus.PostAPI.Migrations
                     b.HasKey("InterestId");
 
                     b.ToTable("Interests");
+
+                    b.HasData(
+                        new
+                        {
+                            InterestId = 1L
+                        },
+                        new
+                        {
+                            InterestId = 2L
+                        },
+                        new
+                        {
+                            InterestId = 3L
+                        },
+                        new
+                        {
+                            InterestId = 4L
+                        },
+                        new
+                        {
+                            InterestId = 5L
+                        });
                 });
 
             modelBuilder.Entity("Sonorus.PostAPI.Data.Entities.Media", b =>
@@ -135,9 +157,9 @@ namespace Sonorus.PostAPI.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<DateTime>("PostedAt")
-                        .ValueGeneratedOnAddOrUpdate()
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 10, 12, 19, 16, 4, 5, DateTimeKind.Local).AddTicks(7685));
+                        .HasDefaultValue(new DateTime(2023, 11, 2, 23, 22, 35, 472, DateTimeKind.Local).AddTicks(9198));
 
                     b.Property<string>("Tablature")
                         .HasColumnType("nvarchar(max)");
@@ -171,17 +193,17 @@ namespace Sonorus.PostAPI.Migrations
                     b.ToTable("PostLikers");
                 });
 
-            modelBuilder.Entity("InterestPost", b =>
+            modelBuilder.Entity("InterestsPosts", b =>
                 {
                     b.HasOne("Sonorus.PostAPI.Data.Entities.Interest", null)
                         .WithMany()
-                        .HasForeignKey("InterestsInterestId")
+                        .HasForeignKey("InterestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Sonorus.PostAPI.Data.Entities.Post", null)
                         .WithMany()
-                        .HasForeignKey("PostsPostId")
+                        .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Sonorus.ChatAPI.Core;
 using Sonorus.ChatAPI.Data;
 using Sonorus.ChatAPI.DTO;
@@ -19,7 +20,7 @@ public class ChatController : APIControllerBase {
     [Authorize]
     [HttpGet]
     [Produces("application/json")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RestResponse<List<ChatDTO>>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(RestResponse<List<ChatDTO>>))]
     public async Task<ActionResult<RestResponse<List<ChatDTO>>>> GetAllChats() {
         RestResponse<List<ChatDTO>> response = new();
@@ -55,26 +56,4 @@ public class ChatController : APIControllerBase {
             return this.StatusCode(500, response);
         }
     }
-
-    //[Authorize]
-    //[HttpPost]
-    //[Produces("application/json")]
-    //[ProducesResponseType(StatusCodes.Status200OK)]
-    //[ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(RestResponse<List<Message>>))]
-    //public async Task<ActionResult<RestResponse<List<Message>>>> AddMessage(string message) {
-    //    RestResponse<List<Message>> response = new();
-    //    try {
-    //        await this._chatService.AddMessageAsync(new() {
-    //            Content = message
-    //        });
-    //        return this.Ok(response);
-    //    } catch (SonorusChatAPIException exception) {
-    //        response.Message = exception.Message;
-    //        response.Errors = exception.Errors;
-    //        return this.StatusCode(exception.StatusCode, response);
-    //    } catch (Exception error) {
-    //        response.Message = "Ocorreu um erro interno na aplicação, por favor, tente novamente mais tarde";
-    //        return this.StatusCode(500, response);
-    //    }
-    //}
 }

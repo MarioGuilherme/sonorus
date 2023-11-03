@@ -10,5 +10,11 @@ public class InterestRepository : IInterestRepository {
 
     public InterestRepository(AccountAPIDbContext dbContext) => this._dbContext = dbContext;
 
-    public async Task<List<Interest>> GetAll() => await this._dbContext.Interests.AsNoTracking().ToListAsync();
+    public async Task<List<Interest>> GetAllAsync() => await this._dbContext.Interests.AsNoTracking().ToListAsync();
+
+    public async Task<long> CreateAsync(Interest interest) {
+        await this._dbContext.Interests.AddAsync(interest);
+        await this._dbContext.SaveChangesAsync();
+        return (long)interest.InterestId!;
+    }
 }

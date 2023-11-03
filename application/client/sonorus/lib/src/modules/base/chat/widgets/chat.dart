@@ -4,6 +4,7 @@ import "package:flutter_screenutil/flutter_screenutil.dart";
 
 import "package:sonorus/src/core/ui/styles/colors_app.dart";
 import "package:sonorus/src/core/ui/styles/text_styles.dart";
+import "package:sonorus/src/core/utils/routes.dart";
 import "package:sonorus/src/models/chat_model.dart";
 
 class Chat extends StatelessWidget {
@@ -20,7 +21,7 @@ class Chat extends StatelessWidget {
           color: const Color(0xFF404048),
           child: InkWell(
             borderRadius: BorderRadius.circular(15),
-            onTap: () => Modular.to.navigate("/chat/", arguments: this.chat),
+            onTap: () => Modular.to.navigate(Routes.realtimeChatPage, arguments: this.chat),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.5),
               child: Row(
@@ -46,7 +47,7 @@ class Chat extends StatelessWidget {
                   Expanded(
                     flex: 5,
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(8),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -59,7 +60,7 @@ class Chat extends StatelessWidget {
                             )
                           ),
                           Text(
-                            this.chat.messages.first.content,
+                            "${this.chat.messages.first.isSentByMe ? "Você: " : ""}${this.chat.messages.first.content}",
                             style: context.textStyles.textRegular.copyWith(
                               color: Colors.white,
                               fontSize: 13.sp

@@ -14,7 +14,6 @@ public class Comment {
     [StringLength(100)]
     public string Content { get; set; } = null!;
 
-    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public DateTime CommentedAt { get; set; }
 
     public Post Post { get; set; } = null!;

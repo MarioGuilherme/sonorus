@@ -9,7 +9,7 @@ public class UserLoginValidator : AbstractValidator<UserLoginDTO> {
             if (user.Email is null && user.Nickname is null)
                 context.AddFailure("Informe pelo menos o seu e-mail ou seu apelido.");
 
-            if (user.Email is not null && user.Nickname is not null && user.Email != user.Nickname)
+            if (user.Email is not null && user.Nickname is not null)
                 context.AddFailure("Informe apenas o seu e-mail ou o seu apelido.");
         });
 

@@ -45,7 +45,7 @@ class AuthRepositoryImpl implements AuthRepository {
       final Response result = await _httpClient.accountMicrosservice().auth().post(
         "/users/interests",
         data: interests.map((interest) => <String, dynamic>{
-          "idInterest": interest.interestId,
+          "interestId": interest.interestId,
           "key": interest.key,
           "value": interest.value,
           "type": interest.type.id

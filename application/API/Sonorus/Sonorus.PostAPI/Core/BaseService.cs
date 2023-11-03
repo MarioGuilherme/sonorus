@@ -15,7 +15,7 @@ public abstract class BaseService {
                 400,
                 resultValidation.Errors.Select(error => new FieldError {
                     Error = error.ErrorMessage,
-                    Field = error.FormattedMessagePlaceholderValues.First(item => item.Key.ToString() == "PropertyName").Value.ToString()!
+                    Field = error.FormattedMessagePlaceholderValues?.First(item => item.Key.ToString() == "PropertyName").Value.ToString()
                 }).ToList()
             );
     }

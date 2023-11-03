@@ -17,7 +17,9 @@ namespace Sonorus.AccountAPI.Configuration;
 public static class ConfigureApplication {
     public static void ConfigureHost(this WebApplicationBuilder builder) {
         Environment.SetEnvironmentVariable("SECRET_JWT", builder.Configuration["JWTConfigs:Secret"]!);
-        Environment.SetEnvironmentVariable("ConnectionStringBlobStorage", builder.Configuration["ConnectionStringBlobStorage"]!);
+        Environment.SetEnvironmentVariable("StorageBaseURL", builder.Configuration["AzureBlobStorage:BaseURL"]!);
+        Environment.SetEnvironmentVariable("StorageConnectionString", builder.Configuration["AzureBlobStorage:ConnectionString"]!);
+        Environment.SetEnvironmentVariable("StorageContainer", builder.Configuration["AzureBlobStorage:Container"]!);
 
         byte[] key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("SECRET_JWT")!);
 
@@ -80,6 +82,7 @@ public static class ConfigureApplication {
         builder.Services.AddScoped<IInterestService, InterestService>();
         builder.Services.AddScoped<IUserRepository, UserRepository>();
         builder.Services.AddScoped<IInterestRepository, InterestRepository>();
+        builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
     }
 
     public static MapperConfiguration RegisterMaps() => new(config => {

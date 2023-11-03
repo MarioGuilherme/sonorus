@@ -9,17 +9,19 @@ class MediaModel {
     required this.path
   });
 
+  bool get isPicture => this.path.split(".").last != "mp4";
+
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       "mediaId": mediaId,
-      "path": path,
+      "path": path
     };
   }
 
   factory MediaModel.fromMap(Map<String, dynamic> map) {
     return MediaModel(
       mediaId: map["mediaId"] as int,
-      path: map["path"] as String,
+      path: map["path"] as String
     );
   }
 

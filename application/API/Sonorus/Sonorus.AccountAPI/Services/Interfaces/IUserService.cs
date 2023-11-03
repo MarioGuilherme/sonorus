@@ -1,13 +1,15 @@
-﻿using Sonorus.AccountAPI.DTO;
+﻿using Microsoft.Extensions.Primitives;
+using Sonorus.AccountAPI.DTO;
 using Sonorus.AccountAPI.Models;
 
 namespace Sonorus.AccountAPI.Services.Interfaces;
 
 public interface IUserService {
-    Task<AuthToken> Login(UserLoginDTO userLogin);
-    Task<AuthToken> Register(UserRegisterDTO userRegister);
-    Task SaveInterests(long idUser, List<InterestDTO> interests);
-    Task<List<InterestDTO>> GetInterests(long idUser);
-    List<UserDTO> GetUsersById(List<long> idsUser);
-    Task SavePicture(long idUser, IFormFile picture);
+    Task<List<InterestDTO>> GetInterestsByUserIdAsync(long userId);
+    List<UserDTO> GetUsersByUserIds(StringValues userIdsRaw);
+    Task<AuthToken> LoginAsync(UserLoginDTO userLogin);
+    Task<AuthToken> RefreshTokenAsync(long userId, string refreshToken);
+    Task<AuthToken> RegisterAsync(UserRegisterDTO userRegister);
+    Task SaveInterestsByUserIdAsync(long userId, List<InterestDTO> interests);
+    Task SavePictureByUserIdAsync(long userId, IFormFile picture);
 }

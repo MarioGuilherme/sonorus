@@ -14,7 +14,6 @@ public class Post {
     [StringLength(255)]
     public string? Content { get; set; }
 
-    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public DateTime PostedAt { get; set; }
 
     public ICollection<PostLiker> Likers { get; set; } = new List<PostLiker>();

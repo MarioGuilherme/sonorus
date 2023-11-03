@@ -13,6 +13,12 @@ class ThemeConfig {
   );
 
   static final theme = ThemeData(
+    textTheme: const TextTheme(
+      displayLarge: TextStyle(color: Colors.white),
+      titleLarge: TextStyle(color: Colors.white),
+      bodyMedium: TextStyle(color: Colors.white),
+      displaySmall: TextStyle(color: Colors.white),
+    ),
     colorScheme: ColorScheme.fromSeed(
       seedColor: ColorsApp.instance.primary,
       primary: ColorsApp.instance.primary,
@@ -28,7 +34,7 @@ class ThemeConfig {
       enabledBorder: ThemeConfig._defaultInputBorder,
       focusedBorder: ThemeConfig._defaultInputBorder,
       labelStyle: TextStyles.instance.textMedium.copyWith(color: Colors.white, fontSize: 16),
-      errorStyle: TextStyles.instance.textRegular.copyWith(color: const Color(0xFFFE2651), fontSize: 12),
+      errorStyle: TextStyles.instance.textRegular.copyWith(color: const Color(0xFFFE2651), fontSize: 14),
       errorMaxLines: 20
     )
   );

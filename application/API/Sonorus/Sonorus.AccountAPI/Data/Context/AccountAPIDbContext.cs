@@ -58,4 +58,5 @@ public class AccountAPIDbContext : DbContext {
 
     public DbSet<User> Users { get; set; }
     public DbSet<Interest> Interests { get; set; }
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
 }

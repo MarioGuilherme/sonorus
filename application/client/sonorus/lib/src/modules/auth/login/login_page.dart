@@ -3,6 +3,7 @@ import "package:flutter_mobx/flutter_mobx.dart";
 import "package:flutter_modular/flutter_modular.dart";
 import "package:flutter_screenutil/flutter_screenutil.dart";
 import "package:mobx/mobx.dart";
+import "package:sonorus/src/core/utils/routes.dart";
 import "package:validatorless/validatorless.dart";
 
 import "package:sonorus/src/core/ui/styles/colors_app.dart";
@@ -40,7 +41,7 @@ class _LoginPageState extends State<LoginPage> with Loader, Messages {
           break;
         case LoginStateStatus.success:
           this.hideLoader();
-          Modular.to.navigate("/");
+          Modular.to.navigate(Routes.timelinePage);
           break;
         case LoginStateStatus.error:
           this.hideLoader();
@@ -68,7 +69,7 @@ class _LoginPageState extends State<LoginPage> with Loader, Messages {
 
   @override
   Widget build(BuildContext context) {
-    this._loginEC.text = "dev.mario.guilherme";
+    this._loginEC.text = "felipe.maciel";
     this._passwordEC.text = "123123123";
     return Scaffold(
       body: SingleChildScrollView(
@@ -91,13 +92,13 @@ class _LoginPageState extends State<LoginPage> with Loader, Messages {
                       Image.asset(
                         "assets/images/logo.png",
                         fit: BoxFit.cover,
-                        height: context.percentHeight(0.3),
+                        height: context.percentHeight(0.3)
                       ),
-                      const SizedBox(height: 18),
+                      const SizedBox(height: 24),
                       Text(
                         "Olá, seja bem-vindo(a)",
                         textAlign: TextAlign.center,
-                        style: context.textStyles.textBold.copyWith(color: Colors.white, fontSize: 16.sp)
+                        style: context.textStyles.textBold.copyWith(color: Colors.white, fontSize: 18.sp)
                       ),
                       const SizedBox(height: 18),
                       Form(
@@ -105,47 +106,43 @@ class _LoginPageState extends State<LoginPage> with Loader, Messages {
                         child: Column(
                           children: [
                             Observer(
-                              builder: (context) {
-                                return TextFormField(
-                                  textInputAction: TextInputAction.next,
-                                  controller: this._loginEC,
-                                  style: context.textStyles.textRegular.copyWith(color: Colors.white),
-                                  validator: Validatorless.required("Informe o seu apelido ou e-mail."),
-                                  decoration: InputDecoration(
-                                    errorText: this._controller.loginInputErrors,
-                                    label: const Text("Apelido ou e-mail"),
-                                    prefixIcon: const Icon(Icons.badge, color: Colors.white, size: 24),
-                                    isDense: true
-                                  )
-                                );
-                              }
+                              builder: (_) => TextFormField(
+                                textInputAction: TextInputAction.next,
+                                controller: this._loginEC,
+                                style: context.textStyles.textRegular.copyWith(color: Colors.white),
+                                validator: Validatorless.required("Informe o seu apelido ou e-mail."),
+                                decoration: InputDecoration(
+                                  errorText: this._controller.loginInputErrors,
+                                  label: const Text("Apelido ou e-mail"),
+                                  prefixIcon: const Icon(Icons.badge, color: Colors.white, size: 24),
+                                  isDense: true
+                                )
+                              )
                             ),
                             const SizedBox(height: 16),
                             Observer(
-                              builder: (context) {
-                                return TextFormField(
-                                  textInputAction: TextInputAction.send,
-                                  onFieldSubmitted: (_) => this._submitForm(),
-                                  controller: this._passwordEC,
-                                  obscureText: true,
-                                  style: context.textStyles.textRegular.copyWith(color: Colors.white),
-                                  validator: Validatorless.multiple([
-                                    Validatorless.required("Informe a sua senha."),
-                                    Validatorless.min(6, "A senha precisar ter no mínimo 6 caracteres")
-                                  ]),
-                                  decoration: InputDecoration(
-                                    errorText: this._controller.passwordInputErrors,
-                                    label: const Text("Senha"),
-                                    isDense: true,
-                                    prefixIcon: const Icon(Icons.lock, color: Colors.white, size: 24),
-                                    suffixIcon: IconButton(
-                                      onPressed: () { },
-                                      icon: const Icon(Icons.visibility, size: 18),
-                                      color: Colors.white
-                                    )
+                              builder: (_) => TextFormField(
+                                textInputAction: TextInputAction.send,
+                                onFieldSubmitted: (_) => this._submitForm(),
+                                controller: this._passwordEC,
+                                obscureText: true,
+                                style: context.textStyles.textRegular.copyWith(color: Colors.white),
+                                validator: Validatorless.multiple([
+                                  Validatorless.required("Informe a sua senha."),
+                                  Validatorless.min(6, "A senha precisar ter no mínimo 6 caracteres")
+                                ]),
+                                decoration: InputDecoration(
+                                  errorText: this._controller.passwordInputErrors,
+                                  label: const Text("Senha"),
+                                  isDense: true,
+                                  prefixIcon: const Icon(Icons.lock, color: Colors.white, size: 24),
+                                  suffixIcon: IconButton(
+                                    onPressed: () { },
+                                    icon: const Icon(Icons.visibility, size: 18),
+                                    color: Colors.white
                                   )
-                                );
-                              }
+                                )
+                              )
                             )
                           ]
                         )
@@ -169,15 +166,15 @@ class _LoginPageState extends State<LoginPage> with Loader, Messages {
                     children: [
                       Text(
                         "Não tem uma conta?",
-                        style: context.textStyles.textRegular.copyWith(color: Colors.white)
+                        style: context.textStyles.textRegular.copyWith(color: Colors.white, fontSize: 16.sp)
                       ),
                       const SizedBox(width: 10),
                       InkWell(
                         child: Text(
                           "Cadastre-se",
-                          style: context.textStyles.textBold.copyWith(color: context.colors.primary)
+                          style: context.textStyles.textBold.copyWith(color: context.colors.primary, fontSize: 16.sp)
                         ),
-                        onTap: () => Modular.to.navigate("/register")
+                        onTap: () => Modular.to.navigate(Routes.registerPage)
                       )
                     ]
                   )

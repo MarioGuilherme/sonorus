@@ -21,4 +21,15 @@ class ChatRealtimeRepositoryImpl implements ChatRealtimeRepository {
       rethrow;
     }
   }
+
+  @override
+  Future<List<MessageModel>> getMessagesByFriendId(int friendId) async {
+    try {
+      final Response result = await _httpClient.chatMicrosservice().auth().get("/users/$friendId/messages");
+      final RestResponseModel restResponse = RestResponseModel.fromMap(result.data);
+      return restResponse.data.map<MessageModel>((message) => MessageModel.fromMap(message)).toList();
+    } on DioException {
+      rethrow;
+    }
+  }
 }

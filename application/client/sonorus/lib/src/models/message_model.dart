@@ -1,13 +1,11 @@
 import "dart:convert";
 
 class MessageModel {
-  final String messageId;
-  final bool isSentByMe;
   final String content;
+  final bool isSentByMe;
   final DateTime sentAt;
 
   MessageModel({
-    required this.messageId,
     required this.isSentByMe,
     required this.content,
     required this.sentAt
@@ -37,7 +35,6 @@ class MessageModel {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      "messageId": messageId,
       "isSentByMe": isSentByMe,
       "content": content,
       "sentAt": sentAt.millisecondsSinceEpoch
@@ -46,7 +43,6 @@ class MessageModel {
 
   factory MessageModel.fromMap(Map<String, dynamic> map) {
     return MessageModel(
-      messageId: map["messageId"] as String,
       isSentByMe: map["isSentByMe"] as bool,
       content: map["content"] as String,
       sentAt: DateTime.parse(map["sentAt"])

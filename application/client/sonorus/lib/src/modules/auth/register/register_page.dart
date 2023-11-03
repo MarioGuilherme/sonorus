@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import "package:flutter_mobx/flutter_mobx.dart";
 import "package:flutter_modular/flutter_modular.dart";
 import "package:mobx/mobx.dart";
+import "package:sonorus/src/core/utils/routes.dart";
 import "package:validatorless/validatorless.dart";
 
 import "package:sonorus/src/core/ui/styles/colors_app.dart";
@@ -41,7 +42,7 @@ class _RegisterPageState extends State<RegisterPage> with Loader, Messages {
           break;
         case RegisterStateStatus.success:
           this.hideLoader();
-          Modular.to.navigate("/register/picture");
+          Modular.to.navigate(Routes.picturePage);
           break;
         case RegisterStateStatus.error:
           this.hideLoader();
@@ -261,7 +262,7 @@ class _RegisterPageState extends State<RegisterPage> with Loader, Messages {
                           "Faça login",
                           style: context.textStyles.textBold.copyWith(color: context.colors.primary)
                         ),
-                        onTap: () => Modular.to.navigate("/login")
+                        onTap: () => Modular.to.navigate(Routes.loginPage)
                       )
                     ]
                   )

@@ -3,5 +3,6 @@
 namespace Sonorus.AccountAPI.Repository.Interfaces;
 
 public interface IInterestRepository {
-    Task<List<Interest>> GetAll();
+    Task<List<Interest>> GetAllAsync();
+    Task<long> CreateAsync(Interest interest);
 }

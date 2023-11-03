@@ -1,6 +1,7 @@
 import "dart:developer";
 
 import "package:mobx/mobx.dart";
+import "package:sonorus/src/core/exceptions/timeout_exception.dart";
 import "package:sonorus/src/models/comment_model.dart";
 import "package:sonorus/src/models/post_model.dart";
 import "package:sonorus/src/services/timeline/timeline_service.dart";
@@ -11,9 +12,15 @@ class TimelineController = TimelineControllerBase with _$TimelineController;
 
 enum TimelineStateStatus {
   initial,
-  loading,
-  success,
-  error
+  savingComment,
+  savedComment,
+  loadingComments,
+  loadedComments,
+  loadingPosts,
+  loadedPosts,
+  errorLoadComments,
+  errorSaveComment,
+  errorPosts
 }
 
 abstract class TimelineControllerBase with Store {
@@ -28,15 +35,40 @@ abstract class TimelineControllerBase with Store {
   @readonly
   List<PostModel> _posts = <PostModel>[];
 
+  @readonly
+  List<CommentModel> _commentsOfOpenedPost = <CommentModel>[];
+
   TimelineControllerBase(this._timelineService);
 
-  Future<void> getPosts() async {
+  @action
+  Future<void> getPosts({bool contentByPreference = true}) async {
     try {
-      this._timelineStatus = TimelineStateStatus.loading;
-      this._posts = await this._timelineService.getPosts();
-      this._timelineStatus = TimelineStateStatus.success;
-    } on Exception catch (exception, stackTrace) {
+      this._timelineStatus = TimelineStateStatus.loadingPosts;
+      this._posts = await this._timelineService.getPosts(contentByPreference);
+      this._timelineStatus = TimelineStateStatus.loadedPosts;
+    }  on Exception catch (exception, stackTrace) {
+      this._timelineStatus = TimelineStateStatus.errorPosts;
       log("Erro ao buscar as publicações", error: exception, stackTrace: stackTrace);
+    }
+    // on TimeoutException catch (exception, stackTrace) {
+    //   log(exception.message, error: exception, stackTrace: stackTrace);
+    //   this._errorMessage = exception.message;
+    //   this._timelineStatus = TimelineStateStatus.error;
+    // } on Exception catch (exception, stackTrace) {
+    //   log("Erro ao buscar as publicações", error: exception, stackTrace: stackTrace);
+    //   this._timelineStatus = TimelineStateStatus.error;
+    // }
+  }
+
+  @action
+  Future<void> saveComment(int postId, String content) async {
+    try {
+      this._timelineStatus = TimelineStateStatus.savingComment;
+      this._commentsOfOpenedPost.add(await this._timelineService.saveComment(postId, content));
+      this._timelineStatus = TimelineStateStatus.savedComment;
+    } on Exception catch (exception, stackTrace) {
+      this._timelineStatus = TimelineStateStatus.errorSaveComment;
+      log("Erro ao curtir a publicação", error: exception, stackTrace: stackTrace);
     }
   }
 
@@ -61,12 +93,14 @@ abstract class TimelineControllerBase with Store {
   }
 
   @action
-  Future<List<CommentModel>> loadComments(int postId) async {
+  Future<void> loadComments(int postId) async {
     try {
-      return await this._timelineService.loadComments(postId);
+      this._timelineStatus = TimelineStateStatus.loadingComments;
+      this._commentsOfOpenedPost = await this._timelineService.loadComments(postId);
+      this._timelineStatus = TimelineStateStatus.loadedComments;
     } on Exception catch (exception, stackTrace) {
+      this._timelineStatus = TimelineStateStatus.errorLoadComments;
       log("Erro ao buscar as publicações", error: exception, stackTrace: stackTrace);
-      return [];
     }
   }
 }

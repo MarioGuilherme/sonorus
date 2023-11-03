@@ -1,6 +1,7 @@
 import "package:flutter_modular/flutter_modular.dart";
 import "package:jwt_decoder/jwt_decoder.dart";
 import "package:shared_preferences/shared_preferences.dart";
+import "package:signalr_core/signalr_core.dart";
 
 import "package:sonorus/src/models/auth_token_model.dart";
 import "package:sonorus/src/models/current_user_model.dart";
@@ -21,9 +22,10 @@ class AuthServiceImpl implements AuthService {
       "password": password
     });
     final CurrentUserModel currentUser = Modular.get<CurrentUserModel>();
-    currentUser.setCurrentUser(JwtDecoder.decode(authTokenModel.accessToken!));
+    currentUser.setCurrentUser(JwtDecoder.decode(authTokenModel.accessToken));
     final SharedPreferences sp = await SharedPreferences.getInstance();
-    sp.setString("accessToken", authTokenModel.accessToken!);
+    sp.setString("accessToken", authTokenModel.accessToken);
+    sp.setString("refreshToken", authTokenModel.refreshToken);
   }
 
   @override
@@ -35,8 +37,23 @@ class AuthServiceImpl implements AuthService {
       password: password.trim()
     ));
     final CurrentUserModel currentUser = Modular.get<CurrentUserModel>();
-    currentUser.setCurrentUser(JwtDecoder.decode(authTokenModel.accessToken!));
+    currentUser.setCurrentUser(JwtDecoder.decode(authTokenModel.accessToken));
     final SharedPreferences sp = await SharedPreferences.getInstance();
-    sp.setString("accessToken", authTokenModel.accessToken!);
+    sp.setString("accessToken", authTokenModel.accessToken);
+    sp.setString("refreshToken", authTokenModel.refreshToken);
+  }
+
+  @override
+  Future<bool> isAuthenticated() async {
+    final SharedPreferences sp = await SharedPreferences.getInstance();
+    final String? accessToken = sp.getString("accessToken");
+    final bool isAuthenticated = accessToken != null;
+
+    if (isAuthenticated) {
+      final CurrentUserModel currentUser = Modular.get<CurrentUserModel>();
+      currentUser.setCurrentUser(JwtDecoder.decode(accessToken));
+    }
+
+    return isAuthenticated;
   }
 }

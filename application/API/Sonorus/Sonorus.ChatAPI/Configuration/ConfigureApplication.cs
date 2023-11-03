@@ -8,7 +8,7 @@ using Sonorus.ChatAPI.Services;
 using Sonorus.ChatAPI.Repository.Interfaces;
 using Sonorus.ChatAPI.Repository;
 using Sonorus.ChatAPI.DTO;
-using Sonorus.ChatAPI.Data.Write;
+using Sonorus.ChatAPI.Data;
 
 namespace Sonorus.ChatAPI.Configuration;
 
@@ -75,7 +75,9 @@ public static class ConfigureApplication {
 
         builder.Services.AddSingleton(RegisterMaps().CreateMapper());
 
-        builder.Services.AddScoped<IChatService, ChatService>();
+        builder.Services.AddHttpClient<IChatService, ChatService>(
+            c => c.BaseAddress = new Uri(builder.Configuration["ServiceUrls:AccountAPI"]!)
+        );
         builder.Services.AddSingleton<IChatRepository, ChatRepository>();
     }
 

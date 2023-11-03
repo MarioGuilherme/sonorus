@@ -4,16 +4,17 @@ import "package:sonorus/src/models/message_model.dart";
 import "package:sonorus/src/models/user_model.dart";
 
 class ChatModel {
-  final String chatId;
+  final String? chatId;
   final UserModel friend;
   final List<MessageModel> messages;
 
   ChatModel({
-    required this.chatId,
+    this.chatId,
     required this.friend,
     required this.messages
   });
 
+  
   String get lastMessageSentAt {
     final DateTime now = DateTime.now();
 
@@ -46,13 +47,13 @@ class ChatModel {
 
   factory ChatModel.fromMap(Map<String, dynamic> map) {
     return ChatModel(
-      chatId: map["chatId"] as String,
-      friend: UserModel.fromMap(map["friend"] as Map<String, dynamic>),
+      chatId: map["chatId"] != null ? map["chatId"] as String : null,
+      friend: UserModel.fromMap(map["friend"] as Map<String,dynamic>),
       messages: List<MessageModel>.from(map["messages"].map((message) => MessageModel.fromMap(message)).toList())
     );
   }
 
-  String toJson() => json.encode(this.toMap());
+  String toJson() => json.encode(toMap());
 
   factory ChatModel.fromJson(String source) => ChatModel.fromMap(json.decode(source) as Map<String, dynamic>);
 }

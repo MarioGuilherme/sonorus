@@ -3,8 +3,6 @@
 namespace Sonorus.PostAPI.Repository.Interfaces;
 
 public interface IPostRepository {
-    Task<List<Post>> GetAllAsync(List<long> idsInterests);
-    Task<List<Comment>> GetAllCommentsByPostAsync(long postId);
-    Task<long> LikeAsync(long idUser, long idPost);
-    Task<long> LikeCommentByIdAsync(long userId, long commentId);
+    Task<List<Post>> GetAllAsync(List<long> idsInterests, bool contentByPreference);
+    Task<long> LikeByPostIdAsync(long postId, long userId);
 }
