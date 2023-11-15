@@ -1,15 +1,15 @@
 import "dart:convert";
 
-import "package:sonorus/src/models/intesrest_type.dart";
+import "package:sonorus/src/models/interest_type.dart";
 
 class InterestModel {
-  final int interestId;
+  final int? interestId;
   final String key;
   final String value;
   final InterestType type;
 
   InterestModel({
-    required this.interestId,
+    this.interestId,
     required this.key,
     required this.value,
     required this.type
@@ -26,7 +26,7 @@ class InterestModel {
 
   factory InterestModel.fromMap(Map<String, dynamic> map) {
     return InterestModel(
-      interestId: map["interestId"] as int,
+      interestId: map["interestId"] == null ? null : map["interestId"] as int,
       key: map["key"] as String,
       value: map["value"] as String,
       type: InterestType.parse(map["type"])

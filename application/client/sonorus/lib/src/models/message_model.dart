@@ -1,37 +1,19 @@
 import "dart:convert";
 
 class MessageModel {
+  String? messageId;
   final String content;
   final bool isSentByMe;
   final DateTime sentAt;
+  bool isSent;
 
   MessageModel({
-    required this.isSentByMe,
+    this.messageId,
     required this.content,
-    required this.sentAt
+    required this.isSentByMe,
+    required this.sentAt,
+    required this.isSent
   });
-
-  String get sentAgo {
-    final DateTime now = DateTime.now();
-
-    final int differenceSeconds = now.difference(this.sentAt).inSeconds;
-    if (differenceSeconds <= 59)
-      return "$differenceSeconds segundos atrás";
-
-    final int differenceMinutes = now.difference(this.sentAt).inMinutes;
-    if (differenceMinutes <= 59)
-      return "$differenceMinutes minutos atrás";
-
-    final int differenceHours = now.difference(this.sentAt).inHours;
-    if (differenceHours <= 23)
-      return "$differenceHours minutos atrás";
-
-    final int differenceDays = now.difference(this.sentAt).inDays;
-    if (differenceDays <= 30)
-      return "$differenceDays dias atrás";
-
-    return "${this.sentAt.day.toString().padLeft(2, "0")}/${this.sentAt.month.toString().padLeft(2, "0")}/${this.sentAt.year}";
-  }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -45,7 +27,8 @@ class MessageModel {
     return MessageModel(
       isSentByMe: map["isSentByMe"] as bool,
       content: map["content"] as String,
-      sentAt: DateTime.parse(map["sentAt"])
+      sentAt: DateTime.parse(map["sentAt"]),
+      isSent: true
     );
   }
 

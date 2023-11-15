@@ -20,4 +20,14 @@ class CurrentUserModel {
     this.email = userJson["Email"];
     this.picture = userJson["Picture"];
   }
+
+  void setNewPicturePath(String path) => this.picture = path;
+
+  void logout() {
+    this.userId = null;
+    this.fullName = null;
+    this.nickname = null;
+    this.email = null;
+    this.picture = null;
+  }
 }

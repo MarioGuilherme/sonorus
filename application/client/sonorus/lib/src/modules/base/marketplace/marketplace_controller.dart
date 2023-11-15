@@ -28,7 +28,6 @@ abstract class _MarketplaceControllerBase with Store {
   List<ProductModel> _products = <ProductModel>[];
 
   _MarketplaceControllerBase(this._marketplaceService);
-
   
   @action
   Future<void> getAllProducts() async {
@@ -40,13 +39,28 @@ abstract class _MarketplaceControllerBase with Store {
       this._marketplaceStatus = MarketplaceStateStatus.error;
       log("Erro ao buscar os produtos", error: exception, stackTrace: stackTrace);
     }
-    // on TimeoutException catch (exception, stackTrace) {
-    //   log(exception.message, error: exception, stackTrace: stackTrace);
-    //   this._errorMessage = exception.message;
-    //   this._timelineStatus = MarketplaceStateStatus.error;
-    // } on Exception catch (exception, stackTrace) {
-    //   log("Erro ao buscar as publicações", error: exception, stackTrace: stackTrace);
-    //   this._timelineStatus = MarketplaceStateStatus.error;
-    // }
+  }
+
+  @action
+  Future<void> filterByName(String name) async {
+    try {
+      this._marketplaceStatus = MarketplaceStateStatus.loadingProducts;
+      this._products = await this._marketplaceService.getAllProductsByName(name);
+      this._marketplaceStatus = MarketplaceStateStatus.loadedProducts;
+    }  on Exception catch (exception, stackTrace) {
+      this._marketplaceStatus = MarketplaceStateStatus.error;
+      log("Erro ao buscar os produtos", error: exception, stackTrace: stackTrace);
+    }
+  }
+
+  @action
+  Future<void> deleteProductById(int productId) async {
+    try {
+       await this._marketplaceService.deleteProductById(productId);
+      this._products = this._products.where((product) => product.productId != productId).toList();
+    }  on Exception catch (exception, stackTrace) {
+      this._marketplaceStatus = MarketplaceStateStatus.error;
+      log("Erro ao buscar os produtos", error: exception, stackTrace: stackTrace);
+    }
   }
 }

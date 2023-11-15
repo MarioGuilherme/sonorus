@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:flutter_screenutil/flutter_screenutil.dart";
+import "package:sonorus/src/core/ui/styles/colors_app.dart";
 
 import "package:sonorus/src/core/ui/styles/text_styles.dart";
 
@@ -11,11 +12,11 @@ class HashTag extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 3),
+      padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 3),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
         child: Material(
-          color: Colors.transparent,
+          color: Colors.white,
           child: InkWell(
             // onTap: () => Modular.to.navigate(Routes.tag),
             child: Ink(
@@ -26,16 +27,16 @@ class HashTag extends StatelessWidget {
               ),
               child: Text(
                 "#${this.hashTag}",
-                style: context.textStyles.textExtraBold.copyWith(
-                  color: Colors.white, fontSize: 10.sp,
+                style: context.textStyles.textSemiBold.copyWith(
+                  color: context.colors.primary, fontSize: 11.sp,
                   decoration: TextDecoration.underline,
                   decorationThickness: 4
                 )
-              ),
-            ),
-          ),
-        ),
-      ),
+              )
+            )
+          )
+        )
+      )
     );
   }
 }

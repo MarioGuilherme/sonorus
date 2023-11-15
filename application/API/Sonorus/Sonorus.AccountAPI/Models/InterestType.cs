@@ -1,7 +1,7 @@
 ﻿namespace Sonorus.AccountAPI.Models;
 
 public enum InterestType {
-    Band,
+    BandOrArtist,
     MusicalGenre,
-    Skill
+    Instrument
 }

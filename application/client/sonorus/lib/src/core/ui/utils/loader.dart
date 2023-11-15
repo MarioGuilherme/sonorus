@@ -9,11 +9,14 @@ mixin Loader<T extends StatefulWidget> on State<T> {
       isOpen = true;
 
       showDialog(
-        barrierDismissible: true,
+        // barrierDismissible: false,
         context: context,
-        builder: (context) => Align(
-          alignment: Alignment.center,
-          child: LoadingAnimationWidget.staggeredDotsWave(color: Colors.white, size: 75)
+        builder: (context) => WillPopScope(
+          onWillPop: () async => false,
+          child: Align(
+            alignment: Alignment.center,
+            child: LoadingAnimationWidget.staggeredDotsWave(color: Colors.white, size: 75)
+          )
         )
       );
     }

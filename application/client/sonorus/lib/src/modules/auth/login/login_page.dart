@@ -24,15 +24,12 @@ class _LoginPageState extends State<LoginPage> with Loader, Messages {
   final _loginEC = TextEditingController();
   final _passwordEC = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool _showPassword = false;
   late final LoginController _controller = Modular.get<LoginController>();
   late final ReactionDisposer _statusReactionDisposer;
 
   @override
   void initState() {
-    this._controller.isAuthenticated().then((isAuthenticated) {
-      // if (isAuthenticated)
-      //   Modular.to.navigate("/");
-    });
     this._statusReactionDisposer = reaction((_) => this._controller.loginStatus, (status) {
       switch (status) {
         case LoginStateStatus.initial: break;
@@ -69,8 +66,8 @@ class _LoginPageState extends State<LoginPage> with Loader, Messages {
 
   @override
   Widget build(BuildContext context) {
-    this._loginEC.text = "felipe.maciel";
-    this._passwordEC.text = "123123123";
+    this._loginEC.text = "dev.mario.guilherme";
+    this._passwordEC.text = "rrrrrr";
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -121,29 +118,31 @@ class _LoginPageState extends State<LoginPage> with Loader, Messages {
                             ),
                             const SizedBox(height: 16),
                             Observer(
-                              builder: (_) => TextFormField(
-                                textInputAction: TextInputAction.send,
-                                onFieldSubmitted: (_) => this._submitForm(),
-                                controller: this._passwordEC,
-                                obscureText: true,
-                                style: context.textStyles.textRegular.copyWith(color: Colors.white),
-                                validator: Validatorless.multiple([
-                                  Validatorless.required("Informe a sua senha."),
-                                  Validatorless.min(6, "A senha precisar ter no mínimo 6 caracteres")
-                                ]),
-                                decoration: InputDecoration(
-                                  errorText: this._controller.passwordInputErrors,
-                                  label: const Text("Senha"),
-                                  isDense: true,
-                                  prefixIcon: const Icon(Icons.lock, color: Colors.white, size: 24),
-                                  suffixIcon: IconButton(
-                                    onPressed: () { },
-                                    icon: const Icon(Icons.visibility, size: 18),
-                                    color: Colors.white
+                              builder: (_) => StatefulBuilder(
+                                builder: (context, setState) => TextFormField(
+                                  textInputAction: TextInputAction.send,
+                                  onFieldSubmitted: (_) => this._submitForm(),
+                                  controller: this._passwordEC,
+                                  obscureText: !this._showPassword,
+                                  style: context.textStyles.textRegular.copyWith(color: Colors.white),
+                                  validator: Validatorless.multiple([
+                                    Validatorless.required("Informe a sua senha."),
+                                    Validatorless.min(6, "A senha precisar ter no mínimo 6 caracteres")
+                                  ]),
+                                  decoration: InputDecoration(
+                                    errorText: this._controller.passwordInputErrors,
+                                    label: const Text("Senha"),
+                                    isDense: true,
+                                    prefixIcon: const Icon(Icons.lock, color: Colors.white, size: 24),
+                                    suffixIcon: IconButton(
+                                      onPressed: () => setState(() => this._showPassword = !this._showPassword),
+                                      icon: const Icon(Icons.visibility, size: 18),
+                                      color: Colors.white
+                                    )
                                   )
                                 )
                               )
-                            )
+                            ),
                           ]
                         )
                       ),

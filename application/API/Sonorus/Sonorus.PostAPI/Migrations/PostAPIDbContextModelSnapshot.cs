@@ -48,7 +48,7 @@ namespace Sonorus.PostAPI.Migrations
                     b.Property<DateTime>("CommentedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 11, 2, 23, 22, 35, 472, DateTimeKind.Local).AddTicks(9558));
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -118,6 +118,182 @@ namespace Sonorus.PostAPI.Migrations
                         new
                         {
                             InterestId = 5L
+                        },
+                        new
+                        {
+                            InterestId = 6L
+                        },
+                        new
+                        {
+                            InterestId = 7L
+                        },
+                        new
+                        {
+                            InterestId = 8L
+                        },
+                        new
+                        {
+                            InterestId = 9L
+                        },
+                        new
+                        {
+                            InterestId = 10L
+                        },
+                        new
+                        {
+                            InterestId = 11L
+                        },
+                        new
+                        {
+                            InterestId = 12L
+                        },
+                        new
+                        {
+                            InterestId = 13L
+                        },
+                        new
+                        {
+                            InterestId = 14L
+                        },
+                        new
+                        {
+                            InterestId = 15L
+                        },
+                        new
+                        {
+                            InterestId = 16L
+                        },
+                        new
+                        {
+                            InterestId = 17L
+                        },
+                        new
+                        {
+                            InterestId = 18L
+                        },
+                        new
+                        {
+                            InterestId = 19L
+                        },
+                        new
+                        {
+                            InterestId = 20L
+                        },
+                        new
+                        {
+                            InterestId = 21L
+                        },
+                        new
+                        {
+                            InterestId = 22L
+                        },
+                        new
+                        {
+                            InterestId = 23L
+                        },
+                        new
+                        {
+                            InterestId = 24L
+                        },
+                        new
+                        {
+                            InterestId = 25L
+                        },
+                        new
+                        {
+                            InterestId = 26L
+                        },
+                        new
+                        {
+                            InterestId = 27L
+                        },
+                        new
+                        {
+                            InterestId = 28L
+                        },
+                        new
+                        {
+                            InterestId = 29L
+                        },
+                        new
+                        {
+                            InterestId = 30L
+                        },
+                        new
+                        {
+                            InterestId = 31L
+                        },
+                        new
+                        {
+                            InterestId = 32L
+                        },
+                        new
+                        {
+                            InterestId = 33L
+                        },
+                        new
+                        {
+                            InterestId = 34L
+                        },
+                        new
+                        {
+                            InterestId = 35L
+                        },
+                        new
+                        {
+                            InterestId = 36L
+                        },
+                        new
+                        {
+                            InterestId = 37L
+                        },
+                        new
+                        {
+                            InterestId = 38L
+                        },
+                        new
+                        {
+                            InterestId = 39L
+                        },
+                        new
+                        {
+                            InterestId = 40L
+                        },
+                        new
+                        {
+                            InterestId = 41L
+                        },
+                        new
+                        {
+                            InterestId = 42L
+                        },
+                        new
+                        {
+                            InterestId = 43L
+                        },
+                        new
+                        {
+                            InterestId = 44L
+                        },
+                        new
+                        {
+                            InterestId = 45L
+                        },
+                        new
+                        {
+                            InterestId = 46L
+                        },
+                        new
+                        {
+                            InterestId = 47L
+                        },
+                        new
+                        {
+                            InterestId = 48L
+                        },
+                        new
+                        {
+                            InterestId = 49L
                         });
                 });
 
@@ -159,10 +335,11 @@ namespace Sonorus.PostAPI.Migrations
                     b.Property<DateTime>("PostedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 11, 2, 23, 22, 35, 472, DateTimeKind.Local).AddTicks(9198));
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("Tablature")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");

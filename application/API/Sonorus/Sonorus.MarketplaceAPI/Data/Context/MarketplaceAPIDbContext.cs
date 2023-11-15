@@ -18,8 +18,9 @@ public class MarketplaceAPIDbContext : DbContext {
 
         builder.Entity<Product>()
             .Property(p => p.AnnouncedAt)
-            .HasDefaultValue(DateTime.Now);
+            .HasDefaultValueSql("GETDATE()");
     }
 
     public DbSet<Product> Products { get; set; }
+    public DbSet<Media> Medias { get; set; }
 }

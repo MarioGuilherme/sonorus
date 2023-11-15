@@ -2,6 +2,7 @@ import "dart:developer";
 
 import "package:flutter_modular/flutter_modular.dart";
 import "package:signalr_core/signalr_core.dart";
+import "package:sonorus/src/core/env/env.dart";
 
 import "package:sonorus/src/core/http/http_client.dart";
 import "package:sonorus/src/models/current_user_model.dart";
@@ -17,22 +18,24 @@ class CoreModule extends Module {
     i.addLazySingleton<HubConnection>(() {
       final HubConnection hubConnection = HubConnectionBuilder()
         .withUrl(
-          "http://192.168.1.112:5115/chatHub",
+          Env.instance["chat_hub_url"]!,
           HttpConnectionOptions(
             logging: (level, message) {
-              print(level);
+              log(level.name);
+              log(level.index.toString());
+              log(message);
             }
           )
         )
         .build();
-        hubConnection.on("MessageSent", (message) {
-          log(message.toString());
-        });
-        hubConnection.on("ReceiveMessage", (message) {
-          final NotificationChat notificationChat = Modular.get<NotificationChat>();
-          notificationChat.totaUnreadMessages++;
-          log(message.toString());
-        });
+        // hubConnection.on("MessageSent", (message) {
+        //   log(message.toString());
+        // });
+        // hubConnection.on("ReceiveMessage", (message) {
+        //   final NotificationChat notificationChat = Modular.get<NotificationChat>();
+        //   notificationChat.totaUnreadMessages++;
+        //   log(message.toString());
+        // });
       return hubConnection;
     });
     i.addLazySingleton<HttpClient>(HttpClient.new);

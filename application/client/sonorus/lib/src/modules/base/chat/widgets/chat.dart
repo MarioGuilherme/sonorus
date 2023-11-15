@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter_modular/flutter_modular.dart";
 import "package:flutter_screenutil/flutter_screenutil.dart";
+import "package:sonorus/src/core/extensions/time_ago_extension.dart";
 
 import "package:sonorus/src/core/ui/styles/colors_app.dart";
 import "package:sonorus/src/core/ui/styles/text_styles.dart";
@@ -21,7 +22,7 @@ class Chat extends StatelessWidget {
           color: const Color(0xFF404048),
           child: InkWell(
             borderRadius: BorderRadius.circular(15),
-            onTap: () => Modular.to.navigate(Routes.realtimeChatPage, arguments: this.chat),
+            onTap: () => Modular.to.pushNamed(Routes.realtimeChatPage, arguments: this.chat),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.5),
               child: Row(
@@ -37,7 +38,7 @@ class Chat extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(200),
                       child: Image.network(
-                        this.chat.friend.picture,
+                        this.chat.friend!.picture,
                         width: 50,
                         height: 50,
                         fit: BoxFit.cover
@@ -53,14 +54,14 @@ class Chat extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            this.chat.friend.nickname,
+                            this.chat.friend!.nickname,
                             style: context.textStyles.textExtraBold.copyWith(
                               color: Colors.white,
                               fontSize: 14.sp
                             )
                           ),
                           Text(
-                            "${this.chat.messages.first.isSentByMe ? "Você: " : ""}${this.chat.messages.first.content}",
+                            "${this.chat.messages!.first.isSentByMe ? "Você: " : ""}${this.chat.messages!.first.content}",
                             style: context.textStyles.textRegular.copyWith(
                               color: Colors.white,
                               fontSize: 13.sp
@@ -71,7 +72,7 @@ class Chat extends StatelessWidget {
                     )
                   ),
                   Text(
-                    this.chat.lastMessageSentAt,
+                    this.chat.messages!.first.sentAt.timeAgo,
                     style: context.textStyles.textLight.copyWith(
                       color: Colors.white,
                       fontSize: 8.sp
@@ -80,9 +81,9 @@ class Chat extends StatelessWidget {
                 ]
               )
             )
-          ),
-        ),
-      ),
+          )
+        )
+      )
     );
   }
 }

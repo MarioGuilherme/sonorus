@@ -85,6 +85,7 @@ public static class ConfigureApplication {
 
     public static MapperConfiguration RegisterMaps() => new(config => {
         config.CreateMap<Product, ProductDTO>().ReverseMap();
+        config.CreateMap<Product, NewProductDTO>().ReverseMap();
         config.CreateMap<Media, MediaDTO>().ReverseMap();
     });
 }

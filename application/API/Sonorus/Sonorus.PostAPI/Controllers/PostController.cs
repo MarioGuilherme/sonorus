@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Primitives;
 using Sonorus.PostAPI.Core;
 using Sonorus.PostAPI.DTO;
 using Sonorus.PostAPI.Exceptions;
@@ -25,11 +24,10 @@ public class PostController : APIControllerBase {
     [Produces("application/json")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(RestResponse<List<PostDTO>>))]
-    public async Task<ActionResult<RestResponse<List<PostDTO>>>> GetAllPosts() {
+    public async Task<ActionResult<RestResponse<List<PostDTO>>>> GetMoreEightPosts([FromHeader] int offset, [FromHeader] bool contentByPreference) {
         RestResponse<List<PostDTO>> response = new();
         try {
-            this.HttpContext.Request.Headers.TryGetValue("ContentByPreference", out StringValues contentByPreferenceRaw);
-            response.Data = await this._postService.GetAllAsync(this.CurrentUser!, contentByPreferenceRaw);
+            response.Data = await this._postService.GetMoreEightPostsAsync(this.CurrentUser!, offset, contentByPreference);
             return this.Ok(response);
         } catch (SonorusPostAPIException exception) {
             response.Message = exception.Message;
@@ -42,15 +40,52 @@ public class PostController : APIControllerBase {
     }
 
     [Authorize]
-    [HttpPost("{postId}/comments")]
+    [HttpPost]
     [Produces("application/json")]
-    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(RestResponse<long>))]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(RestResponse<long>))]
-    public async Task<ActionResult<RestResponse<long>>> SaveComment(long postId, [FromBody] string content) {
-        RestResponse<long> response = new();
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(RestResponse<object>))]
+    public async Task<ActionResult<RestResponse<object>>> CreatePost([FromForm] NewPostDTO post, IEnumerable<IFormFile> medias) {
+        RestResponse<object> response = new();
         try {
-            response.Data = await this._commentService.SaveCommentAsync(this.CurrentUser!.UserId!.Value, postId, content);
-            return this.Ok(response);
+            await this._postService.CreatePostAsync((long)this.CurrentUser!.UserId!, post, medias.ToList());
+            return this.NoContent();
+        } catch (SonorusPostAPIException exception) {
+            response.Message = exception.Message;
+            response.Errors = exception.Errors;
+            return this.StatusCode(exception.StatusCode, response);
+        } catch (Exception error) {
+            response.Message = "Ocorreu um erro interno na aplicação, por favor, tente novamente mais tarde";
+            return this.StatusCode(500, response);
+        }
+    }
+
+    [Authorize]
+    [HttpPatch]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(RestResponse<object>))]
+    public async Task<ActionResult<RestResponse<object>>> UpdatePost([FromForm] NewPostDTO post, IEnumerable<IFormFile> medias) {
+        RestResponse<object> response = new();
+        try {
+            await this._postService.UpdatePostAsync((long)this.CurrentUser!.UserId!, post, medias.ToList());
+            return this.NoContent();
+        } catch (SonorusPostAPIException exception) {
+            response.Message = exception.Message;
+            response.Errors = exception.Errors;
+            return this.StatusCode(exception.StatusCode, response);
+        } catch (Exception error) {
+            response.Message = "Ocorreu um erro interno na aplicação, por favor, tente novamente mais tarde";
+            return this.StatusCode(500, response);
+        }
+    }
+
+    [Authorize]
+    [HttpDelete]
+    [Produces("application/json")]
+    public async Task<ActionResult<RestResponse<PostDTO>>> DeleteAllFromUser() {
+        RestResponse<PostDTO> response = new();
+        try {
+            await this._postService.DeleteAllFromUser((long)this.CurrentUser!.UserId!);
+            return this.NoContent();
         } catch (SonorusPostAPIException exception) {
             response.Message = exception.Message;
             response.Errors = exception.Errors;
@@ -71,6 +106,26 @@ public class PostController : APIControllerBase {
         try {
             response.Data = await this._commentService.GetAllByPostIdAsync(postId, this.CurrentUser!);
             return this.Ok(response);
+        } catch (SonorusPostAPIException exception) {
+            response.Message = exception.Message;
+            response.Errors = exception.Errors;
+            return this.StatusCode(exception.StatusCode, response);
+        } catch (Exception error) {
+            response.Message = "Ocorreu um erro interno na aplicação, por favor, tente novamente mais tarde";
+            return this.StatusCode(500, response);
+        }
+    }
+
+    [Authorize]
+    [HttpDelete("{postId}")]
+    [Produces("application/json")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(RestResponse<object>))]
+    public async Task<ActionResult<RestResponse<PostDTO>>> DeletePost(long postId) {
+        RestResponse<object> response = new();
+        try {
+            await this._postService.DeleteByPostIdAsync((long)this.CurrentUser!.UserId!, postId);
+            return this.NoContent();
         } catch (SonorusPostAPIException exception) {
             response.Message = exception.Message;
             response.Errors = exception.Errors;

@@ -53,8 +53,8 @@ class _ChatPageState extends State<ChatPage> with Loader, Messages, CustomShimme
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
+    return RefreshIndicator(
+      onRefresh: this._controller.getChats,
       child: Observer(
         builder: (_) {
           if (this._controller.chatStatus == ChatStateStatus.loadingChats)

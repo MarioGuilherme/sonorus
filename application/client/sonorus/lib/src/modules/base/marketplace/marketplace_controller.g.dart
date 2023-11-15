@@ -72,6 +72,24 @@ mixin _$MarketplaceController on _MarketplaceControllerBase, Store {
     return _$getAllProductsAsyncAction.run(() => super.getAllProducts());
   }
 
+  late final _$filterByNameAsyncAction =
+      AsyncAction('_MarketplaceControllerBase.filterByName', context: context);
+
+  @override
+  Future<void> filterByName(String name) {
+    return _$filterByNameAsyncAction.run(() => super.filterByName(name));
+  }
+
+  late final _$deleteProductByIdAsyncAction = AsyncAction(
+      '_MarketplaceControllerBase.deleteProductById',
+      context: context);
+
+  @override
+  Future<void> deleteProductById(int productId) {
+    return _$deleteProductByIdAsyncAction
+        .run(() => super.deleteProductById(productId));
+  }
+
   @override
   String toString() {
     return '''

@@ -5,7 +5,6 @@ using Sonorus.AccountAPI.Data.Entities;
 using Sonorus.AccountAPI.DTO;
 using Sonorus.AccountAPI.Repository.Interfaces;
 using Sonorus.AccountAPI.Services.Interfaces;
-using Sonorus.AccountAPI.Services.Validator;
 
 namespace Sonorus.AccountAPI.Services;
 
@@ -23,7 +22,7 @@ public class InterestService : BaseService, IInterestService {
     public async Task<List<InterestDTO>> GetAllAsync() {
         List<Interest> interests = (await this._memoryCache.GetOrCreateAsync("INTERESTS", async entry => {
             entry.SetPriority(CacheItemPriority.Normal);
-            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1);
+            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30);
             return await this._interestRepository.GetAllAsync();
         }))!;
         return this._mapper.Map<List<InterestDTO>>(interests);

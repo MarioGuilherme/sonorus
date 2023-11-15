@@ -28,8 +28,6 @@ public class ChatRepository : IChatRepository {
         );
         this._database = this._cosmosClient.CreateDatabaseIfNotExistsAsync(this._databaseName).GetAwaiter().GetResult()!;
         this._chatContainer = this._database.CreateContainerIfNotExistsAsync("Chats", "/chatId").GetAwaiter().GetResult()!;
-        //this._messageContainer = this._database.CreateContainerIfNotExistsAsync("Messages", "/messageId").GetAwaiter().GetResult()!;
-        //this._userContainer = this._database.CreateContainerIfNotExistsAsync("Users", "/userId").GetAwaiter().GetResult()!;
     }
 
     public async Task<List<ChatDTO>> GetAllChatsByUserIdAsync(long userId) {
@@ -63,29 +61,35 @@ public class ChatRepository : IChatRepository {
         return chatDTOs;
     }
 
-    public async Task<List<MessageDTO>> GetAllMessagesWithFriendAsync(long userId, long myId) {
+    public async Task<ChatDTO> GetChatWithFriendAsync(long friendId, long myId) {
         QueryDefinition queryDefinition = new($"""
             SELECT
+                c.chatId,
                 c.messages
             FROM c
-            WHERE ARRAY_CONTAINS(c.relatedUsersId, {userId}) AND ARRAY_CONTAINS(c.relatedUsersId, {myId})
+            WHERE ARRAY_CONTAINS(c.relatedUsersId, {friendId}) AND ARRAY_CONTAINS(c.relatedUsersId, {myId})
         """);
 
         FeedIterator<Chat> chatsIterator = this._chatContainer.GetItemQueryIterator<Chat>(queryDefinition);
         FeedResponse<Chat> response = await chatsIterator.ReadNextAsync();
         Chat? chat = response.FirstOrDefault();
-        List<MessageDTO> messageDTOs = new();
 
         if (chat is null)
-            return messageDTOs;
+            return new();
 
-        chat.Messages.ForEach(message => messageDTOs.Add(new() {
+        ChatDTO chatDTO = new() {
+            Friend = new() { UserId = friendId, Nickname = string.Empty, Picture = string.Empty },
+            Messages = new(),
+            ChatId = chat.ChatId
+        };
+
+        chat.Messages.ForEach(message => chatDTO.Messages.Add(new() {
             Content = message.Content,
             IsSentByMe = message.SentByUserId == myId,
             SentAt = message.SentAt
         }));
 
-        return messageDTOs;
+        return chatDTO;
     }
 
     public async Task<List<MessageDTO>> GetAllMessagesByChatIdAsync(Guid chatId, long userId) {
@@ -110,13 +114,24 @@ public class ChatRepository : IChatRepository {
         return messageDTOs;
     }
 
+    public async Task<string> CreateNewChatAsync(long friendUserId, long myUserId) {
+        string guid = Guid.NewGuid().ToString();
+        await this._chatContainer.CreateItemAsync(new Chat {
+            ChatId = guid,
+            Id = Guid.NewGuid().ToString(),
+            Messages = new(),
+            RelatedUsersId = new long[2] { friendUserId, myUserId }
+        });
+        return guid;
+    }
+
     public async Task AddMessageAsync(Guid chatId, Message message) {
         QueryDefinition queryDefinition = new($"""
-            SELECT
-               c.id, c.chatId, c.relatedUsersId, c.messages
-            FROM c
-            WHERE c.chatId = '{chatId}'
-        """);
+                SELECT
+                   c.id, c.chatId, c.relatedUsersId, c.messages
+                FROM c
+                WHERE c.chatId = '{chatId}'
+            """);
 
         FeedIterator<Chat> chatsIterator = this._chatContainer.GetItemQueryIterator<Chat>(queryDefinition);
         FeedResponse<Chat> response = await chatsIterator.ReadNextAsync();

@@ -1,36 +1,38 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-
 import "dart:convert";
 
 import "package:sonorus/src/models/interest_model.dart";
-import "package:sonorus/src/models/post_model.dart";
+import "package:sonorus/src/models/opportunity_model.dart";
+import "package:sonorus/src/models/post_base_model.dart";
+import "package:sonorus/src/models/product_model.dart";
 import "package:sonorus/src/models/user_model.dart";
 
 class UserCompleteModel extends UserModel {
-  List<InterestModel> interests;
-  List<PostModel> posts;
-  List<UserModel> friends;
-
-  int get totalFriends => this.friends.length;
+  final String email;
+  final List<InterestModel> interests;
+  final List<PostBaseModel> posts;
+  final List<OpportunityModel> opportunities;
+  final List<ProductModel> products;
 
   UserCompleteModel({
     required super.userId,
     required super.nickname,
     required super.picture,
+    required this.email,
     required this.interests,
     required this.posts,
-    required this.friends
+    required this.opportunities,
+    required this.products
   });
 
   @override
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      "userId": userId,
-      "nickname": nickname,
-      "picture": picture,
-      "interests": interests.map((i) => i.toMap()).toList(),
-      "posts": posts.map((p) => p.toMap()).toList(),
-      "friends": friends.map((f) => f.toMap()).toList()
+      ...super.toMap(),
+      "email": email,
+      "interests": interests.map((x) => x.toMap()).toList(),
+      "posts": posts.map((x) => x.toMap()).toList(),
+      "opportunities": opportunities.map((x) => x.toMap()).toList(),
+      "products": products.map((x) => x.toMap()).toList()
     };
   }
 
@@ -38,10 +40,12 @@ class UserCompleteModel extends UserModel {
     return UserCompleteModel(
       userId: map["userId"] as int,
       nickname: map["nickname"] as String,
+      email: map["email"] as String,
       picture: map["picture"] as String,
-      interests: List<InterestModel>.from((map["interests"] as List<int>).map<InterestModel>((x) => InterestModel.fromMap(x as Map<String,dynamic>),),),
-      posts: List<PostModel>.from((map["posts"] as List<int>).map<PostModel>((x) => PostModel.fromMap(x as Map<String,dynamic>),),),
-      friends: List<UserModel>.from((map["friends"] as List<int>).map<UserModel>((x) => UserModel.fromMap(x as Map<String,dynamic>),),),
+      interests: List<InterestModel>.from(map["interests"].map((interest) => InterestModel.fromMap(interest)).toList()),
+      posts: List<PostBaseModel>.from(map["posts"].map((post) => PostBaseModel.fromMap(post)).toList()),
+      opportunities: List<OpportunityModel>.from(map["opportunities"].map((opportunity) => OpportunityModel.fromMap(opportunity)).toList()),
+      products: List<ProductModel>.from(map["products"].map((product) => ProductModel.fromMap(product)).toList())
     );
   }
 

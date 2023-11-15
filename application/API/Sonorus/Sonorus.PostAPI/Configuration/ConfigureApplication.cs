@@ -88,6 +88,7 @@ public static class ConfigureApplication {
     }
 
     public static MapperConfiguration RegisterMaps() => new(config => {
+        config.CreateMap<Post, NewPostDTO>().ReverseMap();
         config.CreateMap<Post, PostDTO>().ReverseMap();
         config.CreateMap<Comment, CommentDTO>().ReverseMap();
         config.CreateMap<Interest, InterestDTO>().ReverseMap();

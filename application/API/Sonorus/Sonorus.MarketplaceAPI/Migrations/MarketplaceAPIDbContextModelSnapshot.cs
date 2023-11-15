@@ -56,7 +56,10 @@ namespace Sonorus.MarketplaceAPI.Migrations
                     b.Property<DateTime>("AnnouncedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 11, 3, 1, 12, 53, 230, DateTimeKind.Local).AddTicks(257));
+                        .HasDefaultValue(new DateTime(2023, 11, 5, 11, 47, 8, 783, DateTimeKind.Local).AddTicks(1187));
+
+                    b.Property<int>("Condition")
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .HasMaxLength(255)

@@ -1,7 +1,9 @@
 import "dart:developer";
 
 import "package:mobx/mobx.dart";
+
 import "package:sonorus/src/models/interest_model.dart";
+import "package:sonorus/src/models/interest_type.dart";
 import "package:sonorus/src/repositories/auth/auth_repository.dart";
 
 part "interests_controller.g.dart";
@@ -50,9 +52,26 @@ abstract class InterestsControllerBase with Store {
   }
 
   @action
-  void selectInterest(InterestModel interest) => this._selectedInterests.any((i) => i.interestId == interest.interestId)
-      ? this._selectedInterests.remove(interest)
-      : this._selectedInterests.add(interest);
+  void selectInterest(InterestModel interestPressed) {
+    if (this._selectedInterests.any((i) => i.interestId == interestPressed.interestId)) {
+      this._selectedInterests.remove(interestPressed);
+      if (interestPressed.interestId == null)
+        this._interests!.removeWhere((interest) => interestPressed.key == interest.key);
+    } else {
+      this._selectedInterests.add(interestPressed);
+    }
+  }
+
+  @action
+  InterestModel addNewInterest(String key, String value, InterestType interestType) {
+    final InterestModel newInterest = InterestModel(
+      key: key,
+      value: value,
+      type: interestType
+    );
+    this._interests!.add(newInterest);
+    return newInterest;
+  }
 
   @action
   Future<void> saveInterests() async {

@@ -14,10 +14,12 @@ import "package:sonorus/src/core/utils/routes.dart";
 import "package:sonorus/src/models/chat_model.dart";
 import "package:sonorus/src/models/current_user_model.dart";
 import "package:sonorus/src/models/message_model.dart";
+import "package:sonorus/src/modules/base/widgets/picture_user.dart";
 
 import "package:sonorus/src/modules/chat_realtime/chat_realtime_controller.dart";
 import "package:sonorus/src/modules/chat_realtime/widgets/message.dart";
 import "package:sonorus/src/modules/chat_realtime/widgets/random_message_shimmer.dart";
+import "package:uuid/uuid.dart";
 
 class ChatRealtimePage extends StatefulWidget {
   final ChatModel chat;
@@ -42,10 +44,11 @@ class _ChatRealtimePageState extends State<ChatRealtimePage> with Messages, Cust
 
   @override
   void initState() {
-    this._hubConnection.start();
-    this._hubConnection.on("MessageSent", (message) {
-      this._controller.receiveMessage(message!);
-      log(message.toString());
+    this._hubConnection.off("MessageSent");
+    this._hubConnection.off("ReceiveMessage");
+    this._hubConnection.on("MessageSent", (messageId) {
+      this._controller.messageSent(messageId!);
+      log(messageId.toString());
     });
     this._hubConnection.on("ReceiveMessage", (message) {
       this._controller.receiveMessage(message!);
@@ -70,7 +73,7 @@ class _ChatRealtimePageState extends State<ChatRealtimePage> with Messages, Cust
     else {
       this._messageEC.text = this.widget.newMessage ?? "";
       this._focusNode.requestFocus();
-      this._controller.getMessagesByFriendId(this.widget.chat.friend.userId);
+      this._controller.getChatByFriendId(this.widget.chat.friend!.userId).then((chatId) => this.widget.chat.chatId = chatId);
     }
 
     super.initState();
@@ -82,50 +85,69 @@ class _ChatRealtimePageState extends State<ChatRealtimePage> with Messages, Cust
     super.dispose();
   }
 
+  void _sendMessage() {
+    if (this._hubConnection.state != HubConnectionState.connected) return;
+
+    final String message = this._messageEC.text;
+
+    if (message.isEmpty) return;
+
+    final MessageModel messageModel = MessageModel(
+      messageId: const Uuid().v4(),
+      isSentByMe: true,
+      content: message,
+      sentAt: DateTime.now(),
+      isSent: false
+    );
+
+    final CurrentUserModel currentUser = Modular.get<CurrentUserModel>();
+    this._controller.sendMyPendentMessage(messageModel);
+    this._hubConnection.invoke(
+      "SendMessage",
+      args: [
+        this.widget.chat.chatId,
+        this.widget.chat.friend!.userId,
+        currentUser.userId,
+        messageModel.content,
+        messageModel.messageId
+      ]
+    );
+    this._messageEC.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF16161F),
       appBar: AppBar(
         backgroundColor: const Color(0xFF373739),
-        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(bottom: Radius.circular(10))),
-        title: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            if (this.widget.chat.chatId != null)
-              IconButton(
-                onPressed: () => Modular.to.navigate(Routes.chatsPage),
-                splashRadius: 25,
-                style: IconButton.styleFrom(iconSize: 2),
-                icon: const Icon(Icons.arrow_back)
-              ),
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(200)),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(200),
-                      child: Image.network(
-                        this.widget.chat.friend.picture,
-                        width: 35,
-                        height: 35,
-                        fit: BoxFit.cover
-                      )
-                    )
-                  ),
-                  const SizedBox(width: 10),
-                  Text(
-                    this.widget.chat.friend.nickname,
-                    textAlign: TextAlign.start,
-                    style: context.textStyles.textMedium.copyWith(fontSize: 14.sp)
+        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(bottom: Radius.circular(12.5))),
+        title: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+          child: InkWell(
+            onTap: () => Modular.to.pushNamed(Routes.userPage),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                PictureUser(
+                  picture: Image.network(
+                    this.widget.chat.friend!.picture,
+                    width: 40,
+                    height: 40,
+                    fit: BoxFit.cover
                   )
-                ]
-              )
+                ),
+                const SizedBox(width: 20),
+                Flexible(
+                  child: Text(
+                    this.widget.chat.friend!.nickname,
+                    style: context.textStyles.textMedium.copyWith(color: Colors.white, fontSize: 16.sp)
+                  )
+                )
+              ]
             )
-          ]
+          )
         )
       ),
       body: Column(
@@ -180,9 +202,14 @@ class _ChatRealtimePageState extends State<ChatRealtimePage> with Messages, Cust
                 Expanded(
                   child: SizedBox(
                     child: TextFormField(
+                      onChanged: (value) {
+                        if (value.length == 255) 
+                          this._messageEC.text = value.substring(0, 255);
+                      },
                       controller: this._messageEC,
                       focusNode: this._focusNode,
                       textInputAction: TextInputAction.send,
+                      onFieldSubmitted: (value) => this._sendMessage,
                       style: context.textStyles.textRegular.copyWith(color: Colors.white),
                       decoration: InputDecoration(
                         hintText: "Escreva a sua mensagem...",
@@ -202,18 +229,7 @@ class _ChatRealtimePageState extends State<ChatRealtimePage> with Messages, Cust
                       color: Colors.transparent,
                       child: IconButton.outlined(
                         icon: Icon(Icons.send, color: context.colors.primary, size: 28),
-                        onPressed: () {
-                          final CurrentUserModel currentUser = Modular.get<CurrentUserModel>();
-                          this._hubConnection.invoke(
-                            "SendMessage",
-                            args: [
-                              this.widget.chat.chatId,
-                              currentUser.userId,
-                              this._messageEC.text
-                            ]
-                          );
-                          this._messageEC.text = "";
-                        }
+                        onPressed: this._sendMessage
                       )
                     )
                   )

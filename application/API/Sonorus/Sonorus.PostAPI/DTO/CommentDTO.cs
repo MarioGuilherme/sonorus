@@ -3,7 +3,7 @@
 public class CommentDTO {
     public long? CommentId { get; set; }
 
-    public UserDTO User { get; set; } = null!;
+    public UserDTO? Author { get; set; }
 
     public long TotalLikes { get; set; }
 

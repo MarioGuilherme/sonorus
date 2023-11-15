@@ -10,7 +10,7 @@ class TextStyles {
     return _instance!;
   }
 
-  String get fontFamily => "museoModerno";
+  String get fontFamily => "MuseoModerno";
 
   TextStyle get textThin => TextStyle(fontWeight: FontWeight.w100, fontFamily: fontFamily);
   TextStyle get textExtraLight => TextStyle(fontWeight: FontWeight.w200, fontFamily: fontFamily);
@@ -21,6 +21,7 @@ class TextStyles {
   TextStyle get textBold => TextStyle(fontWeight: FontWeight.w700, fontFamily: fontFamily);
   TextStyle get textExtraBold => TextStyle(fontWeight: FontWeight.w800, fontFamily: fontFamily);
   TextStyle get textBlack => TextStyle(fontWeight: FontWeight.w900, fontFamily: fontFamily);
+  TextStyle get textMediumMono => TextStyle(fontWeight: FontWeight.w500, fontFamily: fontFamily);
 }
 
 extension TextStylesExtension on BuildContext {

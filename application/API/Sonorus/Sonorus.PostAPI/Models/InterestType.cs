@@ -3,5 +3,5 @@
 public enum InterestType {
     Band,
     MusicalGenre,
-    Skill
+    Instrument
 }

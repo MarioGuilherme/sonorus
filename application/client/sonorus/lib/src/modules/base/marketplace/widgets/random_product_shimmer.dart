@@ -11,7 +11,7 @@ class RandomProductShimmer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double heigth = (300 + Random().nextInt(100)).toDouble();
-    final double widthNameProduct = (50 + Random().nextInt(80)).toDouble();
+    final double widthNameProduct = (50 + Random().nextInt(60)).toDouble();
     final double widthPriceProduct = (20 + Random().nextInt(55)).toDouble();
 
     return Container(

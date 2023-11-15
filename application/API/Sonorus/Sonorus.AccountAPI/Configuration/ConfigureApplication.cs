@@ -11,6 +11,7 @@ using System.Text;
 using Sonorus.AccountAPI.Data.Context;
 using Sonorus.AccountAPI.Data.Entities;
 using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Sonorus.AccountAPI.Configuration;
 
@@ -34,7 +35,8 @@ public static class ConfigureApplication {
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(key),
                 ValidateIssuer = false,
-                ValidateAudience = false
+                ValidateAudience = false,
+                ValidateLifetime = true
             };
         });
 
@@ -77,6 +79,10 @@ public static class ConfigureApplication {
 
         builder.Services.AddSingleton(RegisterMaps().CreateMapper());
 
+        builder.Services.AddHttpClient("PostAPI", client => client.BaseAddress = new Uri(builder.Configuration["ServiceUrls:PostAPI"]!));
+        builder.Services.AddHttpClient("MarketplaceAPI", client => client.BaseAddress = new Uri(builder.Configuration["ServiceUrls:MarketplaceAPI"]!));
+        builder.Services.AddHttpClient("BusinessAPI", client => client.BaseAddress = new Uri(builder.Configuration["ServiceUrls:BusinessAPI"]!));
+
         builder.Services.AddSingleton<TokenService>();
         builder.Services.AddScoped<IUserService, UserService>();
         builder.Services.AddScoped<IInterestService, InterestService>();
@@ -86,6 +92,7 @@ public static class ConfigureApplication {
     }
 
     public static MapperConfiguration RegisterMaps() => new(config => {
+        config.CreateMap<User, CompleteUserDTO>().ReverseMap();
         config.CreateMap<User, UserDTO>().ReverseMap();
         config.CreateMap<User, UserRegisterDTO>().ReverseMap();
         config.CreateMap<User, UserLoginDTO>().ReverseMap();

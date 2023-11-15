@@ -57,16 +57,15 @@ public class AuthController : APIControllerBase {
         }
     }
 
-    [Authorize]
     [HttpPost("refreshToken")]
     [Produces("application/json")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(RestResponse<AuthToken>))]
-    public async Task<ActionResult<RestResponse<AuthToken>>> RefreshToken(string refreshToken) {
+    public async Task<ActionResult<RestResponse<AuthToken>>> RefreshToken(AuthToken authToken) {
         RestResponse<AuthToken> response = new();
         try {
-            response.Data = await this._userService.RefreshTokenAsync((long)this.CurrentUser!.UserId!, refreshToken);
+            response.Data = await this._userService.RefreshTokenAsync(authToken);
             return this.Ok(response);
         } catch (SonorusAccountAPIException exception) {
             response.Message = exception.Message;

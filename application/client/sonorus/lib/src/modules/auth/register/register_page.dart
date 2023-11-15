@@ -2,7 +2,6 @@ import "package:flutter/material.dart";
 import "package:flutter_mobx/flutter_mobx.dart";
 import "package:flutter_modular/flutter_modular.dart";
 import "package:mobx/mobx.dart";
-import "package:sonorus/src/core/utils/routes.dart";
 import "package:validatorless/validatorless.dart";
 
 import "package:sonorus/src/core/ui/styles/colors_app.dart";
@@ -10,6 +9,7 @@ import "package:sonorus/src/core/ui/styles/text_styles.dart";
 import "package:sonorus/src/core/ui/utils/loader.dart";
 import "package:sonorus/src/core/ui/utils/messages.dart";
 import "package:sonorus/src/core/ui/utils/size_extensions.dart";
+import "package:sonorus/src/core/utils/routes.dart";
 import "package:sonorus/src/modules/auth/register/register_controller.dart";
 
 class RegisterPage extends StatefulWidget {
@@ -78,8 +78,8 @@ class _RegisterPageState extends State<RegisterPage> with Loader, Messages {
   @override
   Widget build(BuildContext context) {
     this._fullnameEC.text = "Mário Guilherme de Andrade Rodrigues";
-    this._emailEC.text = "marioguilhermedev@gmail.com";
-    this._nicknameEC.text = "dev.mario.guilherme";
+    this._emailEC.text = "malkasdhrv@gmail.com";
+    this._nicknameEC.text = "dev.ilhasgdfhgsdjklme";
     this._passwordEC.text = "123123123";
     this._confirmPasswordEC.text = "123123123";
 

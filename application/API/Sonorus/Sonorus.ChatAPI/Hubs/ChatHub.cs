@@ -14,19 +14,22 @@ public class ChatHub : Hub {
         return base.OnConnectedAsync();
     }
 
-    public async Task SendMessage(string chatId, long sentByUserId, string content) {
+    public async Task SendMessage(string? chatId, long friendId, long sentByUserId, string content, string messageId) {
+        chatId ??= await this._chatService.CreateNewChatAsync(sentByUserId, friendId);
+
         Message message = new() {
+            MessageId = messageId,
             Content = content,
             SentAt = DateTime.Now,
             SentByUserId = sentByUserId
         };
-        await this._chatService.AddMessageAsync(Guid.Parse(chatId), message);
+        await this._chatService.AddMessageAsync(Guid.Parse(chatId!), message);
         MessageDTO messageDTO = new() {
             Content = message.Content,
             SentAt = message.SentAt
         };
+
         await Clients.Others.SendAsync("ReceiveMessage", messageDTO);
-        messageDTO.IsSentByMe = true;
-        await Clients.Caller.SendAsync("MessageSent", messageDTO);
+        await Clients.Caller.SendAsync("MessageSent", messageId);
     }
 }

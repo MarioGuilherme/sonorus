@@ -8,6 +8,6 @@ abstract interface class AuthRepository {
   Future<List<InterestModel>> getInterests();
   Future<AuthTokenModel> login(Map<String, String> data);
   Future<AuthTokenModel> register(UserRegisterModel userRegisterModel);
-  Future<void> savePicture(XFile file);
+  Future<String> savePicture(XFile file);
   Future<void> saveInterests(List<InterestModel> interests);
 }

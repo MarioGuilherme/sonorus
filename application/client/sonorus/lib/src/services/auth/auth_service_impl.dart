@@ -26,6 +26,8 @@ class AuthServiceImpl implements AuthService {
     final SharedPreferences sp = await SharedPreferences.getInstance();
     sp.setString("accessToken", authTokenModel.accessToken);
     sp.setString("refreshToken", authTokenModel.refreshToken);
+    final HubConnection hubConnection = Modular.get<HubConnection>();
+    hubConnection.start();
   }
 
   @override

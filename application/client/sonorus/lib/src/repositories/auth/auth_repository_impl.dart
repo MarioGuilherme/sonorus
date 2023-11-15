@@ -23,7 +23,7 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<AuthTokenModel> register(UserRegisterModel userRegisterModel) async {
     late final RestResponseModel restResponse;
     try {
-      final Response result = await _httpClient.accountMicrosservice().unauth().post("/auth/register", data: userRegisterModel.toMap());
+      final Response result = await _httpClient.accountMS().unauth().post("/auth/register", data: userRegisterModel.toMap());
       final RestResponseModel restResponse = RestResponseModel.fromMap(result.data);
       return AuthTokenModel.fromMap(restResponse.data);
     } on DioException catch (exception) {
@@ -42,7 +42,7 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<void> saveInterests(List<InterestModel> interests) async {
     try {
-      final Response result = await _httpClient.accountMicrosservice().auth().post(
+      final Response result = await _httpClient.accountMS().auth().post(
         "/users/interests",
         data: interests.map((interest) => <String, dynamic>{
           "interestId": interest.interestId,
@@ -59,12 +59,12 @@ class AuthRepositoryImpl implements AuthRepository {
   }
   
   @override
-  Future<void> savePicture(XFile file) async {
+  Future<String> savePicture(XFile file) async {
     try {
       final FormData formData = FormData.fromMap({ "picture": await MultipartFile.fromFile(file.path) });
-      final Response result = await _httpClient.accountMicrosservice().auth().post("/users/picture", data: formData);
-      if (result.statusCode != 204)
-        throw Exception("Falha ao salvar imagem do usuário");
+      final Response result = await _httpClient.accountMS().auth().post("/users/picture", data: formData);
+      final RestResponseModel restResponse = RestResponseModel.fromMap(result.data);
+      return restResponse.data as String;
     } on DioException {
       throw RepositoryException();
     }
@@ -74,7 +74,7 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<AuthTokenModel> login(Map<String, String> data) async {
     late final RestResponseModel restResponse;
     try {
-      final Response response = await _httpClient.accountMicrosservice().unauth().post("/auth/login", data: data);
+      final Response response = await _httpClient.accountMS().unauth().post("/auth/login", data: data);
       restResponse = RestResponseModel.fromMap(response.data);
       return AuthTokenModel.fromMap(restResponse.data);
     } on DioException catch (exception) {
@@ -93,7 +93,7 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<List<InterestModel>> getInterests() async {
     try {
-      final Response result = await _httpClient.accountMicrosservice().unauth().get("/interests");
+      final Response result = await _httpClient.accountMS().unauth().get("/interests");
       final RestResponseModel restResponse = RestResponseModel.fromMap(result.data);
       return restResponse.data.map<InterestModel>((interest) => InterestModel.fromMap(interest)).toList();
     } on DioException {

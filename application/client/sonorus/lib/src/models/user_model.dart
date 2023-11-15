@@ -3,7 +3,7 @@ import "dart:convert";
 class UserModel {
   final int userId;
   final String nickname;
-  final String picture;
+  String picture;
 
   UserModel({
     required this.userId,

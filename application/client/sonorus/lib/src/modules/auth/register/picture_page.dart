@@ -1,17 +1,15 @@
-import "dart:developer";
-
 import "package:flutter/material.dart";
 import "package:flutter_mobx/flutter_mobx.dart";
 import "package:flutter_modular/flutter_modular.dart";
 import "package:image_picker/image_picker.dart";
 import "package:mobx/mobx.dart";
+
 import "package:sonorus/src/core/ui/styles/colors_app.dart";
 import "package:sonorus/src/core/ui/styles/text_styles.dart";
 import "package:sonorus/src/core/ui/utils/loader.dart";
 import "package:sonorus/src/core/ui/utils/messages.dart";
 import "package:sonorus/src/core/ui/utils/size_extensions.dart";
 import "package:sonorus/src/core/utils/routes.dart";
-
 import "package:sonorus/src/modules/auth/register/picture_controller.dart";
 import "package:sonorus/src/modules/base/widgets/picture_user.dart";
 
@@ -23,7 +21,7 @@ class PicturePage extends StatefulWidget {
 }
 
 class _PicturePageState extends State<PicturePage> with Loader, Messages {
-  final _controller = Modular.get<PictureController>();
+  final PictureController _controller = Modular.get<PictureController>();
   final ImagePicker _picker = ImagePicker();
   late final ReactionDisposer _statusReactionDisposer;
 

@@ -1,4 +1,5 @@
 import "dart:convert";
+
 class AuthTokenModel {
   final String accessToken;
   final String refreshToken;

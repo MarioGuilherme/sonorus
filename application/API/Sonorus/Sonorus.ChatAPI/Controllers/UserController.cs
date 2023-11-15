@@ -18,14 +18,14 @@ public class UserController : APIControllerBase {
     public UserController(IChatService chatService) => this._chatService = chatService;
 
     [Authorize]
-    [HttpGet("{userId}/messages")]
+    [HttpGet("{friendId}/messages")]
     [Produces("application/json")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(RestResponse<List<MessageDTO>>))]
-    public async Task<ActionResult<RestResponse<List<MessageDTO>>>> GetAllMessagesWithFriend(long userId) {
-        RestResponse<List<MessageDTO>> response = new();
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(RestResponse<ChatDTO>))]
+    public async Task<ActionResult<RestResponse<ChatDTO>>> GetChatWithFriend(long friendId) {
+        RestResponse<ChatDTO> response = new();
         try {
-            response.Data = await this._chatService.GetAllMessagesWithFriendAsync(userId, (long) this.CurrentUser!.UserId!);
+            response.Data = await this._chatService.GetChatWithFriendAsync(friendId, (long) this.CurrentUser!.UserId!);
             return this.Ok(response);
         } catch (SonorusChatAPIException exception) {
             response.Message = exception.Message;

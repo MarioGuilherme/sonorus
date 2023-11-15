@@ -17,5 +17,6 @@ public class Media {
     }
     private string _path = null!;
 
+    public long ProductId { get; set; }
     public Product Product { get; set; } = null!;
 }

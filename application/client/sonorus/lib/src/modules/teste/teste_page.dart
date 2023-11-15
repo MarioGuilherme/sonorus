@@ -4,7 +4,7 @@ import "package:sonorus/src/models/chat_model.dart";
 import "package:sonorus/src/models/current_user_model.dart";
 import "package:sonorus/src/models/media_model.dart";
 import "package:sonorus/src/models/message_model.dart";
-import "package:sonorus/src/models/post_model.dart";
+import "package:sonorus/src/models/post_with_author_model.dart";
 import "package:sonorus/src/models/product_model.dart";
 import "package:sonorus/src/models/user_model.dart";
 import "package:sonorus/src/modules/base/chat/widgets/chat.dart";
@@ -39,7 +39,7 @@ class TestePage extends StatelessWidget {
                 //   )
                 // ),
                 Chat(chat: ChatModel(chatId: "1", friend: UserModel(nickname: "asd", picture: "https://yt3.ggpht.com/XpOIk4Lh0Xk7ImNJ-eltmJ91TiZsZzCUFz22hlackXPk5gGBXx8KRp6ZBYx5d6kLFdb2TiOg=s48-c-k-c0x00ffffff-no-rj", userId: 2), messages: [
-                  MessageModel(isSentByMe: false, content: "content", sentAt: DateTime.now())
+                  // MessageModel(isSentByMe: false, content: "content", sentAt: DateTime.now())
                 ]))
               ]
             ),

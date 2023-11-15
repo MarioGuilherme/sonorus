@@ -13,7 +13,7 @@ class ChatRepositoryImpl implements ChatRepository {
   @override
   Future<List<ChatModel>> getChats() async {
     try {
-      final Response result = await this._httpClient.chatMicrosservice().auth().get("/chats");
+      final Response result = await this._httpClient.chatMS().auth().get("/chats");
       final RestResponseModel restResponse = RestResponseModel.fromMap(result.data);
       return restResponse.data.map<ChatModel>((chat) => ChatModel.fromMap(chat)).toList();
     } on DioException {

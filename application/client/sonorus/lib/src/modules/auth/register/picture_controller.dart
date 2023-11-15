@@ -1,9 +1,12 @@
 import "dart:developer";
 
 import "package:flutter/services.dart";
+import "package:flutter_modular/flutter_modular.dart";
 import "package:image_picker/image_picker.dart";
 import "package:mobx/mobx.dart";
+
 import "package:sonorus/src/core/exceptions/repository_exception.dart";
+import "package:sonorus/src/models/current_user_model.dart";
 import "package:sonorus/src/repositories/auth/auth_repository.dart";
 
 part "picture_controller.g.dart";
@@ -47,7 +50,9 @@ abstract class PictureControllerBase with Store {
   Future<void> savePicture() async {
     try {
       this._pictureStatus = PictureStateStatus.loading;
-      await this._authRepository.savePicture(this._picture!);
+      final String picturePath = await this._authRepository.savePicture(this._picture!);
+      final CurrentUserModel currentUser = Modular.get<CurrentUserModel>();
+      currentUser.setNewPicturePath(picturePath);
       this._pictureStatus = PictureStateStatus.success;
     } on RepositoryException catch (exception, stackTrace) {
       log("Erro ao salvar a foto do usuário", error: exception, stackTrace: stackTrace);

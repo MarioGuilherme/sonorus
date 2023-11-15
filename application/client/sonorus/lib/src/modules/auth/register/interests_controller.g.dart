@@ -101,11 +101,23 @@ mixin _$InterestsController on InterestsControllerBase, Store {
       ActionController(name: 'InterestsControllerBase', context: context);
 
   @override
-  void selectInterest(InterestModel interest) {
+  void selectInterest(InterestModel interestPressed) {
     final _$actionInfo = _$InterestsControllerBaseActionController.startAction(
         name: 'InterestsControllerBase.selectInterest');
     try {
-      return super.selectInterest(interest);
+      return super.selectInterest(interestPressed);
+    } finally {
+      _$InterestsControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  InterestModel addNewInterest(
+      String key, String value, InterestType interestType) {
+    final _$actionInfo = _$InterestsControllerBaseActionController.startAction(
+        name: 'InterestsControllerBase.addNewInterest');
+    try {
+      return super.addNewInterest(key, value, interestType);
     } finally {
       _$InterestsControllerBaseActionController.endAction(_$actionInfo);
     }

@@ -48,16 +48,16 @@ mixin _$TimelineController on TimelineControllerBase, Store {
   late final _$_postsAtom =
       Atom(name: 'TimelineControllerBase._posts', context: context);
 
-  List<PostModel> get posts {
+  List<PostWithAuthorModel> get posts {
     _$_postsAtom.reportRead();
     return super._posts;
   }
 
   @override
-  List<PostModel> get _posts => posts;
+  List<PostWithAuthorModel> get _posts => posts;
 
   @override
-  set _posts(List<PostModel> value) {
+  set _posts(List<PostWithAuthorModel> value) {
     _$_postsAtom.reportWrite(value, super._posts, () {
       super._posts = value;
     });
@@ -82,13 +82,53 @@ mixin _$TimelineController on TimelineControllerBase, Store {
     });
   }
 
-  late final _$getPostsAsyncAction =
-      AsyncAction('TimelineControllerBase.getPosts', context: context);
+  late final _$_contentByPreferenceAtom = Atom(
+      name: 'TimelineControllerBase._contentByPreference', context: context);
+
+  bool get contentByPreference {
+    _$_contentByPreferenceAtom.reportRead();
+    return super._contentByPreference;
+  }
 
   @override
-  Future<void> getPosts({bool contentByPreference = true}) {
-    return _$getPostsAsyncAction
-        .run(() => super.getPosts(contentByPreference: contentByPreference));
+  bool get _contentByPreference => contentByPreference;
+
+  @override
+  set _contentByPreference(bool value) {
+    _$_contentByPreferenceAtom.reportWrite(value, super._contentByPreference,
+        () {
+      super._contentByPreference = value;
+    });
+  }
+
+  late final _$getFirstEightPostsAsyncAction = AsyncAction(
+      'TimelineControllerBase.getFirstEightPosts',
+      context: context);
+
+  @override
+  Future<void> getFirstEightPosts({bool contentByPreference = true}) {
+    return _$getFirstEightPostsAsyncAction.run(() =>
+        super.getFirstEightPosts(contentByPreference: contentByPreference));
+  }
+
+  late final _$updateContentByPreferenceAsyncAction = AsyncAction(
+      'TimelineControllerBase.updateContentByPreference',
+      context: context);
+
+  @override
+  Future<void> updateContentByPreference(bool value) {
+    return _$updateContentByPreferenceAsyncAction
+        .run(() => super.updateContentByPreference(value));
+  }
+
+  late final _$getMoreEightPostsAsyncAction =
+      AsyncAction('TimelineControllerBase.getMoreEightPosts', context: context);
+
+  @override
+  Future<void> getMoreEightPosts(int offset,
+      {bool contentByPreference = true}) {
+    return _$getMoreEightPostsAsyncAction.run(() => super
+        .getMoreEightPosts(offset, contentByPreference: contentByPreference));
   }
 
   late final _$saveCommentAsyncAction =
@@ -117,12 +157,40 @@ mixin _$TimelineController on TimelineControllerBase, Store {
         .run(() => super.likeCommentById(commentId));
   }
 
-  late final _$loadCommentsAsyncAction =
-      AsyncAction('TimelineControllerBase.loadComments', context: context);
+  late final _$loadCommentsByPostIdAsyncAction = AsyncAction(
+      'TimelineControllerBase.loadCommentsByPostId',
+      context: context);
 
   @override
-  Future<void> loadComments(int postId) {
-    return _$loadCommentsAsyncAction.run(() => super.loadComments(postId));
+  Future<void> loadCommentsByPostId(int postId) {
+    return _$loadCommentsByPostIdAsyncAction
+        .run(() => super.loadCommentsByPostId(postId));
+  }
+
+  late final _$deleteCommentAsyncAction =
+      AsyncAction('TimelineControllerBase.deleteComment', context: context);
+
+  @override
+  Future<void> deleteComment(int postId, int commentId) {
+    return _$deleteCommentAsyncAction
+        .run(() => super.deleteComment(postId, commentId));
+  }
+
+  late final _$deletePostAsyncAction =
+      AsyncAction('TimelineControllerBase.deletePost', context: context);
+
+  @override
+  Future<void> deletePost(int postId) {
+    return _$deletePostAsyncAction.run(() => super.deletePost(postId));
+  }
+
+  late final _$updateCommentAsyncAction =
+      AsyncAction('TimelineControllerBase.updateComment', context: context);
+
+  @override
+  Future<void> updateComment(int commentId, String newContent) {
+    return _$updateCommentAsyncAction
+        .run(() => super.updateComment(commentId, newContent));
   }
 
   @override

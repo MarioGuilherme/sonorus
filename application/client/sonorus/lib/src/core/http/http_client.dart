@@ -15,45 +15,45 @@ class HttpClient extends DioForNative {
       requestBody: true,
       responseBody: true,
       requestHeader: true,
-      responseHeader: true
+      responseHeader: true,
+      request: true
     ));
-    this._authInterceptor = AuthInterceptor();
+    this._authInterceptor = AuthInterceptor(this);
   }
 
-  HttpClient accountMicrosservice() {
-    this.options.baseUrl = Env.instance["account_microsservice_base_url"]!;
+  HttpClient accountMS() {
+    this.options.baseUrl = Env.instance["account_ms_base_url"]!;
     return this;
   }
 
-  HttpClient businessMicrosservice() {
-    this.options.baseUrl = Env.instance["business_microsservice_base_url"]!;
+  HttpClient businessMS() {
+    this.options.baseUrl = Env.instance["business_ms_base_url"]!;
     return this;
   }
 
-  HttpClient chatMicrosservice() {
-    this.options.baseUrl = Env.instance["chat_microsservice_base_url"]!;
+  HttpClient chatMS() {
+    this.options.baseUrl = Env.instance["chat_ms_base_url"]!;
     return this;
   }
 
-  HttpClient marketplaceMicrosservice() {
-    this.options.baseUrl = Env.instance["marketplace_microsservice_base_url"]!;
+  HttpClient marketplaceMS() {
+    this.options.baseUrl = Env.instance["marketplace_ms_base_url"]!;
     return this;
   }
 
-  HttpClient postMicrosservice() {
-    this.options.baseUrl = Env.instance["post_microsservice_base_url"]!;
+  HttpClient postMS() {
+    this.options.baseUrl = Env.instance["post_ms_base_url"]!;
     return this;
   }
 
   HttpClient auth() {
-    if (!interceptors.contains(_authInterceptor)) {
-      interceptors.add(_authInterceptor);
-    }
+    if (!interceptors.contains(this._authInterceptor))
+      interceptors.add(this._authInterceptor);
     return this;
   }
 
   HttpClient unauth() {
-    interceptors.remove(_authInterceptor);
+    interceptors.remove(this._authInterceptor);
     return this;
   }
 }

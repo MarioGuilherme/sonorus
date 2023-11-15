@@ -12,5 +12,5 @@ class ChatRealtimeServiceImpl implements ChatRealtimeService {
   Future<List<MessageModel>> getMessages(String chatId) async => this._chatRealtimeRepository.getMessages(chatId);
   
   @override
-  Future<List<MessageModel>> getMessagesByFriendId(int friendId) async => this._chatRealtimeRepository.getMessagesByFriendId(friendId);
+  Future<ChatModel> getChatByFriendId(int friendId) async => this._chatRealtimeRepository.getChatByFriendId(friendId);
 }

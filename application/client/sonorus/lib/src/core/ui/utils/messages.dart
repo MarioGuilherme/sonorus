@@ -6,11 +6,11 @@ import "package:sonorus/src/core/ui/styles/text_styles.dart";
 mixin Messages<T extends StatefulWidget> on State<T> {
   void showMessage(String title, String message) {
     showDialog(
-      barrierDismissible: true,
+      // barrierDismissible: true,
       context: this.context,
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        title: Text(title, textAlign: TextAlign.center, style: context.textStyles.textBold.copyWith(fontSize: 20.sp)),
+        title: Text(title, textAlign: TextAlign.center, style: context.textStyles.textBold.copyWith(color: Colors.black, fontSize: 20.sp)),
         content: Text(message, textAlign: TextAlign.center, style: context.textStyles.textRegular.copyWith(fontSize: 16.sp)),
         actionsAlignment: MainAxisAlignment.center,
         actions: [

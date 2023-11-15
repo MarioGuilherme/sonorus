@@ -1,5 +1,8 @@
 import "dart:convert";
 
+import "package:intl/intl.dart";
+
+import "package:sonorus/src/models/condition_type.dart";
 import "package:sonorus/src/models/media_model.dart";
 import "package:sonorus/src/models/user_model.dart";
 
@@ -9,39 +12,33 @@ class ProductModel {
   final String? description;
   final double price;
   final DateTime announcedAt;
+  final ConditionType condition;
   final UserModel seller;
   final List<MediaModel> medias;
 
   ProductModel({
     required this.productId,
     required this.name,
+    this.description,
     required this.price,
     required this.announcedAt,
+    required this.condition,
     required this.seller,
-    required this.medias,
-    this.description
+    required this.medias
   });
-  
-  String get timeAgo {
-    final DateTime now = DateTime.now();
 
-    final int differenceSeconds = now.difference(this.announcedAt).inSeconds;
-    if (differenceSeconds <= 59)
-      return "$differenceSeconds segundos atrás";
+  String get conditionString => switch (this.condition.id) {
+    0 => "Novo",
+    1 => "Semi-Usado",
+    _ => "Usado"
+  };
 
-    final int differenceMinutes = now.difference(this.announcedAt).inMinutes;
-    if (differenceMinutes <= 59)
-      return "$differenceMinutes minutos atrás";
-
-    final int differenceHours = now.difference(this.announcedAt).inHours;
-    if (differenceHours <= 23)
-      return "$differenceHours minutos atrás";
-
-    final int differenceDays = now.difference(this.announcedAt).inDays;
-    if (differenceDays <= 30)
-      return "$differenceDays dias atrás";
-
-    return "${this.announcedAt.day.toString().padLeft(2, "0")}/${this.announcedAt.month.toString().padLeft(2, "0")}/${this.announcedAt.year}";
+  String get formatedCurrency {
+    final NumberFormat currencyFormat = NumberFormat.currency(
+      locale: "pt_BR",
+      symbol: r"R$"
+    );
+    return currencyFormat.format(this.price);
   }
 
   Map<String, dynamic> toMap() {
@@ -51,8 +48,9 @@ class ProductModel {
       "description": description,
       "price": price,
       "announcedAt": announcedAt.millisecondsSinceEpoch,
+      "condition": condition.id,
       "seller": seller.toMap(),
-      "medias": medias.map((media) => media.toMap()).toList()
+      "medias": medias.map((x) => x.toMap()).toList(),
     };
   }
 
@@ -63,7 +61,8 @@ class ProductModel {
       description: map["description"] != null ? map["description"] as String : null,
       price: map["price"] as double,
       announcedAt: DateTime.parse(map["announcedAt"]),
-      seller: UserModel.fromMap(map["seller"] as Map<String,dynamic>),
+      condition: ConditionType.parse(map["condition"]),
+      seller: UserModel.fromMap(map["seller"] as Map<String, dynamic>),
       medias: List<MediaModel>.from(map["medias"].map((media) => MediaModel.fromMap(media)).toList())
     );
   }

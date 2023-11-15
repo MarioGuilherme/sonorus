@@ -6,6 +6,6 @@ class MarketplaceModule extends Module {
   @override
   void routes(r) {
     r.child("/", child: (_) => const MarketplacePage());
-    r.child("/:productId", child: (_) => ProductPage(product: r.args.data));
+    r.child("/:product", child: (_) => ProductPage(product: r.args.data));
   }
 }

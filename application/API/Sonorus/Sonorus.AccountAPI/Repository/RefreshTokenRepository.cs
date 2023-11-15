@@ -19,6 +19,8 @@ public class RefreshTokenRepository : IRefreshTokenRepository {
     public async Task<string> GetRefreshTokenByUserIdAsync(long userId) => (await this._dbContext.RefreshTokens.AsNoTracking().FirstAsync(rt => rt.UserId == userId)).Token;
     
     public async Task SaveRefreshTokenAsync(long userId, string refreshToken) {
+        List<RefreshToken> oldRefreshTokensOfThisUser = await this._dbContext.RefreshTokens.Where(rt => rt.UserId == userId).ToListAsync();
+        this._dbContext.RefreshTokens.RemoveRange(oldRefreshTokensOfThisUser);
         await this._dbContext.RefreshTokens.AddAsync(new() {
             UserId = userId,
             Token = refreshToken

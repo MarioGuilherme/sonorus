@@ -6,7 +6,7 @@ import "package:shared_preferences/shared_preferences.dart";
 import "package:sonorus/src/core/exceptions/invalid_credentials_exception.dart";
 import "package:sonorus/src/core/exceptions/repository_exception.dart";
 import "package:sonorus/src/core/exceptions/user_not_found_exception.dart";
-import "package:sonorus/src/core/extensions/list_errors.dart";
+import "package:sonorus/src/core/extensions/list_errors_extension.dart";
 import "package:sonorus/src/services/auth/auth_service.dart";
 
 part "login_controller.g.dart";

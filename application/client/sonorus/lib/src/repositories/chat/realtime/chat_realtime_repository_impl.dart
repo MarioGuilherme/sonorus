@@ -14,7 +14,7 @@ class ChatRealtimeRepositoryImpl implements ChatRealtimeRepository {
   @override
   Future<List<MessageModel>> getMessages(String chatId) async {
     try {
-      final Response result = await _httpClient.chatMicrosservice().auth().get("/chats/$chatId/messages");
+      final Response result = await _httpClient.chatMS().auth().get("/chats/$chatId/messages");
       final RestResponseModel restResponse = RestResponseModel.fromMap(result.data);
       return restResponse.data.map<MessageModel>((message) => MessageModel.fromMap(message)).toList();
     } on DioException {
@@ -23,11 +23,11 @@ class ChatRealtimeRepositoryImpl implements ChatRealtimeRepository {
   }
 
   @override
-  Future<List<MessageModel>> getMessagesByFriendId(int friendId) async {
+  Future<ChatModel> getChatByFriendId(int friendId) async {
     try {
-      final Response result = await _httpClient.chatMicrosservice().auth().get("/users/$friendId/messages");
+      final Response result = await _httpClient.chatMS().auth().get("/users/$friendId/messages");
       final RestResponseModel restResponse = RestResponseModel.fromMap(result.data);
-      return restResponse.data.map<MessageModel>((message) => MessageModel.fromMap(message)).toList();
+      return ChatModel.fromMap(restResponse.data);
     } on DioException {
       rethrow;
     }

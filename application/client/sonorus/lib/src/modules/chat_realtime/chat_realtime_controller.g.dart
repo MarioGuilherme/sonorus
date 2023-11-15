@@ -81,14 +81,39 @@ mixin _$ChatRealtimeController on ChatRealtimeControllerBase, Store {
         .run(() => super.receiveMessage(messages));
   }
 
-  late final _$getMessagesByFriendIdAsyncAction = AsyncAction(
-      'ChatRealtimeControllerBase.getMessagesByFriendId',
+  late final _$getChatByFriendIdAsyncAction = AsyncAction(
+      'ChatRealtimeControllerBase.getChatByFriendId',
       context: context);
 
   @override
-  Future<void> getMessagesByFriendId(int friendId) {
-    return _$getMessagesByFriendIdAsyncAction
-        .run(() => super.getMessagesByFriendId(friendId));
+  Future<String?> getChatByFriendId(int friendId) {
+    return _$getChatByFriendIdAsyncAction
+        .run(() => super.getChatByFriendId(friendId));
+  }
+
+  late final _$ChatRealtimeControllerBaseActionController =
+      ActionController(name: 'ChatRealtimeControllerBase', context: context);
+
+  @override
+  void messageSent(List<dynamic> messages) {
+    final _$actionInfo = _$ChatRealtimeControllerBaseActionController
+        .startAction(name: 'ChatRealtimeControllerBase.messageSent');
+    try {
+      return super.messageSent(messages);
+    } finally {
+      _$ChatRealtimeControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void sendMyPendentMessage(MessageModel message) {
+    final _$actionInfo = _$ChatRealtimeControllerBaseActionController
+        .startAction(name: 'ChatRealtimeControllerBase.sendMyPendentMessage');
+    try {
+      return super.sendMyPendentMessage(message);
+    } finally {
+      _$ChatRealtimeControllerBaseActionController.endAction(_$actionInfo);
+    }
   }
 
   @override
