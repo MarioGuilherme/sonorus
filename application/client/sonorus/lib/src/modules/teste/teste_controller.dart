@@ -1,6 +1,6 @@
-import 'package:mobx/mobx.dart';
+import "package:mobx/mobx.dart";
 
-part 'teste_controller.g.dart';
+part "teste_controller.g.dart";
 
 class TesteController = _TesteControllerBase with _$TesteController;
 

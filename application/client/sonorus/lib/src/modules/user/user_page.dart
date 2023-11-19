@@ -1,7 +1,3 @@
-
-import "dart:developer";
-import "dart:io";
-
 import "package:flutter/material.dart";
 import "package:flutter_mobx/flutter_mobx.dart";
 import "package:flutter_modular/flutter_modular.dart";
@@ -10,21 +6,17 @@ import "package:image_picker/image_picker.dart";
 import "package:mobx/mobx.dart";
 import "package:shared_preferences/shared_preferences.dart";
 import "package:signalr_core/signalr_core.dart";
+import "package:validatorless/validatorless.dart";
+
 import "package:sonorus/src/core/ui/styles/colors_app.dart";
 import "package:sonorus/src/core/ui/styles/text_styles.dart";
 import "package:sonorus/src/core/ui/utils/loader.dart";
 import "package:sonorus/src/core/ui/utils/messages.dart";
 import "package:sonorus/src/core/ui/utils/size_extensions.dart";
 import "package:sonorus/src/models/current_user_model.dart";
-import "package:sonorus/src/models/user_model.dart";
-import "package:sonorus/src/modules/base/business/widgets/opportunity.dart";
 import "package:sonorus/src/modules/base/creation/creation_controller.dart";
 import "package:sonorus/src/modules/base/creation/widgets/tag_post.dart";
-import "package:sonorus/src/modules/base/timeline/widgets/hash_tag.dart";
-import "package:sonorus/src/modules/user/widgets/interest.dart";
 import "package:sonorus/src/modules/user/user_controller.dart";
-import "package:validatorless/validatorless.dart";
-import "package:video_thumbnail/video_thumbnail.dart";
 
 class UserPage extends StatefulWidget {
   const UserPage({ super.key });

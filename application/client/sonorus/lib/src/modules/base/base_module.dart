@@ -1,7 +1,4 @@
-import "dart:developer";
-
 import "package:flutter_modular/flutter_modular.dart";
-import "package:signalr_core/signalr_core.dart";
 
 import "package:sonorus/src/modules/base/base_page.dart";
 import "package:sonorus/src/modules/base/business/business_controller.dart";
@@ -20,8 +17,8 @@ import "package:sonorus/src/repositories/chat/chat_repository.dart";
 import "package:sonorus/src/repositories/chat/chat_repository_impl.dart";
 import "package:sonorus/src/repositories/creation/creation_repository.dart";
 import "package:sonorus/src/repositories/creation/creation_repository_impl.dart";
-import "package:sonorus/src/repositories/marketplace/marketplace_repository_impl.dart";
 import "package:sonorus/src/repositories/marketplace/marketplace_repository.dart";
+import "package:sonorus/src/repositories/marketplace/marketplace_repository_impl.dart";
 import "package:sonorus/src/repositories/timeline/timeline_repository.dart";
 import "package:sonorus/src/repositories/timeline/timeline_repository_impl.dart";
 import "package:sonorus/src/services/business/business_service.dart";

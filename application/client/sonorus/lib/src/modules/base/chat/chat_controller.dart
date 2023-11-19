@@ -3,7 +3,6 @@ import "dart:developer";
 import "package:mobx/mobx.dart";
 
 import "package:sonorus/src/models/chat_model.dart";
-import "package:sonorus/src/models/message_model.dart";
 import "package:sonorus/src/services/chat/chat_service.dart";
 
 part "chat_controller.g.dart";

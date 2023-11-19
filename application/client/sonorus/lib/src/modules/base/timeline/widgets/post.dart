@@ -81,7 +81,7 @@ class _PostState extends State<Post> with Messages, Loader {
                           onTap: () {
                             final bool isPostedByMe = Modular.get<CurrentUserModel>().userId == this.widget.post.author.userId;
                             if (isPostedByMe)
-                              Modular.to.pushNamed(Routes.userPage, arguments: this.widget.post.author.userId);
+                              Modular.to.pushNamed(Routes.userPage);
                             Modular.to.pushNamed(
                               "/chat/",
                               arguments: [

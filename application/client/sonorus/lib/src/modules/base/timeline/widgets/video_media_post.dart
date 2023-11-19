@@ -1,10 +1,7 @@
-import "dart:async";
-import "dart:developer";
-
 import "package:flutter/material.dart";
-import "package:sonorus/src/core/ui/styles/colors_app.dart";
-import "package:sonorus/src/core/ui/utils/size_extensions.dart";
 import "package:video_player/video_player.dart";
+
+import "package:sonorus/src/core/ui/styles/colors_app.dart";
 
 class VideoMediaPost extends StatefulWidget {
   final String path;

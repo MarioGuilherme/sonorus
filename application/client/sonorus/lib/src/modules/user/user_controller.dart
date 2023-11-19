@@ -1,10 +1,8 @@
 import "dart:developer";
 
-import "package:flutter_modular/flutter_modular.dart";
 import "package:image_picker/image_picker.dart";
 import "package:mobx/mobx.dart";
-import "package:sonorus/src/core/exceptions/email_or_nickname_in_use_exception.dart";
-import "package:sonorus/src/models/current_user_model.dart";
+
 import "package:sonorus/src/models/interest_model.dart";
 import "package:sonorus/src/models/user_complete_model.dart";
 import "package:sonorus/src/services/user/user_service.dart";

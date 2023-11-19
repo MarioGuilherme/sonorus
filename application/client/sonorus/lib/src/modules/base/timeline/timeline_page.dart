@@ -1,22 +1,19 @@
-import "dart:developer";
-import "dart:math";
-
 import "package:carousel_slider/carousel_slider.dart";
 import "package:flutter/material.dart";
 import "package:flutter_mobx/flutter_mobx.dart";
 import "package:flutter_modular/flutter_modular.dart";
 import "package:flutter_screenutil/flutter_screenutil.dart";
 import "package:mobx/mobx.dart";
+
 import "package:sonorus/src/core/ui/styles/colors_app.dart";
 import "package:sonorus/src/core/ui/styles/text_styles.dart";
 import "package:sonorus/src/core/ui/utils/custom_shimmer.dart";
 import "package:sonorus/src/core/ui/utils/messages.dart";
 import "package:sonorus/src/core/ui/utils/size_extensions.dart";
-import "package:sonorus/src/modules/base/timeline/widgets/comment.dart";
-import "package:sonorus/src/modules/base/timeline/widgets/random_post_shimmer.dart";
-
 import "package:sonorus/src/modules/base/timeline/timeline_controller.dart";
+import "package:sonorus/src/modules/base/timeline/widgets/comment.dart";
 import "package:sonorus/src/modules/base/timeline/widgets/post.dart";
+import "package:sonorus/src/modules/base/timeline/widgets/random_post_shimmer.dart";
 
 class TimelinePage extends StatefulWidget {
   const TimelinePage({ super.key });
@@ -57,7 +54,6 @@ class _TimelinePageState extends State<TimelinePage> with Messages, CustomShimme
         case TimelineStateStatus.savedComment: break;
         case TimelineStateStatus.errorLoadComments:
         case TimelineStateStatus.errorSaveComment:
-        case TimelineStateStatus.errorPosts: break;
         case TimelineStateStatus.errorPosts:
           this.showMessage("Ops", this._controller.errorMessage ?? "Erro não mapeado");
           break;

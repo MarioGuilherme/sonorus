@@ -1,18 +1,9 @@
 import "package:flutter/material.dart";
-import "package:flutter_modular/flutter_modular.dart";
+
 import "package:sonorus/src/models/chat_model.dart";
-import "package:sonorus/src/models/current_user_model.dart";
-import "package:sonorus/src/models/media_model.dart";
-import "package:sonorus/src/models/message_model.dart";
-import "package:sonorus/src/models/post_with_author_model.dart";
-import "package:sonorus/src/models/product_model.dart";
 import "package:sonorus/src/models/user_model.dart";
 import "package:sonorus/src/modules/base/chat/widgets/chat.dart";
-import "package:sonorus/src/modules/base/chat/widgets/random_chat_shimmer.dart";
-import "package:sonorus/src/modules/base/marketplace/widgets/product.dart";
 import "package:sonorus/src/modules/base/marketplace/widgets/random_product_shimmer.dart";
-import "package:sonorus/src/modules/base/timeline/widgets/random_post_shimmer.dart";
-import "package:sonorus/src/modules/base/timeline/widgets/post.dart";
 
 class TestePage extends StatelessWidget {
   const TestePage({super.key});

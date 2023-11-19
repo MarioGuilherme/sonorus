@@ -1,30 +1,25 @@
-import "dart:developer";
 import "dart:io";
 
+import "package:brasil_fields/brasil_fields.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
-import "package:brasil_fields/brasil_fields.dart";
 import "package:flutter_mobx/flutter_mobx.dart";
 import "package:flutter_modular/flutter_modular.dart";
 import "package:flutter_screenutil/flutter_screenutil.dart";
 import "package:image_picker/image_picker.dart";
 import "package:mobx/mobx.dart";
+import "package:validatorless/validatorless.dart";
+
 import "package:sonorus/src/core/ui/styles/colors_app.dart";
 import "package:sonorus/src/core/ui/styles/text_styles.dart";
 import "package:sonorus/src/core/ui/utils/loader.dart";
 import "package:sonorus/src/core/ui/utils/messages.dart";
-import "package:sonorus/src/core/ui/utils/size_extensions.dart";
 import "package:sonorus/src/models/condition_type.dart";
 import "package:sonorus/src/models/creation_type_enum.dart";
-import "package:sonorus/src/models/interest_model.dart";
-import "package:sonorus/src/models/interest_type.dart";
 import "package:sonorus/src/models/work_time_unit.dart";
-import "package:sonorus/src/modules/auth/register/widget/multi_selector.dart";
 import "package:sonorus/src/modules/base/creation/creation_controller.dart";
 import "package:sonorus/src/modules/base/creation/widgets/tag_post.dart";
-import "package:sonorus/src/modules/base/timeline/widgets/hash_tag.dart";
 import "package:sonorus/src/modules/base/timeline/widgets/video_media_post.dart";
-import "package:validatorless/validatorless.dart";
 
 class CreationPage extends StatefulWidget {
   const CreationPage({ super.key });
@@ -59,7 +54,7 @@ class _CreationPageState extends State<CreationPage> with Messages, Loader {
 
   @override
   void initState() {
-    this._tablatureEC.text = "E|-----------------------------------------|\nB|-----------------------------------------|\nG|-----4---4h6p4---4-----4---4h6p4---4-----|\nD|---6---6-------6-----6---6-------6-------|\nA|-6-----------------7---------------------|\nE|-----------------------------------------|";
+    // this._tablatureEC.text = "E|-----------------------------------------|\nB|-----------------------------------------|\nG|-----4---4h6p4---4-----4---4h6p4---4-----|\nD|---6---6-------6-----6---6-------6-------|\nA|-6-----------------7---------------------|\nE|-----------------------------------------|";
     this._statusReactionDisposer = reaction((_) => this._controller.creationStatus, (status) {
       switch (status) {
         case CreationStateStatus.initial: break;

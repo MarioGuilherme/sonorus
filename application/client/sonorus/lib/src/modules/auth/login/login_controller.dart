@@ -1,7 +1,6 @@
 import "dart:developer";
 
 import "package:mobx/mobx.dart";
-import "package:shared_preferences/shared_preferences.dart";
 
 import "package:sonorus/src/core/exceptions/invalid_credentials_exception.dart";
 import "package:sonorus/src/core/exceptions/repository_exception.dart";

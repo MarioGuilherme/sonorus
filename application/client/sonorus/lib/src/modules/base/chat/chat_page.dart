@@ -3,16 +3,14 @@ import "package:flutter_mobx/flutter_mobx.dart";
 import "package:flutter_modular/flutter_modular.dart";
 import "package:flutter_screenutil/flutter_screenutil.dart";
 import "package:mobx/mobx.dart";
-import "package:signalr_core/signalr_core.dart";
+
 import "package:sonorus/src/core/ui/styles/text_styles.dart";
 import "package:sonorus/src/core/ui/utils/custom_shimmer.dart";
-
 import "package:sonorus/src/core/ui/utils/loader.dart";
 import "package:sonorus/src/core/ui/utils/messages.dart";
 import "package:sonorus/src/modules/base/chat/chat_controller.dart";
 import "package:sonorus/src/modules/base/chat/widgets/chat.dart";
 import "package:sonorus/src/modules/base/chat/widgets/random_chat_shimmer.dart";
-import "package:sonorus/src/modules/base/timeline/widgets/random_post_shimmer.dart";
 
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});

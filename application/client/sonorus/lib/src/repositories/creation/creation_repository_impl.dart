@@ -1,11 +1,11 @@
 import "package:dio/dio.dart";
 import "package:image_picker/image_picker.dart";
+
 import "package:sonorus/src/core/http/http_client.dart";
 import "package:sonorus/src/models/interest_model.dart";
 import "package:sonorus/src/models/opportunity_model.dart";
 import "package:sonorus/src/models/opportunity_model_register.dart";
 import "package:sonorus/src/models/post_register_model.dart";
-import "package:sonorus/src/models/post_with_author_model.dart";
 import "package:sonorus/src/models/product_model.dart";
 import "package:sonorus/src/models/product_register_model.dart";
 import "package:sonorus/src/models/rest_response_model.dart";

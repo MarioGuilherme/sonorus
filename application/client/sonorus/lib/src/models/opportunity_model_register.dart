@@ -1,10 +1,5 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import "dart:convert";
 import "dart:convert";
 
-import "package:intl/intl.dart";
-
-import "package:sonorus/src/models/user_model.dart";
 import "package:sonorus/src/models/work_time_unit.dart";
 
 class OpportunityRegisterModel {

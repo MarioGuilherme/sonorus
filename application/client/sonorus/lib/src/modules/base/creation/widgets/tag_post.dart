@@ -3,7 +3,6 @@ import "package:flutter_screenutil/flutter_screenutil.dart";
 
 import "package:sonorus/src/core/ui/styles/colors_app.dart";
 import "package:sonorus/src/core/ui/styles/text_styles.dart";
-import "package:sonorus/src/models/interest_model.dart";
 
 class TagPost extends StatelessWidget {
   final String tag;

@@ -1,8 +1,8 @@
 import "dart:math";
 
 import "package:flutter/material.dart";
-import "package:flutter_modular/flutter_modular.dart";
 import "package:shimmer/shimmer.dart";
+
 import "package:sonorus/src/core/ui/styles/colors_app.dart";
 
 class RandomMessageShimmer extends StatelessWidget {

@@ -1,9 +1,6 @@
-import "dart:developer";
-
 import "package:flutter_modular/flutter_modular.dart";
-import "package:signalr_core/signalr_core.dart";
-import "package:sonorus/src/models/chat_model.dart";
 
+import "package:sonorus/src/models/chat_model.dart";
 import "package:sonorus/src/modules/chat_realtime/chat_realtime_controller.dart";
 import "package:sonorus/src/modules/chat_realtime/chat_realtime_page.dart";
 import "package:sonorus/src/repositories/chat/realtime/chat_realtime_repository.dart";

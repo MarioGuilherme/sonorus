@@ -3,13 +3,12 @@ import "package:flutter_mobx/flutter_mobx.dart";
 import "package:flutter_modular/flutter_modular.dart";
 import "package:flutter_screenutil/flutter_screenutil.dart";
 import "package:mobx/mobx.dart";
+
 import "package:sonorus/src/core/ui/styles/text_styles.dart";
 import "package:sonorus/src/core/ui/utils/debouncer.dart";
 import "package:sonorus/src/core/ui/utils/messages.dart";
 import "package:sonorus/src/core/ui/utils/size_extensions.dart";
 import "package:sonorus/src/modules/base/business/business_controller.dart";
-
-import "package:flutter/material.dart";
 import "package:sonorus/src/modules/base/business/widgets/opportunity.dart";
 
 class BusinessPage extends StatefulWidget {
@@ -34,7 +33,6 @@ class _BusinessPageState extends State<BusinessPage> with Messages {
         case BusinessStateStatus.loadingOpportunities:
         case BusinessStateStatus.updatedOpportunity:
         case BusinessStateStatus.updatingOpportunity:
-        case BusinessStateStatus.loadingOpportunities:
         case BusinessStateStatus.loadedOpportunities: break;
         case BusinessStateStatus.error:
           this.showMessage("Ops", this._controller.errorMessage ?? "Erro não mapeado");

@@ -2,7 +2,7 @@ import "dart:developer";
 
 import "package:flutter_modular/flutter_modular.dart";
 import "package:mobx/mobx.dart";
-import "package:sonorus/src/core/exceptions/timeout_exception.dart";
+
 import "package:sonorus/src/models/comment_model.dart";
 import "package:sonorus/src/models/current_user_model.dart";
 import "package:sonorus/src/models/post_with_author_model.dart";
