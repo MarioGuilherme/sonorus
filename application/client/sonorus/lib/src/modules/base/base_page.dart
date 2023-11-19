@@ -53,7 +53,7 @@ class _BasePageState extends State<BasePage> {
           activeColor: context.colors.primary,
           items: const [
             TabItem(icon: Icons.home, title: "Menu"),
-            TabItem(icon: Icons.handshake, title: "Negócios"),
+            TabItem(icon: Icons.work, title: "Trabalhos"),
             TabItem(icon: Icons.add_circle, title: "Criar"),
             TabItem(icon: Icons.shopping_cart, title: "Compras"),
             TabItem(icon: Icons.chat, title: "Chat")

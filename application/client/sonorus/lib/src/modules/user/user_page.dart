@@ -49,6 +49,7 @@ class _UserPageState extends State<UserPage> with Messages, Loader {
 
   @override
   void initState() {
+    this._controller.setNewFields(user.fullName!, user.nickname!, user.email!);
     this._controller.setPicture(user.picture!);
     this._newFullnameEC.text = this.user.fullName!;
     this._newNicknameEC.text = this.user.nickname!;

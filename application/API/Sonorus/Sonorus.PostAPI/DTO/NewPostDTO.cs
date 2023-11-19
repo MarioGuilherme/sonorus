@@ -1,7 +1,7 @@
 ﻿namespace Sonorus.PostAPI.DTO;
 
 public class NewPostDTO {
-    public long PostId { get; set; }
+    public long? PostId { get; set; }
 
     public string? Content { get; set; }
 

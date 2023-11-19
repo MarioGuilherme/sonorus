@@ -729,7 +729,11 @@ class _PostState extends State<Post> with Messages, Loader {
                                   child: FittedBox(
                                     child: Text(
                                       this.widget.post.tablature!,
-                                      style: const TextStyle(color: Colors.black)
+                                      style:
+                                      TextStyle(
+                                        color: Colors.black,
+                                        fontFamily: context.textStyles.monospaced
+                                      )
                                     )
                                   )
                                 )

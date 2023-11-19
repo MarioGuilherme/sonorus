@@ -2,6 +2,6 @@
 
 public enum ConditionType {
     New,
-    Semi_used,
+    SemiUsed,
     used
 }

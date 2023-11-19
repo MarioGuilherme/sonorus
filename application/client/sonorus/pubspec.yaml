@@ -74,9 +74,9 @@ flutter:
         - asset: assets/fonts/museoModerno/MuseoModerno-Black.ttf
           weight: 900
 
-    # - family: robotoMono
-    #   fonts:
-    #     - asset: assets/fonts/RobotoMono/RobotoMono-Medium.ttf
-    #       weight: 500
+    - family: robotoMono
+      fonts:
+        - asset: assets/fonts/RobotoMono/RobotoMono-Medium.ttf
+          weight: 500
 
   uses-material-design: true

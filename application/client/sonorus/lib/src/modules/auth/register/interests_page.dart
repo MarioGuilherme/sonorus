@@ -74,7 +74,7 @@ class _InterestsPageState extends State<InterestsPage> with Loader, Messages {
                     height: 75,
                     width: double.infinity,
                     child: Text(
-                      "Preencha os seus interesses",
+                      "Selecione os seus interesses",
                       textAlign: TextAlign.center,
                       style: context.textStyles.textBold.copyWith(color: Colors.white, fontSize: 24)
                     )
@@ -126,6 +126,12 @@ class _InterestsPageState extends State<InterestsPage> with Loader, Messages {
                           "Selecione no mínimo 3 items do seu interesses",
                           textAlign: TextAlign.center,
                           style: context.textStyles.textExtraBold.copyWith(color: context.colors.primary, fontSize: 12.sp)
+                        ),
+                        const SizedBox(height: 15),
+                        Text(
+                          "Você poderá editar isso depois",
+                          textAlign: TextAlign.center,
+                          style: context.textStyles.textExtraBold.copyWith(fontSize: 10.sp)
                         )
                       ]
                     )

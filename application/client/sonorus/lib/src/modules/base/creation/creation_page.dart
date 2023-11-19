@@ -59,6 +59,7 @@ class _CreationPageState extends State<CreationPage> with Messages, Loader {
 
   @override
   void initState() {
+    this._tablatureEC.text = "E|-----------------------------------------|\nB|-----------------------------------------|\nG|-----4---4h6p4---4-----4---4h6p4---4-----|\nD|---6---6-------6-----6---6-------6-------|\nA|-6-----------------7---------------------|\nE|-----------------------------------------|";
     this._statusReactionDisposer = reaction((_) => this._controller.creationStatus, (status) {
       switch (status) {
         case CreationStateStatus.initial: break;
@@ -569,7 +570,7 @@ class _CreationPageState extends State<CreationPage> with Messages, Loader {
                                   minLines: 5,
                                   controller: this._opportunityDescriptionEC,
                                   style: context.textStyles.textRegular.copyWith(color: Colors.white),
-                                  validator: Validatorless.max(255, "A descrição da vaga pode ter no máximo 255 caracteres."),
+                                  validator: Validatorless.max(255, "A descrição da oportunidade pode ter no máximo 255 caracteres."),
                                   decoration: InputDecoration(
                                     label: Text("Descrição", style: context.textStyles.textBold.copyWith(fontSize: 18.sp)),
                                     prefixIcon: const Icon(Icons.description, color: Colors.white, size: 24),

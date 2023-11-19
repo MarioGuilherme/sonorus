@@ -14,6 +14,7 @@ public interface IUserRepository {
     Task<List<User>> GetUsersByUserIdAsync(List<long> userIds);
 
     Task<User?> GetCompleteUserByIdAsync(long userIds);
+
     Task RegisterAsync(User user);
 
     Task AddInterest(long userId, long idInterest);

@@ -401,7 +401,7 @@ class _OpportunityState extends State<Opportunity> with Loader, Messages {
                                                             minLines: 5,
                                                             controller: this._descriptionEC,
                                                             style: context.textStyles.textRegular.copyWith(color: Colors.white),
-                                                            validator: Validatorless.max(255, "A descrição da vaga pode ter no máximo 255 caracteres."),
+                                                            validator: Validatorless.max(255, "A descrição da oportunidade pode ter no máximo 255 caracteres."),
                                                             decoration: InputDecoration(
                                                               label: Text("Descrição", style: context.textStyles.textBold.copyWith(fontSize: 18.sp)),
                                                               prefixIcon: const Icon(Icons.description, color: Colors.white, size: 24),
@@ -578,7 +578,7 @@ class _OpportunityState extends State<Opportunity> with Loader, Messages {
                                       onPressed: () => Modular.to.popAndPushNamed(
                                         "/chat/",
                                         arguments: [
-                                          "Olá, tenho interesse nesta sua ${this.widget.opportunity.isWork ? "oferta de trabalho" : "vaga para a banda"} \"${this.widget.opportunity.name}\", ainda está disponível?",
+                                          "Olá, tenho interesse nesta sua ${this.widget.opportunity.isWork ? "oportunidade de trabalho" : "oportunidade para entrar na banda"} \"${this.widget.opportunity.name}\", ainda está disponível?",
                                           ChatModel(
                                             friend: this.widget.opportunity.recruiter,
                                             messages: []
