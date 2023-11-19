@@ -502,28 +502,52 @@ class _PostState extends State<Post> with Messages, Loader {
                                                                                                     textInputAction: TextInputAction.newline,
                                                                                                     keyboardType: TextInputType.multiline,
                                                                                                     maxLines: null,
-                                                                                                    // minLines: 5,
                                                                                                     controller: this._tablatureEC,
                                                                                                     style: context.textStyles.textMediumMono.copyWith(color: Colors.black),
                                                                                                     validator: Validatorless.max(255, "A tablatura pode ter no máximo 1000 caracteres."),
-                                                                                                    decoration: const InputDecoration(
-                                                                                                      isDense: true
-                                                                                                    )
+                                                                                                    decoration: const InputDecoration(isDense: true),
+                                                                                                    onChanged: (value) {
+                                                                                                      value = value.replaceAll(RegExp("[eBGDAEBF#| ]"), "");
+                                                                                                      final stringAcronyms = ["e", "B", "G", "D", "A", "E", "B", "F#"];
+                                                                                                      final aa = value.split("\n").sublist(0, value.split("\n").length > 8 ? 8 : value.split("\n").length);
+                                                                                                      // String maisLonga = "";
+
+                                                                                                      // for (String str in aa) {
+                                                                                                      //   if (str.length > maisLonga.length) {
+                                                                                                      //     maisLonga = str;
+                                                                                                      //   }
+                                                                                                      // }
+
+                                                                                                      for (var i = 0; i < aa.length; i++) {
+                                                                                                        final remain = aa[i];//.padRight(maisLonga.length, "-");
+                                                                                                        final ac = stringAcronyms[i].padRight(3, " ");
+                                                                                                        aa[i] = "$ac| $remain";
+                                                                                                      }
+                                                                                                      final result = aa.join(" |\n");
+                                                                                                      final previousSelection = _tablatureEC.selection;
+                                                                                                      this._tablatureEC.text = result;
+                                                                                                      this._tablatureEC.selection = previousSelection;
+                                                                                                      // _tablatureEC.value = _tablatureEC.value.copyWith(
+                                                                                                      //   text: result,
+                                                                                                      //   selection: previousSelection,
+                                                                                                      //   composing: TextRange.empty,
+                                                                                                      // );
+                                                                                                    }
                                                                                                   )
-                                                                                                ),
+                                                                                                )
                                                                                               )
                                                                                             ]
-                                                                                          ),
+                                                                                          )
                                                                                         )
                                                                                       )
-                                                                                    ),
+                                                                                    )
                                                                                   )
                                                                                 );
                                                                                 await SystemChrome.setPreferredOrientations([ DeviceOrientation.landscapeLeft ]);
                                                                               },
                                                                               label: const Padding(
                                                                                   padding: EdgeInsets.symmetric(horizontal: 8),
-                                                                                child: Text("Anexar tablatura"),
+                                                                                child: Text("Tablatura"),
                                                                               )
                                                                             ),
                                                                             Text(
