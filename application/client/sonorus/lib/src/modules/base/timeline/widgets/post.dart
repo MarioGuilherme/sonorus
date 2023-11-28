@@ -168,7 +168,7 @@ class _PostState extends State<Post> with Messages, Loader {
                                                         builder: (context) => AlertDialog(
                                                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                                                           title: Text("Tem certeza?", textAlign: TextAlign.center, style: context.textStyles.textBold.copyWith(color: Colors.black, fontSize: 20.sp)),
-                                                          content: Text("Deseja mesmo apagar esta publicação?", textAlign: TextAlign.center, style: context.textStyles.textRegular.copyWith(fontSize: 16.sp)),
+                                                          content: Text("Deseja mesmo apagar esta publicação? Esta ação é irreversível", textAlign: TextAlign.center, style: context.textStyles.textRegular.copyWith(fontSize: 16.sp)),
                                                           actionsAlignment: MainAxisAlignment.center,
                                                           actions: [
                                                             Row(
