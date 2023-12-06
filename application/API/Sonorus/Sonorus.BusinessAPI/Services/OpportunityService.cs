@@ -66,6 +66,32 @@ public class OpportunityService : IOpportunityService {
         return mappedOpportunities;
     }
 
+
+    public async Task<List<OpportunityDTO>> GetAllOpportunitiesByNameAsync(string name) {
+        List<Opportunity> opportunities = await this._opportunityRepository.GetAllOpportunitiesByNameAsync(name);
+
+        if (!opportunities.Any())
+            return new();
+
+        List<long> userIds = opportunities.Select(opportunity => opportunity.RecruiterId).Distinct().ToList();
+        this._httpClient.DefaultRequestHeaders.Add("userIds", string.Join(",", userIds));
+        RestResponse<List<UserDTO>> responseUsers = (await this._httpClient.GetFromJsonAsync<RestResponse<List<UserDTO>>>("api/v1/users/"))!;
+
+        List<OpportunityDTO> mappedOpportunities = this._mapper.Map<List<Opportunity>, List<OpportunityDTO>>(
+            opportunities,
+            options => options.AfterMap((oldOpportunities, opportunitiesDTO) => {
+                for (int i = 0; i < oldOpportunities.Count; i++)
+                    opportunitiesDTO[i].Recruiter = new() { UserId = oldOpportunities[i].RecruiterId };
+            })
+        );
+
+        mappedOpportunities.ForEach(opportunityMapped => {
+            opportunityMapped.Recruiter = responseUsers!.Data!.First(user => opportunityMapped.Recruiter.UserId == user.UserId);
+        });
+
+        return mappedOpportunities;
+    }
+
     public async Task<List<OpportunityDTO>> GetAllByUserIdAsync(long userId) {
         List<Opportunity> opportunities = await this._opportunityRepository.GetAllByUserIdAsync(userId);
         return this._mapper.Map<List<OpportunityDTO>>(opportunities);

@@ -56,19 +56,22 @@ class _MarketplacePageState extends State<MarketplacePage> with Messages, Custom
       child: SingleChildScrollView(
         child: Column(
           children: [
-            TextFormField(
-              textInputAction: TextInputAction.search,
-              controller: this._searchEC,
-              style: context.textStyles.textRegular.copyWith(color: Colors.white),
-              onChanged: (value) {
-                debouncer.call(() {
-                  this._controller.filterByName(value);
-                });
-              },
-              decoration: const InputDecoration(
-                label: Text("Pesquisar"),
-                prefixIcon: Icon(Icons.search, color: Colors.white, size: 24)
-              )
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: TextFormField(
+                textInputAction: TextInputAction.search,
+                controller: this._searchEC,
+                style: context.textStyles.textRegular.copyWith(color: Colors.white),
+                onChanged: (value) {
+                  debouncer.call(() {
+                    this._controller.filterByName(value);
+                  });
+                },
+                decoration: const InputDecoration(
+                  label: Text("Pesquisar"),
+                  prefixIcon: Icon(Icons.search, color: Colors.white, size: 24)
+                )
+              ),
             ),
             const SizedBox(height: 12),
             Observer(

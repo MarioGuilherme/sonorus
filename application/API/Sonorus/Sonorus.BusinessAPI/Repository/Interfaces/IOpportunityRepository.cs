@@ -11,6 +11,8 @@ public interface IOpportunityRepository {
 
     Task<List<Opportunity>> GetAllByUserIdAsync(long userId);
 
+    Task<List<Opportunity>> GetAllOpportunitiesByNameAsync(string name);
+
     Task DeleteOpportunityByIdAsync(long userId, long opportunityId);
 
     Task DeleteAllFromuserId(long userId);

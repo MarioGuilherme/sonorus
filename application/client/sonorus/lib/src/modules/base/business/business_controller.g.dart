@@ -91,6 +91,14 @@ mixin _$BusinessController on _BusinessControllerBase, Store {
         .run(() => super.getAllOpportunities());
   }
 
+  late final _$filterByNameAsyncAction =
+      AsyncAction('_BusinessControllerBase.filterByName', context: context);
+
+  @override
+  Future<void> filterByName(String name) {
+    return _$filterByNameAsyncAction.run(() => super.filterByName(name));
+  }
+
   late final _$deleteOpportunityByIdAsyncAction = AsyncAction(
       '_BusinessControllerBase.deleteOpportunityById',
       context: context);

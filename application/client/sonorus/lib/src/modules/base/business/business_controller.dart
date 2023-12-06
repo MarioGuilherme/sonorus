@@ -50,6 +50,18 @@ abstract class _BusinessControllerBase with Store {
   }
   
   @action
+  Future<void> filterByName(String name) async {
+    try {
+      this._businessStatus = BusinessStateStatus.loadingOpportunities;
+      this._opportunities = await this._businessService.getAllOpportunitiesByName(name);
+      this._businessStatus = BusinessStateStatus.loadedOpportunities;
+    }  on Exception catch (exception, stackTrace) {
+      this._businessStatus = BusinessStateStatus.error;
+      log("Erro ao buscar os produtos", error: exception, stackTrace: stackTrace);
+    }
+  }
+
+  @action
   Future<void> deleteOpportunityById(int opportunityId) async {
     try {
       await this._businessService.deleteOpportunityById(opportunityId);

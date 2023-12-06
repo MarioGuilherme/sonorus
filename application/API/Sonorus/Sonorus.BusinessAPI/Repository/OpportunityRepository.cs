@@ -52,6 +52,16 @@ public class OpportunityRepository : IOpportunityRepository {
         .OrderByDescending(opportunity => opportunity.AnnouncedAt)
         .ToListAsync();
 
+
+    public async Task<List<Opportunity>> GetAllOpportunitiesByNameAsync(string name) {
+        List<Opportunity> opportunities = await this._dbContext.Opportunities
+            .AsNoTracking()
+            .Where(product => product.Name.Contains(name))
+            .ToListAsync();
+
+        return opportunities;
+    }
+
     public async Task<List<Opportunity>> GetAllByUserIdAsync(long userId) => await this._dbContext.Opportunities
         .AsNoTracking()
         .Where(opportunity => opportunity.RecruiterId == userId)

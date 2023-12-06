@@ -61,7 +61,7 @@ class _CreationPageState extends State<CreationPage> with Messages, Loader {
         case CreationStateStatus.createdOpportunity:
           this.hideLoader();
           this._opportunityNameEC.clear();
-          this._productDescriptionEC.clear();
+          this._opportunityDescriptionEC.clear();
           this._opportunityExperienceEC.clear();
           this._opportunityPaymentEC.clear();
           this._isToBand = false;

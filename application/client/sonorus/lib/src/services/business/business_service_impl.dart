@@ -12,4 +12,7 @@ class BusinessServiceImpl implements BusinessService {
   
   @override
   Future<void> deleteOpportunityById(int opportunityId) async => this._businessRepository.deleteOpportunityById(opportunityId);
+
+  @override
+  Future<List<OpportunityModel>> getAllOpportunitiesByName(String name) async => this._businessRepository.getAllOpportunitiesByName(name);
 }

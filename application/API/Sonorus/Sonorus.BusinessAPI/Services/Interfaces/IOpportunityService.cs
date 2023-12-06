@@ -12,6 +12,8 @@ public interface IOpportunityService {
 
     Task<List<OpportunityDTO>> GetAllByUserIdAsync(long userId);
 
+    Task<List<OpportunityDTO>> GetAllOpportunitiesByNameAsync(string name);
+
     Task DeleteOpportunityByIdAsync(long userId, long opportunityId);
 
     Task DeleteAllFromuserId(long userId);

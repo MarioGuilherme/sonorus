@@ -99,6 +99,8 @@ public class ProductService : IProductService {
 
     public async Task<List<ProductDTO>> GetAllProductsByNameAsync(string name) {
         List<Product> products = await this._productRepository.GetAllProductsByNameAsync(name);
+        if (products.Count == 0)
+            return new();
         List<long> userIds = products.Select(product => product.SellerId).Distinct().ToList();
 
         this._httpClient.DefaultRequestHeaders.Add("userIds", string.Join(",", userIds));

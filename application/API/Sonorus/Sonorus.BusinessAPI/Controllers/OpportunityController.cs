@@ -36,6 +36,25 @@ public class OpportunityController : APIControllerBase {
         }
     }
 
+    [HttpGet("{name}")]
+    [Produces("application/json")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(RestResponse<List<OpportunityDTO>>))]
+    public async Task<ActionResult<RestResponse<List<OpportunityDTO>>>> GetAllOpportunitiesByName(string name) {
+        RestResponse<List<OpportunityDTO>> response = new();
+        try {
+            response.Data = await this._opportunityService.GetAllOpportunitiesByNameAsync(name);
+            return this.Ok(response);
+        } catch (SonorusBusinessAPIException exception) {
+            response.Message = exception.Message;
+            response.Errors = exception.Errors;
+            return this.StatusCode(exception.StatusCode, response);
+        } catch (Exception error) {
+            response.Message = "Ocorreu um erro interno na aplicação, por favor, tente novamente mais tarde";
+            return this.StatusCode(500, response);
+        }
+    }
+
     [Authorize]
     [HttpPost]
     [Produces("application/json")]

@@ -31,4 +31,15 @@ class BusinessRepositoryImpl implements BusinessRepository {
       rethrow;
     }
   }
+  
+  @override
+  Future<List<OpportunityModel>> getAllOpportunitiesByName(String name) async {
+    try {
+      final Response result = await this._httpClient.businessMS().unauth().get("/opportunities/$name");
+      final RestResponseModel restResponse = RestResponseModel.fromMap(result.data);
+      return restResponse.data.map<OpportunityModel>((opportunity) => OpportunityModel.fromMap(opportunity)).toList();
+    } on DioException {
+      rethrow;
+    }
+  }
 }
