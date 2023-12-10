@@ -110,21 +110,20 @@ class _PostState extends State<Post> with Messages, Loader {
                               color: Colors.transparent,
                               child: Ink(
                                 child: InkWell(
-                                  onTap: () {
-                                    final bool isPostedByMe = Modular.get<CurrentUserModel>().userId == this.widget.post.author.userId;
-                                    if (isPostedByMe)
-                                      Modular.to.pushNamed(Routes.userPage, arguments: this.widget.post.author.userId);
-                                    Modular.to.pushNamed(
-                                      "/chat/",
-                                      arguments: [
-                                        "",
-                                        ChatModel(
-                                          friend: this.widget.post.author,
-                                          messages: []
-                                        )
-                                      ]
-                                    );
-                                  },
+                                  onTap: Modular.get<CurrentUserModel>().userId != this.widget.post.author.userId
+                                    ? () {
+                                      Modular.to.pushNamed(
+                                        "/chat/",
+                                        arguments: [
+                                          "",
+                                          ChatModel(
+                                            friend: this.widget.post.author,
+                                            messages: []
+                                          )
+                                        ]
+                                      );
+                                    }
+                                    : null,
                                   child: Text(
                                     this.widget.post.author.nickname,
                                     style: context.textStyles.textBold.copyWith(color: Colors.white, fontSize: 14.sp)

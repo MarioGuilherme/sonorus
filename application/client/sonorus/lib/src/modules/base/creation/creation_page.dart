@@ -54,7 +54,7 @@ class _CreationPageState extends State<CreationPage> with Messages, Loader {
 
   @override
   void initState() {
-    this._tablatureEC.text = "-----------------------------------------\n-----------------------------------------\n-----4---4h6p4---4-----4---4h6p4---4-----\n---6---6-------6-----6---6-------6-------\n-6-----------------7---------------------\n-----------------------------------------";
+    // this._tablatureEC.text = "-----------------------------------------\n-----------------------------------------\n-----4---4h6p4---4-----4---4h6p4---4-----\n---6---6-------6-----6---6-------6-------\n-6-----------------7---------------------\n-----------------------------------------";
     this._statusReactionDisposer = reaction((_) => this._controller.creationStatus, (status) {
       switch (status) {
         case CreationStateStatus.initial: break;
@@ -64,7 +64,10 @@ class _CreationPageState extends State<CreationPage> with Messages, Loader {
           this._opportunityDescriptionEC.clear();
           this._opportunityExperienceEC.clear();
           this._opportunityPaymentEC.clear();
-          this._isToBand = false;
+          this._opportunityBandNameEC.clear();
+          setState(() {
+            this._isToBand = false;
+          });
           this._controller.toggleWorkTimeUnit(WorkTimeUnit.perShow);
           showDialog(
             barrierDismissible: true,

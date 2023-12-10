@@ -76,9 +76,13 @@ public class ProductService : IProductService {
         List<ProductDTO> mappedProducts = this._mapper.Map<List<Product>, List<ProductDTO>>(products,
             options => options.AfterMap((products, productsDTO) => {
                 for (int i = 0; i < products.Count; i++)
-                    productsDTO[i].Seller = responseUsers.Data!.First(user => user.UserId == products.First(p => p.SellerId == user.UserId).SellerId);
+                    productsDTO[i].Seller = new() { UserId = products[i].SellerId };
             })
         );
+
+        mappedProducts.ForEach(opportunityMapped => {
+            opportunityMapped.Seller = responseUsers!.Data!.First(user => opportunityMapped.Seller.UserId == user.UserId);
+        });
 
         return mappedProducts;
     }

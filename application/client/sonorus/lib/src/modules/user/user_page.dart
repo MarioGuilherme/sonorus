@@ -79,9 +79,13 @@ class _UserPageState extends State<UserPage> with Messages, Loader {
               expandedHeight: 300,
               pinned: true,
               flexibleSpace: FlexibleSpaceBar(
-                title: Text(
-                  this.user.nickname!,
-                  style: context.textStyles.textBold.copyWith(fontSize: 16.sp)
+                title: Observer(
+                  builder: (context) {
+                    return Text(
+                      this._controller.nickname!,
+                      style: context.textStyles.textBold.copyWith(fontSize: 16.sp)
+                    );
+                  }
                 ),
                 background: Stack(
                   fit: StackFit.expand,
@@ -387,18 +391,20 @@ class _UserPageState extends State<UserPage> with Messages, Loader {
                                           if (formValid) {
                                             Modular.to.pop();
                                             this.showLoader();
-                                            await this._controller.updateUser(
-                                              this._newFullnameEC.text.trim(),
-                                              this._newNicknameEC.text.trim(),
-                                              this._newEmailEC.text.trim()
-                                            );
-                                            this._controller.setNewFields(
-                                              this._newFullnameEC.text.trim(),
-                                              this._newNicknameEC.text.trim(),
-                                              this._newEmailEC.text.trim()
-                                            );
+                                            setState(() {
+                                              this._controller.updateUser(
+                                                this._newFullnameEC.text.trim(),
+                                                this._newNicknameEC.text.trim(),
+                                                this._newEmailEC.text.trim()
+                                              );
+                                              this._controller.setNewFields(
+                                                this._newFullnameEC.text.trim(),
+                                                this._newNicknameEC.text.trim(),
+                                                this._newEmailEC.text.trim()
+                                              );
+                                            });
                                             this.hideLoader();
-                                            this.showMessage("Dados atualizados", "Seuas informações foram atualizadas com sucesso");
+                                            this.showMessage("Dados atualizados", "Suas informações foram atualizadas com sucesso");
                                           }
                                         },
                                         style: ElevatedButton.styleFrom(

@@ -178,6 +178,7 @@ abstract class _CreationControllerBase with Store {
   @action
   void clearPostMedias() {
     this._postOldmedias.clear();
+    this._postMedia.clear();
   }
 
   @action

@@ -66,8 +66,8 @@ class _LoginPageState extends State<LoginPage> with Loader, Messages {
 
   @override
   Widget build(BuildContext context) {
-    this._loginEC.text = "dev.mario.guilherme";
-    this._passwordEC.text = "123123123";
+    // this._loginEC.text = "dev.mario.guilherme";
+    // this._passwordEC.text = "123123123";
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(

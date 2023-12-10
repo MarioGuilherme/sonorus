@@ -77,11 +77,11 @@ class _RegisterPageState extends State<RegisterPage> with Loader, Messages {
 
   @override
   Widget build(BuildContext context) {
-    this._fullnameEC.text = "Felipe Maciel Rodrigues";
-    this._emailEC.text = "felipe.rodrigues30@fatec.sp.gov.br";
-    this._nicknameEC.text = "felipe.maciel";
-    this._passwordEC.text = "123123123";
-    this._confirmPasswordEC.text = "123123123";
+    // this._fullnameEC.text = "Felipe Maciel Rodrigues";
+    // this._emailEC.text = "felipe.rodrigues30@fatec.sp.gov.br";
+    // this._nicknameEC.text = "felipe.maciel";
+    // this._passwordEC.text = "123123123";
+    // this._confirmPasswordEC.text = "123123123";
 
     return Scaffold(
       body: SingleChildScrollView(

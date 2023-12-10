@@ -25,7 +25,8 @@ public class CommentService : ICommentService {
     public async Task<List<CommentDTO>> GetAllByPostIdAsync(long postId, CurrentUser user) {
         List<Comment> comments = await this._commentRepository.GetAllByPostIdAsync(postId);
         List<long> userIds = comments.Select(comment => comment.UserId).Distinct().ToList();
-
+        if (!userIds.Any())
+            return new();
         this._httpClient.DefaultRequestHeaders.Add("userIds", string.Join(",", userIds));
         RestResponse<List<UserDTO>> restResponseUsers = (await this._httpClient.GetFromJsonAsync<RestResponse<List<UserDTO>>>("api/v1/users/"))!;
 

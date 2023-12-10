@@ -24,6 +24,6 @@ public class Post {
 
     public ICollection<Interest> Interests { get; set; } = new List<Interest>();
 
-    [StringLength(1000)]
+    [StringLength(10000)]
     public string? Tablature { get; set; }
 }
