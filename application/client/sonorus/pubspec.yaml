@@ -42,6 +42,10 @@ dev_dependencies:
   mobx_codegen: ^2.3.0
   flutter_launcher_icons: ^0.13.1
 
+flutter_launcher_icons:
+  android: "launcher_icon"
+  image_path: "assets/images/logoApp.png"
+
 flutter_native_splash:
   color: "#16161F"
   image: assets/images/logo.png
