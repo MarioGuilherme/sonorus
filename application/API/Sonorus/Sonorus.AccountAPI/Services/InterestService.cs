@@ -22,7 +22,7 @@ public class InterestService : BaseService, IInterestService {
     public async Task<List<InterestDTO>> GetAllAsync() {
         List<Interest> interests = (await this._memoryCache.GetOrCreateAsync("INTERESTS", async entry => {
             entry.SetPriority(CacheItemPriority.Normal);
-            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(30);
+            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1);
             return await this._interestRepository.GetAllAsync();
         }))!;
         return this._mapper.Map<List<InterestDTO>>(interests);
