@@ -9,7 +9,6 @@ import "package:sonorus/src/core/ui/styles/text_styles.dart";
 import "package:sonorus/src/core/ui/utils/loader.dart";
 import "package:sonorus/src/core/ui/utils/messages.dart";
 import "package:sonorus/src/core/ui/utils/size_extensions.dart";
-import "package:sonorus/src/core/utils/routes.dart";
 import "package:sonorus/src/modules/auth/register/picture_controller.dart";
 import "package:sonorus/src/modules/base/widgets/picture_user.dart";
 
@@ -36,7 +35,7 @@ class _PicturePageState extends State<PicturePage> with Loader, Messages {
           break;
         case PictureStateStatus.success:
           this.hideLoader();
-          Modular.to.navigate(Routes.interestsPage);
+          Modular.to.navigate("/register/interests");
           break;
         case PictureStateStatus.error:
           this.hideLoader();
@@ -184,7 +183,7 @@ class _PicturePageState extends State<PicturePage> with Loader, Messages {
                             ),
                           const SizedBox(width: 20),
                           OutlinedButton(
-                            onPressed: () => Modular.to.navigate(Routes.interestsPage),
+                            onPressed: () => Modular.to.navigate("/register/interests"),
                             child: const Text("Definir isto depois")
                           )
                         ]

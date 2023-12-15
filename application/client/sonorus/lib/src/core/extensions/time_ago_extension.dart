@@ -21,7 +21,7 @@ extension TimeAgoExtension on DateTime {
       if (differenceDays <= 30)
         return "$differenceDays dia(s) atrás";
 
-      final DateFormat formatter = DateFormat("dd-MM-yyyy");
+      final DateFormat formatter = DateFormat("dd/MM/yyyy");
       return formatter.format(this);
     }
 }

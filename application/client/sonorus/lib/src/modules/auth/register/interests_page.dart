@@ -8,7 +8,6 @@ import "package:sonorus/src/core/ui/styles/colors_app.dart";
 import "package:sonorus/src/core/ui/styles/text_styles.dart";
 import "package:sonorus/src/core/ui/utils/loader.dart";
 import "package:sonorus/src/core/ui/utils/messages.dart";
-import "package:sonorus/src/core/utils/routes.dart";
 import "package:sonorus/src/models/interest_type.dart";
 import "package:sonorus/src/modules/auth/register/interests_controller.dart";
 import "package:sonorus/src/modules/auth/register/widget/multi_selector.dart";
@@ -41,7 +40,7 @@ class _InterestsPageState extends State<InterestsPage> with Loader, Messages {
           break;
         case InterestStateStatus.savedInterests:
           this.hideLoader();
-          Modular.to.navigate(Routes.timelinePage);
+          Modular.to.navigate("/");
           break;
         case InterestStateStatus.error:
           this.hideLoader();

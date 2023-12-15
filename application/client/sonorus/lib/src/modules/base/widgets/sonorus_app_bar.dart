@@ -2,7 +2,6 @@ import "package:flutter/material.dart";
 import "package:flutter_modular/flutter_modular.dart";
 import "package:flutter_screenutil/flutter_screenutil.dart";
 import "package:sonorus/src/core/ui/styles/text_styles.dart";
-import "package:sonorus/src/core/utils/routes.dart";
 
 import "package:sonorus/src/models/current_user_model.dart";
 import "package:sonorus/src/modules/base/widgets/picture_user.dart";
@@ -32,7 +31,7 @@ class _SonorusAppBarContent extends StatelessWidget {
       title: Padding(
         padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
         child: InkWell(
-          onTap: () => Modular.to.pushNamed(Routes.userPage, arguments: this._currentUser),
+          onTap: () => Modular.to.pushNamed("/user", arguments: this._currentUser),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,

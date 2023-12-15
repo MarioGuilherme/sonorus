@@ -14,7 +14,6 @@ import "package:sonorus/src/core/ui/styles/colors_app.dart";
 import "package:sonorus/src/core/ui/styles/text_styles.dart";
 import "package:sonorus/src/core/ui/utils/loader.dart";
 import "package:sonorus/src/core/ui/utils/messages.dart";
-import "package:sonorus/src/core/utils/routes.dart";
 import "package:sonorus/src/models/chat_model.dart";
 import "package:sonorus/src/models/condition_type.dart";
 import "package:sonorus/src/models/current_user_model.dart";
@@ -121,7 +120,7 @@ class _ProductPageState extends State<ProductPage> with Messages, Loader {
                                                         shape: RoundedRectangleBorder(
                                                         borderRadius: BorderRadius.circular(20))
                                                       ),
-                                                      onPressed: () => Modular.to.popUntil(ModalRoute.withName(Routes.marketplacePage)),
+                                                      onPressed: () => Modular.to.popUntil(ModalRoute.withName("/marketplace")),
                                                       child: Text("OK", style: context.textStyles.textLight.copyWith(fontSize: 14.sp))
                                                     )
                                                   ]

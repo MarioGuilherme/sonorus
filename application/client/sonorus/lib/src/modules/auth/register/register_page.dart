@@ -9,7 +9,6 @@ import "package:sonorus/src/core/ui/styles/text_styles.dart";
 import "package:sonorus/src/core/ui/utils/loader.dart";
 import "package:sonorus/src/core/ui/utils/messages.dart";
 import "package:sonorus/src/core/ui/utils/size_extensions.dart";
-import "package:sonorus/src/core/utils/routes.dart";
 import "package:sonorus/src/modules/auth/register/register_controller.dart";
 
 class RegisterPage extends StatefulWidget {
@@ -42,7 +41,7 @@ class _RegisterPageState extends State<RegisterPage> with Loader, Messages {
           break;
         case RegisterStateStatus.success:
           this.hideLoader();
-          Modular.to.navigate(Routes.picturePage);
+          Modular.to.navigate("/register/picture");
           break;
         case RegisterStateStatus.error:
           this.hideLoader();
@@ -77,12 +76,6 @@ class _RegisterPageState extends State<RegisterPage> with Loader, Messages {
 
   @override
   Widget build(BuildContext context) {
-    // this._fullnameEC.text = "Felipe Maciel Rodrigues";
-    // this._emailEC.text = "felipe.rodrigues30@fatec.sp.gov.br";
-    // this._nicknameEC.text = "felipe.maciel";
-    // this._passwordEC.text = "123123123";
-    // this._confirmPasswordEC.text = "123123123";
-
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -262,7 +255,7 @@ class _RegisterPageState extends State<RegisterPage> with Loader, Messages {
                           "Faça login",
                           style: context.textStyles.textBold.copyWith(color: context.colors.primary)
                         ),
-                        onTap: () => Modular.to.navigate(Routes.loginPage)
+                        onTap: () => Modular.to.navigate("/login")
                       )
                     ]
                   )

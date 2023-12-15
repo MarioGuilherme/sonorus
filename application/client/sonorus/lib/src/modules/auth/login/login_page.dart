@@ -3,7 +3,6 @@ import "package:flutter_mobx/flutter_mobx.dart";
 import "package:flutter_modular/flutter_modular.dart";
 import "package:flutter_screenutil/flutter_screenutil.dart";
 import "package:mobx/mobx.dart";
-import "package:sonorus/src/core/utils/routes.dart";
 import "package:validatorless/validatorless.dart";
 
 import "package:sonorus/src/core/ui/styles/colors_app.dart";
@@ -38,7 +37,7 @@ class _LoginPageState extends State<LoginPage> with Loader, Messages {
           break;
         case LoginStateStatus.success:
           this.hideLoader();
-          Modular.to.navigate(Routes.timelinePage);
+          Modular.to.navigate("/");
           break;
         case LoginStateStatus.error:
           this.hideLoader();
@@ -66,8 +65,6 @@ class _LoginPageState extends State<LoginPage> with Loader, Messages {
 
   @override
   Widget build(BuildContext context) {
-    // this._loginEC.text = "dev.mario.guilherme";
-    // this._passwordEC.text = "123123123";
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -173,7 +170,7 @@ class _LoginPageState extends State<LoginPage> with Loader, Messages {
                           "Cadastre-se",
                           style: context.textStyles.textBold.copyWith(color: context.colors.primary, fontSize: 16.sp)
                         ),
-                        onTap: () => Modular.to.navigate(Routes.registerPage)
+                        onTap: () => Modular.to.navigate("/register")
                       )
                     ]
                   )

@@ -13,7 +13,6 @@ import "package:sonorus/src/core/ui/styles/colors_app.dart";
 import "package:sonorus/src/core/ui/styles/text_styles.dart";
 import "package:sonorus/src/core/ui/utils/loader.dart";
 import "package:sonorus/src/core/ui/utils/messages.dart";
-import "package:sonorus/src/core/utils/routes.dart";
 import "package:sonorus/src/models/chat_model.dart";
 import "package:sonorus/src/models/comment_model.dart";
 import "package:sonorus/src/models/current_user_model.dart";
@@ -81,7 +80,7 @@ class _PostState extends State<Post> with Messages, Loader {
                           onTap: () {
                             final bool isPostedByMe = Modular.get<CurrentUserModel>().userId == this.widget.post.author.userId;
                             if (isPostedByMe)
-                              Modular.to.pushNamed(Routes.userPage);
+                              Modular.to.pushNamed("/user");
                             Modular.to.pushNamed(
                               "/chat/",
                               arguments: [
@@ -506,31 +505,19 @@ class _PostState extends State<Post> with Messages, Loader {
                                                                                                     validator: Validatorless.max(255, "A tablatura pode ter no máximo 1000 caracteres."),
                                                                                                     decoration: const InputDecoration(isDense: true),
                                                                                                     onChanged: (value) {
-                                                                                                      value = value.replaceAll(RegExp("[eBGDAEBF#| ]"), "");
-                                                                                                      final stringAcronyms = ["e", "B", "G", "D", "A", "E", "B", "F#"];
-                                                                                                      final aa = value.split("\n").sublist(0, value.split("\n").length > 8 ? 8 : value.split("\n").length);
-                                                                                                      // String maisLonga = "";
+                                                                                                      const stringAcronyms = ["e", "B", "G", "D", "A", "E", "B", "F#"];
+                                                                                                      value = value.replaceAll(RegExp("[${stringAcronyms.join("")}| ]"), "");
+                                                                                                      final strings = value.split("\n").sublist(0, value.split("\n").length > 8 ? 8 : value.split("\n").length);
 
-                                                                                                      // for (String str in aa) {
-                                                                                                      //   if (str.length > maisLonga.length) {
-                                                                                                      //     maisLonga = str;
-                                                                                                      //   }
-                                                                                                      // }
-
-                                                                                                      for (var i = 0; i < aa.length; i++) {
-                                                                                                        final remain = aa[i];//.padRight(maisLonga.length, "-");
-                                                                                                        final ac = stringAcronyms[i].padRight(3, " ");
-                                                                                                        aa[i] = "$ac| $remain";
+                                                                                                      for (var i = 0; i < strings.length; i++) {
+                                                                                                        final remain = strings[i];
+                                                                                                        final acronymCompleted = stringAcronyms[i].padRight(3, " ");
+                                                                                                        strings[i] = "$acronymCompleted| $remain";
                                                                                                       }
-                                                                                                      final result = aa.join(" |\n");
+                                                                                                      final result = strings.join(" |\n");
                                                                                                       final previousSelection = _tablatureEC.selection;
                                                                                                       this._tablatureEC.text = result;
                                                                                                       this._tablatureEC.selection = previousSelection;
-                                                                                                      // _tablatureEC.value = _tablatureEC.value.copyWith(
-                                                                                                      //   text: result,
-                                                                                                      //   selection: previousSelection,
-                                                                                                      //   composing: TextRange.empty,
-                                                                                                      // );
                                                                                                     }
                                                                                                   )
                                                                                                 )
@@ -582,10 +569,7 @@ class _PostState extends State<Post> with Messages, Loader {
                                                                                   actionsAlignment: MainAxisAlignment.center,
                                                                                   actions: [
                                                                                     ElevatedButton(
-                                                                                      style: ElevatedButton.styleFrom(
-                                                                                        shape: RoundedRectangleBorder(
-                                                                                        borderRadius: BorderRadius.circular(20))
-                                                                                      ),
+                                                                                      style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
                                                                                       onPressed: () {
                                                                                         Modular.to.pop();
                                                                                         Modular.to.pop();
@@ -746,7 +730,7 @@ class _PostState extends State<Post> with Messages, Loader {
                               const SizedBox(height: 5),
                               Expanded(
                                 flex: 8,
-                                child: SingleChildScrollView( // <== talvez remover o scroll
+                                child: SingleChildScrollView(
                                   physics: const BouncingScrollPhysics(),
                                   scrollDirection: Axis.horizontal,
                                   child: FittedBox(

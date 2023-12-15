@@ -10,7 +10,6 @@ import "package:sonorus/src/core/ui/styles/colors_app.dart";
 import "package:sonorus/src/core/ui/styles/text_styles.dart";
 import "package:sonorus/src/core/ui/utils/custom_shimmer.dart";
 import "package:sonorus/src/core/ui/utils/messages.dart";
-import "package:sonorus/src/core/utils/routes.dart";
 import "package:sonorus/src/models/chat_model.dart";
 import "package:sonorus/src/models/current_user_model.dart";
 import "package:sonorus/src/models/message_model.dart";
@@ -124,29 +123,26 @@ class _ChatRealtimePageState extends State<ChatRealtimePage> with Messages, Cust
         shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(bottom: Radius.circular(12.5))),
         title: Padding(
           padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-          child: InkWell(
-            onTap: () => Modular.to.pushNamed(Routes.userPage),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                PictureUser(
-                  picture: Image.network(
-                    this.widget.chat.friend!.picture,
-                    width: 40,
-                    height: 40,
-                    fit: BoxFit.cover
-                  )
-                ),
-                const SizedBox(width: 20),
-                Flexible(
-                  child: Text(
-                    this.widget.chat.friend!.nickname,
-                    style: context.textStyles.textMedium.copyWith(color: Colors.white, fontSize: 16.sp)
-                  )
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              PictureUser(
+                picture: Image.network(
+                  this.widget.chat.friend!.picture,
+                  width: 40,
+                  height: 40,
+                  fit: BoxFit.cover
                 )
-              ]
-            )
+              ),
+              const SizedBox(width: 20),
+              Flexible(
+                child: Text(
+                  this.widget.chat.friend!.nickname,
+                  style: context.textStyles.textMedium.copyWith(color: Colors.white, fontSize: 16.sp)
+                )
+              )
+            ]
           )
         )
       ),

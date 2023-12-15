@@ -54,7 +54,6 @@ class _CreationPageState extends State<CreationPage> with Messages, Loader {
 
   @override
   void initState() {
-    // this._tablatureEC.text = "-----------------------------------------\n-----------------------------------------\n-----4---4h6p4---4-----4---4h6p4---4-----\n---6---6-------6-----6---6-------6-------\n-6-----------------7---------------------\n-----------------------------------------";
     this._statusReactionDisposer = reaction((_) => this._controller.creationStatus, (status) {
       switch (status) {
         case CreationStateStatus.initial: break;
@@ -121,7 +120,7 @@ class _CreationPageState extends State<CreationPage> with Messages, Loader {
                 )
               ]
             )
-          ); // fUTURA EDição talvez
+          );
           break;
         case CreationStateStatus.creatingProduct:
           this.showLoader();
@@ -131,6 +130,9 @@ class _CreationPageState extends State<CreationPage> with Messages, Loader {
           this._productDescriptionEC.clear();
           this._productNameEC.clear();
           this._productPriceEC.clear();
+          setState(() {
+            this._controller.toggleConditionProduct(ConditionType.new_);
+          });
           this.hideLoader();
           showDialog(
             barrierDismissible: true,
@@ -492,31 +494,19 @@ class _CreationPageState extends State<CreationPage> with Messages, Loader {
                                                     validator: Validatorless.max(255, "A tablatura pode ter no máximo 1000 caracteres."),
                                                     decoration: const InputDecoration(isDense: true),
                                                     onChanged: (value) {
-                                                      value = value.replaceAll(RegExp("[eBGDAEBF#| ]"), "");
-                                                      final stringAcronyms = ["e", "B", "G", "D", "A", "E", "B", "F#"];
-                                                      final aa = value.split("\n").sublist(0, value.split("\n").length > 8 ? 8 : value.split("\n").length);
-                                                      // String maisLonga = "";
+                                                      const stringAcronyms = ["e", "B", "G", "D", "A", "E", "B", "F#"];
+                                                      value = value.replaceAll(RegExp("[${stringAcronyms.join("")}| ]"), "");
+                                                      final strings = value.split("\n").sublist(0, value.split("\n").length > 8 ? 8 : value.split("\n").length);
 
-                                                      // for (String str in aa) {
-                                                      //   if (str.length > maisLonga.length) {
-                                                      //     maisLonga = str;
-                                                      //   }
-                                                      // }
-
-                                                      for (var i = 0; i < aa.length; i++) {
-                                                        final remain = aa[i];//.padRight(maisLonga.length, "-");
-                                                        final ac = stringAcronyms[i].padRight(3, " ");
-                                                        aa[i] = "$ac| $remain";
+                                                      for (var i = 0; i < strings.length; i++) {
+                                                        final remain = strings[i];
+                                                        final acronymCompleted = stringAcronyms[i].padRight(3, " ");
+                                                        strings[i] = "$acronymCompleted| $remain";
                                                       }
-                                                      final result = aa.join(" |\n");
+                                                      final result = strings.join(" |\n");
                                                       final previousSelection = _tablatureEC.selection;
                                                       this._tablatureEC.text = result;
                                                       this._tablatureEC.selection = previousSelection;
-                                                      // _tablatureEC.value = _tablatureEC.value.copyWith(
-                                                      //   text: result,
-                                                      //   selection: previousSelection,
-                                                      //   composing: TextRange.empty,
-                                                      // );
                                                     }
                                                   )
                                                 )
@@ -525,7 +515,7 @@ class _CreationPageState extends State<CreationPage> with Messages, Loader {
                                           )
                                         )
                                       )
-                                    ),
+                                    )
                                   )
                                 );
                                 await SystemChrome.setPreferredOrientations([ DeviceOrientation.landscapeLeft ]);
