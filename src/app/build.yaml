@@ -1,0 +1,7 @@
+targets:
+  $default:
+    builders:
+      mobx_codegen|mobx_generator:
+        generate_for:
+          include:
+            - "lib/src/modules/**_controller.dart"

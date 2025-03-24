@@ -1,2 +1,0 @@
-class ExpireTokenException implements Exception {
-}

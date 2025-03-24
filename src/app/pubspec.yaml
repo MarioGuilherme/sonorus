@@ -1,0 +1,79 @@
+name: sonorus
+description: "Aplicativo do TCC idealizado como rede social para musicistas e fãs de música"
+publish_to: 'none'
+version: 2.0.0
+
+environment:
+  sdk: ^3.7.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_dotenv: ^5.2.1
+  dio: ^5.8.0+1
+  mobx: ^2.5.0
+  flutter_mobx: ^2.3.0
+  flutter_modular: ^6.3.4
+  signalr_netcore: ^1.4.0
+  intl: ^0.20.2
+  brasil_fields: ^1.17.0
+  flutter_screenutil: ^5.9.3
+  shared_preferences: ^2.5.2
+  loading_animation_widget: ^1.3.0
+  validatorless: ^1.2.4
+  flutter_native_splash: 2.4.5
+  image_picker: ^1.1.2
+  shimmer: ^3.0.0
+  flutter_staggered_grid_view: ^0.7.0
+  carousel_slider: ^5.0.0
+  video_player: ^2.9.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  flutter_launcher_icons: ^0.14.3
+  mobx_codegen: ^2.7.0
+  build_runner: ^2.4.15
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  image_path: "assets/images/logoApp.png"
+
+flutter_native_splash:
+  color: "#16161F"
+  image: assets/images/logo.png
+
+flutter:
+  assets:
+    - .env
+    - assets/images/
+
+  fonts:
+    - family: museoModerno
+      fonts:
+        - asset: assets/fonts/museoModerno/MuseoModerno-Thin.ttf
+          weight: 100
+        - asset: assets/fonts/museoModerno/MuseoModerno-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/museoModerno/MuseoModerno-Light.ttf
+          weight: 300
+        - asset: assets/fonts/museoModerno/MuseoModerno-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/museoModerno/MuseoModerno-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/museoModerno/MuseoModerno-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/museoModerno/MuseoModerno-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/museoModerno/MuseoModerno-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/museoModerno/MuseoModerno-Black.ttf
+          weight: 900
+
+    - family: robotoMono
+      fonts:
+        - asset: assets/fonts/RobotoMono/RobotoMono-Medium.ttf
+          weight: 500
+
+  uses-material-design: true

@@ -1,0 +1,6 @@
+@Sonorus.Business.API_HostAddress = http://localhost:5074
+
+GET {{Sonorus.Business.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

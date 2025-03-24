@@ -1,0 +1,6 @@
+@Sonorus.ApiGateway_HostAddress = http://localhost:5032
+
+GET {{Sonorus.ApiGateway_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Sdk Name="Aspire.AppHost.Sdk" Version="9.0.0" />
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsAspireHost>true</IsAspireHost>
+    <UserSecretsId>92436271-8e05-4f53-808f-fee90e3e6750</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.AppHost" Version="9.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Microsservices\Account\Sonorus.Account.API\Sonorus.Account.API.csproj" />
+    <ProjectReference Include="..\..\Microsservices\Business\Sonorus.Business.API\Sonorus.Business.API.csproj" />
+    <ProjectReference Include="..\..\Microsservices\Chat\Sonorus.Chat.API\Sonorus.Chat.API.csproj" />
+    <ProjectReference Include="..\..\Microsservices\Marketplace\Sonorus.Marketplace.API\Sonorus.Marketplace.API.csproj" />
+    <ProjectReference Include="..\..\Microsservices\Post\Sonorus.Post.API\Sonorus.Post.API.csproj" />
+    <ProjectReference Include="..\..\Gateway\Sonorus.ApiGateway\Sonorus.ApiGateway.csproj" />
+  </ItemGroup>
+
+</Project>
