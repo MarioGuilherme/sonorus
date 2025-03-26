@@ -27,13 +27,13 @@ class CoreModule extends Module {
   void exportedBinds(i) {
     i.addLazySingleton<HubConnection>(() {
       final HubConnection hubConnection = HubConnectionBuilder()
-        .withUrl(Env.instance["hub_url"]!, options: HttpConnectionOptions(
+        .withUrl("${Env.instance["api_gateway_base_url"]!}/chatHub", options: HttpConnectionOptions(
           accessTokenFactory: () async => (await AuthUtils.getAccessAndRefreshToken()).$1!,
           transport: HttpTransportType.WebSockets
         ))
         .withAutomaticReconnect()
         .build();
-      hubConnection.keepAliveIntervalInMilliseconds = 3600;
+      hubConnection.keepAliveIntervalInMilliseconds = 1000 * 3600;
       return hubConnection;
     });
     i.addLazySingleton<HttpClient>(HttpClient.new);
