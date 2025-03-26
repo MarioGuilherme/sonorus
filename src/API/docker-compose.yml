@@ -33,21 +33,21 @@ services:
       context: .
       dockerfile: Microsservices/Chat/Sonorus.Chat.API/Dockerfile
 
-  # sonorus.marketplace.api:
-  #   image: ${DOCKER_REGISTRY-}sonorusmarketplaceapi
-  #   depends_on:
-  #     - sonorus.marketplace.db
-  #   build:
-  #     context: .
-  #     dockerfile: Microsservices/Marketplace/Sonorus.Marketplace.API/Dockerfile
+  sonorus.marketplace.api:
+    image: ${DOCKER_REGISTRY-}sonorusmarketplaceapi
+    depends_on:
+      - sonorus.marketplace.db
+    build:
+      context: .
+      dockerfile: Microsservices/Marketplace/Sonorus.Marketplace.API/Dockerfile
 
-  # sonorus.post.api:
-  #   image: ${DOCKER_REGISTRY-}sonoruspostapi
-  #   depends_on:
-  #     - sonorus.post.db
-  #   build:
-  #     context: .
-  #     dockerfile: Microsservices/Post/Sonorus.Post.API/Dockerfile
+  sonorus.post.api:
+    image: ${DOCKER_REGISTRY-}sonoruspostapi
+    depends_on:
+      - sonorus.post.db
+    build:
+      context: .
+      dockerfile: Microsservices/Post/Sonorus.Post.API/Dockerfile
 
   sonorus.account.db:
     image: mcr.microsoft.com/mssql/server
@@ -65,24 +65,24 @@ services:
     volumes:
       - sql_sonorus_business_data:/var/opt/mssql
 
-  # sonorus.marketplace.db:
-  #   image: mcr.microsoft.com/mssql/server
-  #   environment:
-  #     MSSQL_SA_PASSWORD: "Adm1n23%"
-  #     ACCEPT_EULA: "Y"
-  #   volumes:
-  #     - sql_sonorus_marketplace_data:/var/opt/mssql
+  sonorus.marketplace.db:
+    image: mcr.microsoft.com/mssql/server
+    environment:
+      MSSQL_SA_PASSWORD: "Adm1n23%"
+      ACCEPT_EULA: "Y"
+    volumes:
+      - sql_sonorus_marketplace_data:/var/opt/mssql
 
-  # sonorus.post.db:
-  #   image: mcr.microsoft.com/mssql/server
-  #   environment:
-  #     MSSQL_SA_PASSWORD: "Adm1n23%"
-  #     ACCEPT_EULA: "Y"
-  #   volumes:
-  #     - sql_sonorus_post_data:/var/opt/mssql
+  sonorus.post.db:
+    image: mcr.microsoft.com/mssql/server
+    environment:
+      MSSQL_SA_PASSWORD: "Adm1n23%"
+      ACCEPT_EULA: "Y"
+    volumes:
+      - sql_sonorus_post_data:/var/opt/mssql
 
 volumes:
   sql_sonorus_account_data:
   sql_sonorus_business_data:
-  # sql_sonorus_marketplace_data:
-  # sql_sonorus_post_data:
+  sql_sonorus_marketplace_data:
+  sql_sonorus_post_data:
