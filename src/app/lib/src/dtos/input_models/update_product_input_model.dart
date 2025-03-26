@@ -23,7 +23,7 @@ class UpdateProductInputModel {
   FormData toFormData() {
     final FormData formData = FormData.fromMap({
       "name": this.name,
-      "price": this.price.toString().replaceAll(".", ","),
+      "price": this.price,
       "description": this.description,
       "condition": this.condition.id,
       "mediasToRemove": mediasToRemove
