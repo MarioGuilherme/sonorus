@@ -4,15 +4,19 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>7ab5e861-d7ac-44d4-adfb-061185dc4b48</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..\..</DockerfileContext>
+    <DockerComposeProjectPath>..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.3" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\SharedKernel\Sonorus.SharedKernel\Sonorus.SharedKernel.csproj" />
-    <ProjectReference Include="..\..\..\Analytics\Sonorus.Analytics.ServiceDefaults\Sonorus.Analytics.ServiceDefaults.csproj" />
     <ProjectReference Include="..\Sonorus.Chat.Application\Sonorus.Chat.Application.csproj" />
     <ProjectReference Include="..\Sonorus.Chat.Infrastructure\Sonorus.Chat.Infrastructure.csproj" />
   </ItemGroup>

@@ -4,6 +4,10 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>91474caf-847e-4fd8-b67e-d4ddd9e31bcb</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..\..</DockerfileContext>
+    <DockerComposeProjectPath>..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,11 +16,11 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
   </ItemGroup>
 
   <ItemGroup>
 	<ProjectReference Include="..\..\..\SharedKernel\Sonorus.SharedKernel\Sonorus.SharedKernel.csproj" />
-    <ProjectReference Include="..\..\..\Analytics\Sonorus.Analytics.ServiceDefaults\Sonorus.Analytics.ServiceDefaults.csproj" />
     <ProjectReference Include="..\Sonorus.Marketplace.Application\Sonorus.Marketplace.Application.csproj" />
     <ProjectReference Include="..\Sonorus.Marketplace.Infrastructure\Sonorus.Marketplace.Infrastructure.csproj" />
   </ItemGroup>

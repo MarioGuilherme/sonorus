@@ -6,8 +6,6 @@ using Sonorus.SharedKernel;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-builder.AddServiceDefaults();
-
 builder.Services
     .AddInfrastructure(builder.Configuration)
     .AddApplication();
@@ -24,8 +22,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSharedSwaggerGen(webServiceName: "Chat");
 
 WebApplication app = builder.Build();
-
-app.MapDefaultEndpoints();
 
 if (app.Environment.IsDevelopment()) {
     app.MapOpenApi();

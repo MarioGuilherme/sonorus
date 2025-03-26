@@ -6,8 +6,6 @@ using System.Text;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-builder.AddServiceDefaults();
-
 builder.Configuration.AddJsonFile("ocelot.json");
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -24,15 +22,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 builder.Services.AddAuthorization();
 
+builder.Services.AddSignalR();
 builder.Services.AddOcelot();
 
 WebApplication app = builder.Build();
 
-app.MapDefaultEndpoints();
-
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseWebSockets();
 await app.UseOcelot();
 
 app.Run();

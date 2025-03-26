@@ -5,11 +5,11 @@
       "UpstreamPathTemplate": "/auth/login",
       "UpstreamHttpMethod": [ "POST" ],
       "DownstreamPathTemplate": "/api/v2/auth/login",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7275
+          "Host": "sonorus.account.api",
+          "Port": 8001
         }
       ]
     },
@@ -17,11 +17,11 @@
       "UpstreamPathTemplate": "/auth/register",
       "UpstreamHttpMethod": [ "POST" ],
       "DownstreamPathTemplate": "/api/v2/auth/register",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7275
+          "Host": "sonorus.account.api",
+          "Port": 8001
         }
       ]
     },
@@ -29,11 +29,11 @@
       "UpstreamPathTemplate": "/auth/refreshToken",
       "UpstreamHttpMethod": [ "PUT" ],
       "DownstreamPathTemplate": "/api/v2/auth/refreshToken",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7275
+          "Host": "sonorus.account.api",
+          "Port": 8001
         }
       ],
       "AuthenticationOptions": {
@@ -46,11 +46,11 @@
       "UpstreamPathTemplate": "/interests",
       "UpstreamHttpMethod": [ "GET" ],
       "DownstreamPathTemplate": "/api/v2/interests",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7275
+          "Host": "sonorus.account.api",
+          "Port": 8001
         }
       ]
     },
@@ -60,11 +60,11 @@
       "UpstreamPathTemplate": "/users/me",
       "UpstreamHttpMethod": [ "GET", "PATCH", "DELETE" ],
       "DownstreamPathTemplate": "/api/v2/users/me",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7275
+          "Host": "sonorus.account.api",
+          "Port": 8001
         }
       ],
       "AuthenticationOptions": {
@@ -75,11 +75,11 @@
       "UpstreamPathTemplate": "/users/me/picture",
       "UpstreamHttpMethod": [ "PATCH" ],
       "DownstreamPathTemplate": "/api/v2/users/me/picture",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7275
+          "Host": "sonorus.account.api",
+          "Port": 8001
         }
       ],
       "AuthenticationOptions": {
@@ -90,11 +90,11 @@
       "UpstreamPathTemplate": "/users/me/interests/{interestId}",
       "UpstreamHttpMethod": [ "POST", "DELETE" ],
       "DownstreamPathTemplate": "/api/v2/users/me/interests/{interestId}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7275
+          "Host": "sonorus.account.api",
+          "Port": 8001
         }
       ],
       "AuthenticationOptions": {
@@ -105,11 +105,11 @@
       "UpstreamPathTemplate": "/users/me/interests",
       "UpstreamHttpMethod": [ "GET", "POST" ],
       "DownstreamPathTemplate": "/api/v2/users/me/interests",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7275
+          "Host": "sonorus.account.api",
+          "Port": 8001
         }
       ],
       "AuthenticationOptions": {
@@ -120,11 +120,11 @@
       "UpstreamPathTemplate": "/users/me/password",
       "UpstreamHttpMethod": [ "PATCH" ],
       "DownstreamPathTemplate": "/api/v2/users/me/password",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7275
+          "Host": "sonorus.account.api",
+          "Port": 8001
         }
       ],
       "AuthenticationOptions": {
@@ -136,11 +136,11 @@
       "UpstreamHttpMethod": [ "GET" ],
       "DownstreamPathTemplate": "/api/v2/users",
       "RequestIdKey": "OcRequestId",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7275
+          "Host": "sonorus.account.api",
+          "Port": 8001
         }
       ]
     },
@@ -150,11 +150,11 @@
       "UpstreamPathTemplate": "/opportunities",
       "UpstreamHttpMethod": [ "GET", "POST" ],
       "DownstreamPathTemplate": "/api/v2/opportunities",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7133
+          "Host": "sonorus.business.api",
+          "Port": 8002
         }
       ]
     },
@@ -162,11 +162,11 @@
       "UpstreamPathTemplate": "/opportunities/{opportunityId}",
       "UpstreamHttpMethod": [ "PATCH", "DELETE" ],
       "DownstreamPathTemplate": "/api/v2/opportunities/{opportunityId}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7133
+          "Host": "sonorus.business.api",
+          "Port": 8002
         }
       ],
       "AuthenticationOptions": {
@@ -182,23 +182,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "192.168.1.190",
-          "Port": 5251
-        }
-      ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer"
-      }
-    },
-    {
-      "UpstreamPathTemplate": "/chats/${chatId}/messages",
-      "UpstreamHttpMethod": [ "GET" ],
-      "DownstreamPathTemplate": "/api/v2/chats/${chatId}/messages",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "192.168.1.190",
-          "Port": 5251
+          "Host": "sonorus.chat.api",
+          "Port": 8003
         }
       ],
       "AuthenticationOptions": {
@@ -212,8 +197,8 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "192.168.1.190",
-          "Port": 5251
+          "Host": "sonorus.chat.api",
+          "Port": 8003
         }
       ],
       "AuthenticationOptions": {
@@ -221,14 +206,14 @@
       }
     },
     {
-      "UpstreamPathTemplate": "/chatHub",
-      "UpstreamHttpMethod": [ "POST" ],
-      "DownstreamPathTemplate": "/chatHub",
-      "DownstreamScheme": "http",
+      "DownstreamPathTemplate": "/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS" ],
+      "UpstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "ws",
       "DownstreamHostAndPorts": [
         {
-          "Host": "192.168.1.190",
-          "Port": 5251
+          "Host": "sonorus.chat.api",
+          "Port": 8003
         }
       ]
     },
@@ -238,11 +223,11 @@
       "UpstreamPathTemplate": "/products",
       "UpstreamHttpMethod": [ "GET", "POST" ],
       "DownstreamPathTemplate": "/api/v2/products",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7051
+          "Host": "sonorus.marketplace.api",
+          "Port": 8004
         }
       ],
       "AuthenticationOptions": {
@@ -253,11 +238,11 @@
       "UpstreamPathTemplate": "/products/{productId}",
       "UpstreamHttpMethod": [ "PATCH", "DELETE" ],
       "DownstreamPathTemplate": "/api/v2/products/{productId}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7051
+          "Host": "sonorus.marketplace.api",
+          "Port": 8004
         }
       ],
       "AuthenticationOptions": {
@@ -270,11 +255,11 @@
       "UpstreamPathTemplate": "/posts",
       "UpstreamHttpMethod": [ "GET", "POST" ],
       "DownstreamPathTemplate": "/api/v2/posts",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7257
+          "Host": "sonorus.post.api",
+          "Port": 8005
         }
       ],
       "AuthenticationOptions": {
@@ -285,11 +270,11 @@
       "UpstreamPathTemplate": "/posts/{postId}",
       "UpstreamHttpMethod": [ "PATCH", "DELETE" ],
       "DownstreamPathTemplate": "/api/v2/posts/{postId}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7257
+          "Host": "sonorus.post.api",
+          "Port": 8005
         }
       ],
       "AuthenticationOptions": {
@@ -300,11 +285,11 @@
       "UpstreamPathTemplate": "/posts/{postId}/likers",
       "UpstreamHttpMethod": [ "PATCH" ],
       "DownstreamPathTemplate": "/api/v2/posts/{postId}/likers",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7257
+          "Host": "sonorus.post.api",
+          "Port": 8005
         }
       ],
       "AuthenticationOptions": {
@@ -315,11 +300,11 @@
       "UpstreamPathTemplate": "/posts/{postId}/comments",
       "UpstreamHttpMethod": [ "GET", "POST" ],
       "DownstreamPathTemplate": "/api/v2/posts/{postId}/comments",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7257
+          "Host": "sonorus.post.api",
+          "Port": 8005
         }
       ],
       "AuthenticationOptions": {
@@ -330,11 +315,11 @@
       "UpstreamPathTemplate": "/posts/{postId}/comments/{commentId}",
       "UpstreamHttpMethod": [ "PATCH", "DELETE" ],
       "DownstreamPathTemplate": "/api/v2/posts/{postId}/comments/{commentId}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7257
+          "Host": "sonorus.post.api",
+          "Port": 8005
         }
       ],
       "AuthenticationOptions": {
@@ -345,11 +330,11 @@
       "UpstreamPathTemplate": "/posts/{postId}/comments/{commentId}/likers",
       "UpstreamHttpMethod": [ "PATCH" ],
       "DownstreamPathTemplate": "/api/v2/posts/{postId}/comments/{commentId}/likers",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7257
+          "Host": "sonorus.post.api",
+          "Port": 8005
         }
       ],
       "AuthenticationOptions": {

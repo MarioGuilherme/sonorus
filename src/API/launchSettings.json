@@ -1,0 +1,16 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "sonorus.apigateway": "StartDebugging",
+        "sonorus.account.api": "StartDebugging",
+        "sonorus.business.api": "StartDebugging",
+        "sonorus.chat.api": "StartDebugging",
+        "sonorus.marketplace.api": "StartDebugging",
+        "sonorus.post.api": "StartDebugging"
+      }
+    }
+  }
+}

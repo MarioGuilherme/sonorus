@@ -1,0 +1,88 @@
+services:
+  sonorus.apigateway:
+    image: ${DOCKER_REGISTRY-}sonorusapigateway
+    depends_on:
+      - sonorus.account.api
+      - sonorus.business.api
+      - sonorus.chat.api
+      # - sonorus.marketplace.api
+      # - sonorus.post.api
+    build:
+      context: .
+      dockerfile: Gateway/Sonorus.ApiGateway/Dockerfile
+
+  sonorus.account.api:
+    image: ${DOCKER_REGISTRY-}sonorusaccountapi
+    depends_on:
+      - sonorus.account.db
+    build:
+      context: .
+      dockerfile: Microsservices/Account/Sonorus.Account.API/Dockerfile
+
+  sonorus.business.api:
+    image: ${DOCKER_REGISTRY-}sonorusaccountapi
+    depends_on:
+      - sonorus.business.db
+    build:
+      context: .
+      dockerfile: Microsservices/Business/Sonorus.Business.API/Dockerfile
+
+  sonorus.chat.api:
+    image: ${DOCKER_REGISTRY-}sonoruschatapi
+    build:
+      context: .
+      dockerfile: Microsservices/Chat/Sonorus.Chat.API/Dockerfile
+
+  # sonorus.marketplace.api:
+  #   image: ${DOCKER_REGISTRY-}sonorusmarketplaceapi
+  #   depends_on:
+  #     - sonorus.marketplace.db
+  #   build:
+  #     context: .
+  #     dockerfile: Microsservices/Marketplace/Sonorus.Marketplace.API/Dockerfile
+
+  # sonorus.post.api:
+  #   image: ${DOCKER_REGISTRY-}sonoruspostapi
+  #   depends_on:
+  #     - sonorus.post.db
+  #   build:
+  #     context: .
+  #     dockerfile: Microsservices/Post/Sonorus.Post.API/Dockerfile
+
+  sonorus.account.db:
+    image: mcr.microsoft.com/mssql/server
+    environment:
+      MSSQL_SA_PASSWORD: "Adm1n23%"
+      ACCEPT_EULA: "Y"
+    volumes:
+      - sql_sonorus_account_data:/var/opt/mssql
+
+  sonorus.business.db:
+    image: mcr.microsoft.com/mssql/server
+    environment:
+      MSSQL_SA_PASSWORD: "Adm1n23%"
+      ACCEPT_EULA: "Y"
+    volumes:
+      - sql_sonorus_business_data:/var/opt/mssql
+
+  # sonorus.marketplace.db:
+  #   image: mcr.microsoft.com/mssql/server
+  #   environment:
+  #     MSSQL_SA_PASSWORD: "Adm1n23%"
+  #     ACCEPT_EULA: "Y"
+  #   volumes:
+  #     - sql_sonorus_marketplace_data:/var/opt/mssql
+
+  # sonorus.post.db:
+  #   image: mcr.microsoft.com/mssql/server
+  #   environment:
+  #     MSSQL_SA_PASSWORD: "Adm1n23%"
+  #     ACCEPT_EULA: "Y"
+  #   volumes:
+  #     - sql_sonorus_post_data:/var/opt/mssql
+
+volumes:
+  sql_sonorus_account_data:
+  sql_sonorus_business_data:
+  # sql_sonorus_marketplace_data:
+  # sql_sonorus_post_data:

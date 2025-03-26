@@ -7,8 +7,6 @@ using Sonorus.SharedKernel;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-builder.AddServiceDefaults();
-
 builder.Services
     .AddInfrastructure(builder.Configuration)
     .AddApplication();
@@ -32,8 +30,6 @@ SonorusAccountDbContext context = services.GetRequiredService<SonorusAccountDbCo
 if ((await context.Database.GetPendingMigrationsAsync()).Any())
     await context.Database.MigrateAsync();
 #endregion
-
-app.MapDefaultEndpoints();
 
 if (app.Environment.IsDevelopment()) {
     app.MapOpenApi();
