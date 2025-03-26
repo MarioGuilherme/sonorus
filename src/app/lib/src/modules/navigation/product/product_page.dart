@@ -50,7 +50,7 @@ class _ProductPageState extends State<ProductPage> with Messages, CustomShimmer,
             message: "Seu anúncio foi salvo, deseja visualizá-lo?",
             onConfirmButtonPressed: () {
               Modular.to.pop();
-              Modular.to.pushNamed("/products/product/", arguments: this._controller.savedProduct).then((obj) async {
+              Modular.to.pushNamed("/products/details/", arguments: this._controller.savedProduct).then((obj) async {
                 if (obj.runtimeType != ProductViewModel) {
                   this._controller.getAllWithQuery();
                   return;

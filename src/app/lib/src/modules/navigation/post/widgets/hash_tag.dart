@@ -26,7 +26,6 @@ class HashTag extends StatelessWidget {
                 style: context.textStyles.textSemiBold.copyWith(
                   color: context.colors.primary,
                   fontSize: 11.sp,
-                  decoration: TextDecoration.underline,
                   decorationThickness: 4
                 )
               )
