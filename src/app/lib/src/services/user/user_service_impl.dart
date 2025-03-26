@@ -32,11 +32,12 @@ class UserServiceImpl implements UserService {
   }
 
   @override
-  Future<void> updatePicture(XFile file) async {
+  Future<String> updatePicture(XFile file) async {
     final UpdateUserPictureInputModel inputModel = UpdateUserPictureInputModel(file: file);
     final String uri = await this._repository.updatePicture(inputModel);
     final AuthenticatedUser currentUser = Modular.get<AuthenticatedUser>();
     currentUser.picture = uri;
+    return uri;
   }
 
   @override

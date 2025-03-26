@@ -116,7 +116,7 @@ abstract class _ProfileControllerBase with Store {
     try {
       this._status = ProfilePageStatus.updatingPicture;
 
-      await this._userService.updatePicture(picture);
+      this._picture = await this._userService.updatePicture(picture);
       this._picture = this._picture!.split("?").length == 1
         ? this._picture = "${this._picture}?v=${Random().nextInt(2)}"
         : this._picture = "${this._picture!.split("?").first}?v=${Random().nextInt(2)}";

@@ -8,7 +8,7 @@ abstract interface class UserService {
   Future<void> disassociateInterest(int interestId);
   Future<List<InterestDto>> getMyInterests();
   Future<void> associateCollectionOfInterests(List<InterestDto> interests);
-  Future<void> updatePicture(XFile file);
+  Future<String> updatePicture(XFile file);
   Future<void> updatePassword(String password);
   Future<void> updateUser(String fullname, String nickname, String email);
 }
