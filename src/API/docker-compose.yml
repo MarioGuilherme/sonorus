@@ -5,8 +5,8 @@ services:
       - sonorus.account.api
       - sonorus.business.api
       - sonorus.chat.api
-      # - sonorus.marketplace.api
-      # - sonorus.post.api
+      - sonorus.marketplace.api
+      - sonorus.post.api
     build:
       context: .
       dockerfile: Gateway/Sonorus.ApiGateway/Dockerfile
