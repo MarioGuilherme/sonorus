@@ -63,7 +63,7 @@ Images of the main parts of the software
   <img width="30%" heigth="30%" src="https://github.com/user-attachments/assets/448617cb-2092-421c-972e-8e1dc8626205"></img>
   <img width="30%" heigth="30%" src="https://github.com/user-attachments/assets/32d7ae86-8a1f-4a08-bffe-b263f0fae712"></img>
   <img width="30%" heigth="30%" src="https://github.com/user-attachments/assets/2b2cc23a-de7c-4495-b53d-0e0836c16c0f"></img>
-  <img width="30%" heigth="30%" src="https://github.com/user-attachments/assets/8cc10fe2-0821-4c01-a404-8d1ce6030968"></img>
+  <img width="30%" heigth="30%" src="https://github.com/user-attachments/assets/3bdc6219-1cab-46dc-bd3e-0809cb646ba8"></img>
   <img width="30%" heigth="30%" src="https://github.com/user-attachments/assets/232ccf5e-9a90-4354-9589-9335d36b347b"></img>
   <video width="30%" heigth="30%" src="https://github.com/user-attachments/assets/7055e37e-d42d-4dab-9c30-b152f0938392"></video>
 
@@ -79,7 +79,7 @@ Images of the main parts of the software
 
 - Real-time chat:
   <br>
-  <img width="30%" heigth="30%" src="https://github.com/user-attachments/assets/a23740de-1040-40ea-9ebc-9a863f0d4484"></img>
+  <img width="30%" heigth="30%" src="https://github.com/user-attachments/assets/b75f7163-ad10-4d98-b73d-ae27d87428b5"></img>
   <video width="30%" heigth="30%" src="https://github.com/user-attachments/assets/abb8d1fd-08ea-4db5-9370-e457482712dc"></video>
 
 ## Running
