@@ -37,7 +37,7 @@ Repository for undergraduate work. The work is about creating a social network f
     <img width="35%" src="https://github.com/user-attachments/assets/8c6d6f7d-6cd3-4fb9-ac99-6a57a2d8d6ac"/>
 
   - ### Conceptual Architecture
-  ![Conceptual Architecture](https://github.com/user-attachments/assets/41cd1e9b-bc74-4376-8f1e-da90879b9a75)
+  ![Conceptual Architecture](https://github.com/user-attachments/assets/5f237660-e155-4e6c-b007-a8b2f52946b3)
 
 ## Demo
 Images of the main parts of the software
