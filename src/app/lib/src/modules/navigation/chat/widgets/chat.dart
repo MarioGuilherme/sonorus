@@ -23,7 +23,7 @@ class Chat extends StatelessWidget {
           color: const Color(0xFF404048),
           child: InkWell(
             borderRadius: BorderRadius.circular(15),
-            onTap: () => Modular.to.pushNamed("/chat/", arguments: [this.chat.participants.firstWhere((c) => c.userId != Modular.get<AuthenticatedUser>().userId)]),
+            onTap: () => Modular.to.pushNamed("/chat/", arguments: [this.chat.participants.firstWhere((c) => c.userId != myUserId)]),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.5),
               child: Row(
@@ -48,8 +48,8 @@ class Chat extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(this.chat.participants.first.nickname, style: context.textStyles.textExtraBold.withFontSize(14)),
-                          Text("${this.chat.messages.first.sentByUserId == Modular.get<AuthenticatedUser>().userId! ? "Você: " : ""}${this.chat.messages.first.content}", style: context.textStyles.textRegular.withFontSize(13))
+                          Text(this.chat.participants.firstWhere((p) => p.userId != myUserId).nickname, style: context.textStyles.textExtraBold.withFontSize(14)),
+                          Text("${this.chat.messages.first.sentByUserId == myUserId ? "Você: " : ""}${this.chat.messages.first.content}", style: context.textStyles.textRegular.withFontSize(13))
                         ]
                       )
                     )
