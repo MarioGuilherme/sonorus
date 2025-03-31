@@ -32,8 +32,9 @@ Repository for undergraduate work. The work is about creating a social network f
     - Flutter with Flutter Modular and Mobx.
  
 ## Architecture Overview
-  - ### Solution
-  ![Solution](https://github.com/user-attachments/assets/818c763c-3743-4d31-ab2c-c526db6571ee)
+  - ### Source
+    <img width="64%" src="https://github.com/user-attachments/assets/818c763c-3743-4d31-ab2c-c526db6571ee"/>
+    <img width="35%" src="https://github.com/user-attachments/assets/8c6d6f7d-6cd3-4fb9-ac99-6a57a2d8d6ac"/>
 
   - ### Conceptual Architecture
   ![Conceptual Architecture](https://github.com/user-attachments/assets/41cd1e9b-bc74-4376-8f1e-da90879b9a75)
