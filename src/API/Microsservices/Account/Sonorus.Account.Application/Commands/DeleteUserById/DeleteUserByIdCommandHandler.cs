@@ -25,11 +25,12 @@ public class DeleteUserByIdCommandHandler(IUnitOfWork unitOfWork, IFileStorage f
         await this._unitOfWork.CompleteAsync();
         await this._unitOfWork.CommitAsync();
 
+        DeletedUserEvent deletedUserEvent = new(user.UserId);
         await Task.WhenAll([
-            this._messageBroker.SendMessageAsync<DeletedUserEvent>(new(user.UserId), "deleted-users_microservice-business", cancellationToken),
-            this._messageBroker.SendMessageAsync<DeletedUserEvent>(new(user.UserId), "deleted-users_microservice-chat", cancellationToken),
-            this._messageBroker.SendMessageAsync<DeletedUserEvent>(new(user.UserId), "deleted-users_microservice-marketplace", cancellationToken),
-            this._messageBroker.SendMessageAsync<DeletedUserEvent>(new(user.UserId), "deleted-users_microservice-posts", cancellationToken)
+            this._messageBroker.SendMessageAsync<DeletedUserEvent>(deletedUserEvent, "deleted-users_microservice-business", cancellationToken),
+            this._messageBroker.SendMessageAsync<DeletedUserEvent>(deletedUserEvent, "deleted-users_microservice-chat", cancellationToken),
+            this._messageBroker.SendMessageAsync<DeletedUserEvent>(deletedUserEvent, "deleted-users_microservice-marketplace", cancellationToken),
+            this._messageBroker.SendMessageAsync<DeletedUserEvent>(deletedUserEvent, "deleted-users_microservice-posts", cancellationToken)
         ]);
 
         return Unit.Value;
