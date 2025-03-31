@@ -1,11 +1,10 @@
 # sonorus
 
-Repositório para o trabalho de graduação. Trabalho esse que remete a criação de uma rede social à musicistas e fãs de música usando Flutter, .NET e serviços Azure.
+Repository for undergraduate work. The work is about creating a social network for musicians and music fans using Flutter, .NET and Azure services.
 
 # IMPORTANTE
-Decidi deixar a branch `main` para ser a versão original de entrega do trabalho de graduação.
-Para visualizar novas atualizações e versões novas deste projeto, consulte a branch 
-[**latest-features**](https://github.com/MarioGuilherme/sonorus/tree/latest-features).
+I decided to consider the `main` branch to be the original version for submitting the undergraduate work.
+To view new updates and new versions of this project, see the [**latest-features**](https://github.com/MarioGuilherme/sonorus/tree/latest-features) branch.
 
 # Contribua
-Sinta-se a vontade para contribuir com o projeto abrindo um pull request com novas ideias ou até melhorias e correções na branch [**latest-features**](https://github.com/MarioGuilherme/sonorus/tree/latest-features)
+Feel free to contribute to the project by opening a pull request with new ideas or even improvements and corrections in the [**latest-features**](https://github.com/MarioGuilherme/sonorus/tree/latest-features) branch
