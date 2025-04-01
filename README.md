@@ -33,8 +33,8 @@ Repository for undergraduate work. The work is about creating a social network f
  
 ## Architecture Overview
   - ### Source
-    <img width="64%" src="https://github.com/user-attachments/assets/818c763c-3743-4d31-ab2c-c526db6571ee"/>
-    <img width="35%" src="https://github.com/user-attachments/assets/8c6d6f7d-6cd3-4fb9-ac99-6a57a2d8d6ac"/>
+    <img width="52%" src="https://github.com/user-attachments/assets/4424ae24-a4a9-4b21-a38e-9478ee1997ad"/>
+    <img width="43%" src="https://github.com/user-attachments/assets/c8c26b3a-70a3-4748-a6fa-4675fcbe0860"/>
 
   - ### Conceptual Architecture
     <img src="https://github.com/user-attachments/assets/5f237660-e155-4e6c-b007-a8b2f52946b3"/>
@@ -75,7 +75,7 @@ Images of the main parts of the software
 - Opportunities:
   <br>
   <img width="30%" heigth="30%" src="https://github.com/user-attachments/assets/bfd16d86-ed39-4947-92cf-c4f6a2c09587"></img>
-  <img width="30%" heigth="30%" src="https://github.com/user-attachments/assets/aff06936-bc3f-4997-8b87-4bd7466c3064"></img>
+  <img width="30%" heigth="30%" src="https://github.com/user-attachments/assets/729a3528-0e62-483b-bed4-63b2873f6271"></img>
 
 - Real-time chat:
   <br>
