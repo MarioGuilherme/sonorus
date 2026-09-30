@@ -13,21 +13,21 @@ public class RegisterUserCommandHandler(IUnitOfWork unitOfWork, IAuthService aut
     private readonly IMapper _mapper = mapper;
 
     public async Task<TokenViewModel> Handle(CreateUserCommand request, CancellationToken cancellationToken) {
-        User user = this._mapper.Map<User>(request);
+        User user = _mapper.Map<User>(request);
 
-        await this._unitOfWork.Users.RegisterAsync(user);
+        await _unitOfWork.Users.RegisterAsync(user);
 
-        await this._unitOfWork.BeginTransactionAsync();
-        await this._unitOfWork.CompleteAsync();
+        await _unitOfWork.BeginTransactionAsync();
+        await _unitOfWork.CompleteAsync();
 
-        string accessToken = this._authService.GenerateToken(user);
-        string refreshToken = this._authService.GenerateRefreshToken();
+        string accessToken = _authService.GenerateToken(user);
+        string refreshToken = _authService.GenerateRefreshToken();
 
         TokenViewModel tokenViewModel = new(accessToken, refreshToken);
 
-        await this._unitOfWork.RefreshTokens.SaveAsync(new(user.UserId!, tokenViewModel.RefreshToken));
-        await this._unitOfWork.CompleteAsync();
-        await this._unitOfWork.CommitAsync();
+        await _unitOfWork.RefreshTokens.SaveAsync(new(user.UserId!, tokenViewModel.RefreshToken));
+        await _unitOfWork.CompleteAsync();
+        await _unitOfWork.CommitAsync();
 
         return tokenViewModel;
     }

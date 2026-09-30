@@ -13,11 +13,11 @@ public class GetAllProductsByNameQueryHandler(IUnitOfWork unitOfWork, IHttpClien
     private readonly IMapper _mapper = mapper;
 
     public async Task<IEnumerable<ProductViewModel>> Handle(GetAllProductsByNameQuery request, CancellationToken cancellationToken) {
-        IEnumerable<Product> products = await this._unitOfWork.Products.GetAllByNameAsync(request.Name);
+        IEnumerable<Product> products = await _unitOfWork.Products.GetAllByNameAsync(request.Name);
         if (!products.Any()) return [];
 
         IEnumerable<long> userIds = products.Select(product => product.SellerId).Distinct();
-        using HttpClient userMShttpClient = this._httpClientFactory.CreateClient("API_GATEWAY");
+        using HttpClient userMShttpClient = _httpClientFactory.CreateClient("API_GATEWAY");
         IEnumerable<UserViewModel>? users = await userMShttpClient.GetFromJsonAsync<IEnumerable<UserViewModel>>(
             $"users?{string.Join('&', userIds.Select(userId => $"id={userId}"))}",
             cancellationToken: cancellationToken
@@ -27,7 +27,7 @@ public class GetAllProductsByNameQueryHandler(IUnitOfWork unitOfWork, IHttpClien
         foreach (Product product in products) {
             UserViewModel? user = users!.FirstOrDefault(user => user.UserId == product.SellerId);
             if (user is null) continue;
-            ProductViewModel productViewModel = this._mapper.Map<ProductViewModel>(product);
+            ProductViewModel productViewModel = _mapper.Map<ProductViewModel>(product);
             productViewModel.Seller = user;
             mappedProducts.Add(productViewModel);
         }

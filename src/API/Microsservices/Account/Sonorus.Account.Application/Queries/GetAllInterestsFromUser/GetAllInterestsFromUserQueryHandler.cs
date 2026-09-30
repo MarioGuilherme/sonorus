@@ -12,7 +12,7 @@ public class GetAllInterestsFromUserQueryHandler(IUnitOfWork unitOfWork, IMapper
     private readonly IMapper _mapper = mapper;
 
     public async Task<IEnumerable<InterestViewModel>> Handle(GetAllInterestsFromUserQuery request, CancellationToken cancellationToken) {
-        User user = await this._unitOfWork.Users.GetByIdTrackingAsync(request.UserId) ?? throw new AuthenticatedUserNoLongerExistException();
-        return this._mapper.Map<IEnumerable<InterestViewModel>>(user.Interests);
+        User user = await _unitOfWork.Users.GetByIdTrackingAsync(request.UserId) ?? throw new AuthenticatedUserNoLongerExistException();
+        return _mapper.Map<IEnumerable<InterestViewModel>>(user.Interests);
     }
 }

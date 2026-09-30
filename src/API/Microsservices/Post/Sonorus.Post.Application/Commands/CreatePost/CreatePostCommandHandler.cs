@@ -19,15 +19,15 @@ public class CreatePostCommandHandler(IUnitOfWork unitOfWork, IFileStorage fileS
 
         foreach (IFormFile file in request.Medias) {
             string mediaName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
-            await this._fileStorage.UploadOrUpdateFileAsync(mediaName, file.OpenReadStream());
+            await _fileStorage.UploadOrUpdateFileAsync(mediaName, file.OpenReadStream());
             post.Medias.Add(new(mediaName));
         }
 
-        await this._unitOfWork.Posts.CreatePostAsync(post);
+        await _unitOfWork.Posts.CreatePostAsync(post);
 
-        await this._unitOfWork.BeginTransactionAsync();
-        await this._unitOfWork.CompleteAsync();
-        await this._unitOfWork.CommitAsync();
+        await _unitOfWork.BeginTransactionAsync();
+        await _unitOfWork.CompleteAsync();
+        await _unitOfWork.CommitAsync();
 
         return Unit.Value;
     }

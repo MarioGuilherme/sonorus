@@ -10,26 +10,26 @@ public class User(string fullname, string nickname, string email, string passwor
     public RefreshToken RefreshToken { get; private set; } = null!;
 
     public string Password {
-        get => this._password;
-        private set => this._password = HashPassword(value);
+        get => _password;
+        private set => _password = HashPassword(value);
     }
     private string _password = password;
 
     public string Picture {
-        get => $"{Environment.GetEnvironmentVariable("BlobStorageURL")}/{this._picture ?? "defaultPicture.png"}";
-        private set => this._picture = value;
+        get => $"{Environment.GetEnvironmentVariable("BlobStorageURL")}/{_picture ?? "defaultPicture.png"}";
+        private set => _picture = value;
     }
     private string? _picture;
 
     public ICollection<Interest> Interests { get; private set; } = [];
 
-    public void UpdatePassword(string password) => this._password = HashPassword(password);
+    public void UpdatePassword(string password) => _password = HashPassword(password);
 
     public void UpdateData(string fullname, string nickname, string email) {
-        this.Fullname = fullname;
-        this.Nickname = nickname;
-        this.Email = email;
+        Fullname = fullname;
+        Nickname = nickname;
+        Email = email;
     }
 
-    public void UpdatePicture(string pictureName) => this._picture = pictureName;
+    public void UpdatePicture(string pictureName) => _picture = pictureName;
 }

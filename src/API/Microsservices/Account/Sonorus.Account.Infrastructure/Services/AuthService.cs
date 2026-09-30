@@ -20,9 +20,9 @@ public class AuthService(IConfiguration configuration) : IAuthService {
     }
 
     public string GenerateToken(User user) {
-        string issuer = this._configuration["Jwt:Issuer"]!;
-        string audience = this._configuration["Jwt:Audience"]!;
-        string key = this._configuration["Jwt:Secret"]!;
+        string issuer = _configuration["Jwt:Issuer"]!;
+        string audience = _configuration["Jwt:Audience"]!;
+        string key = _configuration["Jwt:Secret"]!;
 
         SymmetricSecurityKey securityKey = new(Encoding.UTF8.GetBytes(key));
         JwtSecurityTokenHandler tokenHandler = new();
@@ -50,7 +50,7 @@ public class AuthService(IConfiguration configuration) : IAuthService {
             Expires = DateTime.UtcNow.AddHours(1),
             Subject = new ClaimsIdentity(claims),
             SigningCredentials = new(
-                key: new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this._configuration["Jwt:Secret"]!)),
+                key: new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Secret"]!)),
                 algorithm: SecurityAlgorithms.HmacSha256Signature
             )
         };

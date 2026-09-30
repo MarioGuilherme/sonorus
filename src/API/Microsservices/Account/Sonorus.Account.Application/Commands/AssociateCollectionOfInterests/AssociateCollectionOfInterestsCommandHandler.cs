@@ -13,35 +13,35 @@ public class AssociateCollectionOfInterestsCommandHandler(IMapper mapper, ICache
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     public async Task<Unit> Handle(AssociateCollectionOfInterestsCommand request, CancellationToken cancellationToken) {
-        User user = await this._unitOfWork.Users.GetByIdTrackingAsync(request.UserId) ?? throw new AuthenticatedUserNoLongerExistException();
-        IEnumerable<Interest> interests = this._mapper.Map<IEnumerable<Interest>>(request.Interests);
+        User user = await _unitOfWork.Users.GetByIdTrackingAsync(request.UserId) ?? throw new AuthenticatedUserNoLongerExistException();
+        IEnumerable<Interest> interests = _mapper.Map<IEnumerable<Interest>>(request.Interests);
 
         user.Interests.Clear();
         foreach (Interest interest in interests) {
-            Interest? interestDb = await this._unitOfWork.Interests.GetByIdTrackingAsync(interest.InterestId);
+            Interest? interestDb = await _unitOfWork.Interests.GetByIdTrackingAsync(interest.InterestId);
 
             if (interestDb is not null) {
                 user.Interests.Add(interestDb);
                 continue;
             }
 
-            interestDb = await this._unitOfWork.Interests.GetByKeyTrackingAsync(interest.Key);
+            interestDb = await _unitOfWork.Interests.GetByKeyTrackingAsync(interest.Key);
 
             if (interestDb is not null) {
                 user.Interests.Add(interestDb);
                 continue;
             }
 
-            await this._unitOfWork.Interests.AddAsync(interest);
-            await this._unitOfWork.CompleteAsync();
+            await _unitOfWork.Interests.AddAsync(interest);
+            await _unitOfWork.CompleteAsync();
             user.Interests.Add(interest);
         }
 
-        await this._unitOfWork.BeginTransactionAsync();
-        await this._unitOfWork.CompleteAsync();
-        await this._unitOfWork.CommitAsync();
+        await _unitOfWork.BeginTransactionAsync();
+        await _unitOfWork.CompleteAsync();
+        await _unitOfWork.CommitAsync();
 
-        this._cacheService.SetInterests(await this._unitOfWork.Interests.GetAllAsync());
+        _cacheService.SetInterests(await _unitOfWork.Interests.GetAllAsync());
 
         return Unit.Value;
     }

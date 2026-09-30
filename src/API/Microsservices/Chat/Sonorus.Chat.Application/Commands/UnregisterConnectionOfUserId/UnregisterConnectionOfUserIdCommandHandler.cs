@@ -8,11 +8,11 @@ public class UnregisterConnectionOfUserIdCommandHandler(IConnectionRepository co
     private readonly IConnectionRepository _connectionRepository = connectionRepository;
 
     public async Task<Unit> Handle(UnregisterConnectionOfUserIdCommand request, CancellationToken cancellationToken) {
-        Connection? connection = await this._connectionRepository.GetByUserIdAsync(request.UserId);
+        Connection? connection = await _connectionRepository.GetByUserIdAsync(request.UserId);
 
         if (connection is null) return Unit.Value;
 
-        await this._connectionRepository.DeleteAsync(connection);
+        await _connectionRepository.DeleteAsync(connection);
 
         return Unit.Value;
     }

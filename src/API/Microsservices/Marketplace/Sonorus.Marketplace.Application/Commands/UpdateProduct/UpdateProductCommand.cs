@@ -8,13 +8,13 @@ public class UpdateProductCommand : UpdateProductInputModel, IRequest<ProductVie
     public long ProductId { get; private set; }
 
     public UpdateProductCommand(long userId, long productId, UpdateProductInputModel inputModel) {
-        this.UserId = userId;
-        this.ProductId = productId;
-        this.Name = inputModel.Name;
-        this.Description = inputModel.Description;
-        this.Price = inputModel.Price;
-        this.Condition = inputModel.Condition;
-        this.NewMedias = inputModel.NewMedias;
-        this.MediasToRemove = inputModel.MediasToRemove;
+        UserId = userId;
+        ProductId = productId;
+        Name = inputModel.Name;
+        Description = inputModel.Description;
+        Price = inputModel.Price;
+        Condition = inputModel.Condition;
+        NewMedias = inputModel.NewMedias;
+        MediasToRemove = inputModel.MediasToRemove;
     }
 }

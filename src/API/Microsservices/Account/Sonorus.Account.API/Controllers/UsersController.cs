@@ -28,9 +28,9 @@ public class UsersController(IMediator mediator) : ControllerBase {
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetAuthenticatedUser() {
-        GetAuthenticatedUserQuery getAuthenticatedUserQuery = new(this.User.UserId());
-        AuthenticatedUserViewModel authenticatedUser = await this._mediator.Send(getAuthenticatedUserQuery);
-        return this.Ok(authenticatedUser);
+        GetAuthenticatedUserQuery getAuthenticatedUserQuery = new(User.UserId());
+        AuthenticatedUserViewModel authenticatedUser = await _mediator.Send(getAuthenticatedUserQuery);
+        return Ok(authenticatedUser);
     }
 
     [HttpPatch("me/picture")]
@@ -38,9 +38,9 @@ public class UsersController(IMediator mediator) : ControllerBase {
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> UpdatePicture(IFormFile file) {
-        UpdatePictureCommand updatePictureCommand = new(this.User.UserId(), file);
-        string uri = await this._mediator.Send(updatePictureCommand);
-        return this.Created(uri, default);
+        UpdatePictureCommand updatePictureCommand = new(User.UserId(), file);
+        string uri = await _mediator.Send(updatePictureCommand);
+        return Created(uri, default);
     }
 
     [HttpPatch("me")]
@@ -50,9 +50,9 @@ public class UsersController(IMediator mediator) : ControllerBase {
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> Update(UpdateUserInputModel inputModel) {
-        UpdateUserCommand updateUserCommand = new(this.User.UserId(), inputModel);
-        await this._mediator.Send(updateUserCommand);
-        return this.NoContent();
+        UpdateUserCommand updateUserCommand = new(User.UserId(), inputModel);
+        await _mediator.Send(updateUserCommand);
+        return NoContent();
     }
 
     [HttpDelete("me/interests/{interestId}")]
@@ -61,9 +61,9 @@ public class UsersController(IMediator mediator) : ControllerBase {
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> DisassociateInterest(long interestId) {
-        DisassociateInterestCommand disassociateInterestCommand = new(this.User.UserId(), interestId);
-        await this._mediator.Send(disassociateInterestCommand);
-        return this.NoContent();
+        DisassociateInterestCommand disassociateInterestCommand = new(User.UserId(), interestId);
+        await _mediator.Send(disassociateInterestCommand);
+        return NoContent();
     }
 
     [HttpPost("me/interests/{interestId}")]
@@ -72,9 +72,9 @@ public class UsersController(IMediator mediator) : ControllerBase {
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> AssociateInterest(long interestId) {
-        AssociateInterestCommand associateInterestCommand = new(this.User.UserId(), interestId);
-        await this._mediator.Send(associateInterestCommand);
-        return this.NoContent();
+        AssociateInterestCommand associateInterestCommand = new(User.UserId(), interestId);
+        await _mediator.Send(associateInterestCommand);
+        return NoContent();
     }
 
     [HttpPost("me/interests")]
@@ -83,9 +83,9 @@ public class UsersController(IMediator mediator) : ControllerBase {
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> AssociateCollectionOfInterests(AssociateCollectionOfInterestsInputModel inputModel) {
-        AssociateCollectionOfInterestsCommand associateInterests = new(this.User.UserId(), inputModel);
-        await this._mediator.Send(associateInterests);
-        return this.NoContent();
+        AssociateCollectionOfInterestsCommand associateInterests = new(User.UserId(), inputModel);
+        await _mediator.Send(associateInterests);
+        return NoContent();
     }
 
     [HttpDelete("me")]
@@ -93,9 +93,9 @@ public class UsersController(IMediator mediator) : ControllerBase {
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> DeleteMyAccount() {
-        DeleteUserByIdCommand deleteUserByIdCommand = new(this.User.UserId());
-        await this._mediator.Send(deleteUserByIdCommand);
-        return this.Accepted();
+        DeleteUserByIdCommand deleteUserByIdCommand = new(User.UserId());
+        await _mediator.Send(deleteUserByIdCommand);
+        return Accepted();
     }
 
     [HttpGet("me/interests")]
@@ -104,9 +104,9 @@ public class UsersController(IMediator mediator) : ControllerBase {
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> GetMyInterests() {
-        GetAllInterestsFromUserQuery getAllInterestsFromUserQuery = new(this.User.UserId());
-        IEnumerable<InterestViewModel> interests = await this._mediator.Send(getAllInterestsFromUserQuery);
-        return this.Ok(interests);
+        GetAllInterestsFromUserQuery getAllInterestsFromUserQuery = new(User.UserId());
+        IEnumerable<InterestViewModel> interests = await _mediator.Send(getAllInterestsFromUserQuery);
+        return Ok(interests);
     }
 
     [HttpPatch("me/password")]
@@ -115,9 +115,9 @@ public class UsersController(IMediator mediator) : ControllerBase {
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> UpdatePassword(UpdatePasswordInputModel inputModel) {
-        UpdatePasswordCommand updatePasswordCommand = new(this.User.UserId(), inputModel.Password);
-        await this._mediator.Send(updatePasswordCommand);
-        return this.NoContent();
+        UpdatePasswordCommand updatePasswordCommand = new(User.UserId(), inputModel.Password);
+        await _mediator.Send(updatePasswordCommand);
+        return NoContent();
     }
 
     [AllowAnonymous]
@@ -127,7 +127,7 @@ public class UsersController(IMediator mediator) : ControllerBase {
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> GetByIds([FromQuery(Name = "id")] IEnumerable<long> userIds) {
         GetUsersByIdQuery getUsersByIdQuery = new(userIds);
-        IEnumerable<UserViewModel> users = await this._mediator.Send(getUsersByIdQuery);
-        return this.Ok(users);
+        IEnumerable<UserViewModel> users = await _mediator.Send(getUsersByIdQuery);
+        return Ok(users);
     }
 }

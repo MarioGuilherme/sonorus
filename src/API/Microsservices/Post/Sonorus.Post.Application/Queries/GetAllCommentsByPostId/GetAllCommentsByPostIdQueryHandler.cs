@@ -14,11 +14,11 @@ public class GetAllCommentsByPostIdQueryHandler(IUnitOfWork unitOfWork, IHttpCli
     private readonly IMapper _mapper = mapper;
 
     public async Task<IEnumerable<CommentViewModel>> Handle(GetAllCommentsByPostIdQuery request, CancellationToken cancellationToken) {
-        IEnumerable<Comment> comments = await this._unitOfWork.Posts.GetAllCommentsByPostIdAsync(request.PostId) ?? throw new PostNotFoundException();
+        IEnumerable<Comment> comments = await _unitOfWork.Posts.GetAllCommentsByPostIdAsync(request.PostId) ?? throw new PostNotFoundException();
         if (!comments.Any()) return [];
 
         IEnumerable<long> userIds = comments.Select(comment => comment.UserId).Distinct();
-        using HttpClient userMShttpClient = this._httpClientFactory.CreateClient("API_GATEWAY");
+        using HttpClient userMShttpClient = _httpClientFactory.CreateClient("API_GATEWAY");
         IEnumerable<UserViewModel>? users = await userMShttpClient.GetFromJsonAsync<IEnumerable<UserViewModel>>(
             $"users?{string.Join('&', userIds.Select(userId => $"id={userId}"))}",
             cancellationToken: cancellationToken

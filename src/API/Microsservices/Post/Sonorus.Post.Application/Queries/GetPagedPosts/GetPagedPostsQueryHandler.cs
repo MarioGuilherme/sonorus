@@ -14,11 +14,11 @@ public class GetPagedPostsQueryHandler(IUnitOfWork unitOfWork, IHttpClientFactor
     private readonly IMapper _mapper = mapper;
 
     public async Task<IEnumerable<PostViewModel>> Handle(GetPagedPostsQuery request, CancellationToken cancellationToken) {
-        using HttpClient userMShttpClient = this._httpClientFactory.CreateClient("API_GATEWAY");
+        using HttpClient userMShttpClient = _httpClientFactory.CreateClient("API_GATEWAY");
         userMShttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", request.AccessToken);
 
         if (!request.ContentByPreference) {
-            List<Core.Entities.Post> posts = await this._unitOfWork.Posts.GetPagedPostsAsync(request.Offset, request.Limit);
+            List<Core.Entities.Post> posts = await _unitOfWork.Posts.GetPagedPostsAsync(request.Offset, request.Limit);
 
             if (posts.Count == 0) return [];
 
@@ -44,7 +44,7 @@ public class GetPagedPostsQueryHandler(IUnitOfWork unitOfWork, IHttpClientFactor
                     post.PostLikers.Count,
                     post.Comments.Count,
                     post.Tablature,
-                    post.Medias.Select(this._mapper.Map<MediaViewModel>)
+                    post.Medias.Select(_mapper.Map<MediaViewModel>)
                 ) {
                     Author = author,
                     IsLikedByMe = post.PostLikers.Any(post => post.UserId == request.UserId)
@@ -61,7 +61,7 @@ public class GetPagedPostsQueryHandler(IUnitOfWork unitOfWork, IHttpClientFactor
             return mappedPosts;
         } else {
             List<InterestViewModel>? myInterests = await userMShttpClient.GetFromJsonAsync<List<InterestViewModel>>("users/me/interests", cancellationToken: cancellationToken);
-            List<Core.Entities.Post> posts = await this._unitOfWork.Posts.GetPagedPostsAsync(request.Offset, request.Limit, myInterests!.Select(interest => interest.InterestId));
+            List<Core.Entities.Post> posts = await _unitOfWork.Posts.GetPagedPostsAsync(request.Offset, request.Limit, myInterests!.Select(interest => interest.InterestId));
 
             if (posts.Count == 0) return [];
 
@@ -87,7 +87,7 @@ public class GetPagedPostsQueryHandler(IUnitOfWork unitOfWork, IHttpClientFactor
                     post.PostLikers.Count,
                     post.Comments.Count,
                     post.Tablature,
-                    this._mapper.Map<IEnumerable<MediaViewModel>>(post.Medias)
+                    _mapper.Map<IEnumerable<MediaViewModel>>(post.Medias)
                 ) {
                     Author = author,
                     IsLikedByMe = post.PostLikers.Any(post => post.UserId == request.UserId)

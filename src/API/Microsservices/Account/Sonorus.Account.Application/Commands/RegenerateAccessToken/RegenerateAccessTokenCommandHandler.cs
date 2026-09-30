@@ -12,20 +12,20 @@ public class RegenerateAccessTokenCommandHandler(IAuthService authService, IUnit
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     public async Task<TokenViewModel> Handle(RegenerateAccessTokenCommand request, CancellationToken cancellationToken) {
-        string? savedRefreshToken = await this._unitOfWork.RefreshTokens.GetByUserIdAsync(request.UserId);
+        string? savedRefreshToken = await _unitOfWork.RefreshTokens.GetByUserIdAsync(request.UserId);
 
         if (savedRefreshToken != request.RefreshToken) throw new RefreshTokenNotFoundByUserException();
 
-        User? user = (await this._unitOfWork.Users.GetByIdAsync(request.UserId))!;
+        User? user = (await _unitOfWork.Users.GetByIdAsync(request.UserId))!;
 
-        string newJwtToken = this._authService.GenerateToken(user);
-        string newRefreshToken = this._authService.GenerateRefreshToken();
+        string newJwtToken = _authService.GenerateToken(user);
+        string newRefreshToken = _authService.GenerateRefreshToken();
 
-        await this._unitOfWork.BeginTransactionAsync();
-        await this._unitOfWork.RefreshTokens.DeleteAsync(new(user.UserId, request.RefreshToken));
-        await this._unitOfWork.RefreshTokens.SaveAsync(new(user.UserId, newRefreshToken));
-        await this._unitOfWork.CompleteAsync();
-        await this._unitOfWork.CommitAsync();
+        await _unitOfWork.BeginTransactionAsync();
+        await _unitOfWork.RefreshTokens.DeleteAsync(new(user.UserId, request.RefreshToken));
+        await _unitOfWork.RefreshTokens.SaveAsync(new(user.UserId, newRefreshToken));
+        await _unitOfWork.CompleteAsync();
+        await _unitOfWork.CommitAsync();
 
         return new(newJwtToken, newRefreshToken);
     }

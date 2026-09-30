@@ -13,9 +13,9 @@ public class Product(long sellerId, string name, string? description, decimal pr
     public ICollection<Media> Medias { get; private set; } = [];
 
     public void Update(string name, decimal price, string? description, ConditionType condition) {
-        this.Name = name;
-        this.Price = price;
-        this.Description = description;
-        this.Condition = condition;
+        Name = name;
+        Price = price;
+        Description = description;
+        Condition = condition;
     }
 }

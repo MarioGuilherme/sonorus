@@ -8,8 +8,8 @@ public class CheckUseOfEmailAndNicknameBehavior(IUnitOfWork unitOfWork) : IPipel
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     public async Task<Unit> Handle(UpdateUserCommand request, RequestHandlerDelegate<Unit> next, CancellationToken cancellationToken) {
-        if (await this._unitOfWork.Users.EmailInUseInAsync(request.Email, request.UserId)) throw new EmailAlreadyInUseException();
-        if (await this._unitOfWork.Users.NicknameIsInUseAsync(request.Nickname, request.UserId)) throw new NicknameAlreadyInUseException();
+        if (await _unitOfWork.Users.EmailInUseInAsync(request.Email, request.UserId)) throw new EmailAlreadyInUseException();
+        if (await _unitOfWork.Users.NicknameIsInUseAsync(request.Nickname, request.UserId)) throw new NicknameAlreadyInUseException();
 
         return await next();
     }

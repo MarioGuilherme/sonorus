@@ -22,8 +22,8 @@ public class ProductsController(IMediator mediator) : ControllerBase {
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> GetAllWithQuery(string? name = default) {
         GetAllProductsByNameQuery getAllProductsByNameQuery = new(name);
-        IEnumerable<ProductViewModel> products = await this._mediator.Send(getAllProductsByNameQuery);
-        return this.Ok(products);
+        IEnumerable<ProductViewModel> products = await _mediator.Send(getAllProductsByNameQuery);
+        return Ok(products);
     }
 
     [HttpPost]
@@ -32,9 +32,9 @@ public class ProductsController(IMediator mediator) : ControllerBase {
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> Create(CreateProductInputModel inputModel) {
-        CreateProductCommand createProductCommand = new(this.User.UserId(), inputModel);
-        ProductViewModel product = await this._mediator.Send(createProductCommand);
-        return this.Created(string.Empty, product);
+        CreateProductCommand createProductCommand = new(User.UserId(), inputModel);
+        ProductViewModel product = await _mediator.Send(createProductCommand);
+        return Created(string.Empty, product);
     }
 
     [HttpPatch("{productId}")]
@@ -44,9 +44,9 @@ public class ProductsController(IMediator mediator) : ControllerBase {
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> Update(long productId, [FromForm] UpdateProductInputModel inputModel) {
-        UpdateProductCommand updateProductCommand = new(this.User.UserId(), productId, inputModel);
-        ProductViewModel product = await this._mediator.Send(updateProductCommand);
-        return this.Ok(product);
+        UpdateProductCommand updateProductCommand = new(User.UserId(), productId, inputModel);
+        ProductViewModel product = await _mediator.Send(updateProductCommand);
+        return Ok(product);
     }
 
     [HttpDelete("{productId}")]
@@ -55,8 +55,8 @@ public class ProductsController(IMediator mediator) : ControllerBase {
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> Delete(long productId) {
-        DeleteProductCommand deleteProductCommand = new(this.User.UserId(), productId);
-        await this._mediator.Send(deleteProductCommand);
-        return this.NoContent();
+        DeleteProductCommand deleteProductCommand = new(User.UserId(), productId);
+        await _mediator.Send(deleteProductCommand);
+        return NoContent();
     }
 }

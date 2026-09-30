@@ -12,7 +12,7 @@ public class Post(long userId, string? content, string? tablature) {
     public ICollection<PostInterest> PostInterests { get; private set; } = [];
 
     public void Update(string? content, string? tablature) {
-        this.Content = content;
-        this.Tablature = tablature;
+        Content = content;
+        Tablature = tablature;
     }
 }

@@ -12,26 +12,26 @@ public class UpdatePostCommandHandler(IUnitOfWork unitOfWork, IFileStorage fileS
     private readonly IFileStorage _fileStorage = fileStorage;
 
     public async Task<Unit> Handle(UpdatePostCommand request, CancellationToken cancellationToken) {
-        Core.Entities.Post postDb = await this._unitOfWork.Posts.GetByIdWithFullDataTrackingAsync(request.PostId) ?? throw new PostNotFoundException();
+        Core.Entities.Post postDb = await _unitOfWork.Posts.GetByIdWithFullDataTrackingAsync(request.PostId) ?? throw new PostNotFoundException();
 
         foreach (IFormFile file in request.NewMedias) {
             string mediaName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
-            await this._fileStorage.UploadOrUpdateFileAsync(mediaName, file.OpenReadStream());
+            await _fileStorage.UploadOrUpdateFileAsync(mediaName, file.OpenReadStream());
             postDb.Medias.Add(new(mediaName));
         }
 
         IEnumerable<Media> mediasToRemove = postDb.Medias.Where(media => request.MediasToRemove.Contains(media.MediaId));
-        foreach (Media media in mediasToRemove) await this._fileStorage.DeleteFileAsync(Path.GetFileName(media.Path));
+        foreach (Media media in mediasToRemove) await _fileStorage.DeleteFileAsync(Path.GetFileName(media.Path));
 
         postDb.PostInterests.Clear();
         foreach (long interestId in request.InterestsIds) postDb.PostInterests.Add(new(interestId));
 
         postDb.Update(request.Content, request.Tablature);
-        this._unitOfWork.Posts.UpdatePost(postDb, mediasToRemove);
+        _unitOfWork.Posts.UpdatePost(postDb, mediasToRemove);
 
-        await this._unitOfWork.BeginTransactionAsync();
-        await this._unitOfWork.CompleteAsync();
-        await this._unitOfWork.CommitAsync();
+        await _unitOfWork.BeginTransactionAsync();
+        await _unitOfWork.CompleteAsync();
+        await _unitOfWork.CommitAsync();
 
         return Unit.Value;
     }

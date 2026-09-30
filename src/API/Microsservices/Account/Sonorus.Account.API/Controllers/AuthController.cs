@@ -22,8 +22,8 @@ public class AuthController(IMediator mediator) : ControllerBase {
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Login(GetUserByLoginQuery query) {
-        TokenViewModel tokenViewModel = await this._mediator.Send(query);
-        return this.Ok(tokenViewModel);
+        TokenViewModel tokenViewModel = await _mediator.Send(query);
+        return Ok(tokenViewModel);
     }
 
     [AllowAnonymous]
@@ -34,8 +34,8 @@ public class AuthController(IMediator mediator) : ControllerBase {
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Create(CreateUserCommand command) {
-        TokenViewModel tokenViewModel = await this._mediator.Send(command);
-        return this.Ok(tokenViewModel);
+        TokenViewModel tokenViewModel = await _mediator.Send(command);
+        return Ok(tokenViewModel);
     }
 
     [Authorize]
@@ -45,8 +45,8 @@ public class AuthController(IMediator mediator) : ControllerBase {
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> RefreshToken(RefreshTokenInputModel inputModel) {
-        RegenerateAccessTokenCommand recreateAccessAndRefreshTokenCommand = new(this.User.UserId(), inputModel.RefreshToken);
-        TokenViewModel tokenViewModel = await this._mediator.Send(recreateAccessAndRefreshTokenCommand);
-        return this.Ok(tokenViewModel);
+        RegenerateAccessTokenCommand recreateAccessAndRefreshTokenCommand = new(User.UserId(), inputModel.RefreshToken);
+        TokenViewModel tokenViewModel = await _mediator.Send(recreateAccessAndRefreshTokenCommand);
+        return Ok(tokenViewModel);
     }
 }

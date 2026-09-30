@@ -11,18 +11,18 @@ public class DeletePostByIdCommandHandler(IUnitOfWork unitOfWork, IFileStorage f
     private readonly IFileStorage _fileStorage = fileStorage;
 
     public async Task<Unit> Handle(DeletePostByIdCommand request, CancellationToken cancellationToken) {
-        Core.Entities.Post post = await this._unitOfWork.Posts.GetByIdWithFullDataTrackingAsync(request.PostId) ?? throw new PostNotFoundException();
+        Core.Entities.Post post = await _unitOfWork.Posts.GetByIdWithFullDataTrackingAsync(request.PostId) ?? throw new PostNotFoundException();
 
         if (post.UserId != request.UserId) throw new AuthenticatedUserAreNotOwnerOfPostException();
 
-        await this._unitOfWork.BeginTransactionAsync();
+        await _unitOfWork.BeginTransactionAsync();
 
-        this._unitOfWork.Posts.Delete(post);
+        _unitOfWork.Posts.Delete(post);
         foreach (Media item in post.Medias)
-            await this._fileStorage.DeleteFileAsync(Path.GetFileName(item.Path));
+            await _fileStorage.DeleteFileAsync(Path.GetFileName(item.Path));
 
-        await this._unitOfWork.CompleteAsync();
-        await this._unitOfWork.CommitAsync();
+        await _unitOfWork.CompleteAsync();
+        await _unitOfWork.CommitAsync();
 
         return Unit.Value;
     }

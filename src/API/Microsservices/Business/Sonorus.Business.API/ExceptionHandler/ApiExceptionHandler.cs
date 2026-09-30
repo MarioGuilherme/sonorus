@@ -13,7 +13,7 @@ public class ApiExceptionHandler(ILogger<ApiExceptionHandler> logger) : IExcepti
             _ => StatusCodes.Status500InternalServerError
         };
 
-        this._logger.LogError("{Message}", exception.Message);
+        _logger.LogError("{Message}", exception.Message);
 
         return ValueTask.FromResult(true);
     }

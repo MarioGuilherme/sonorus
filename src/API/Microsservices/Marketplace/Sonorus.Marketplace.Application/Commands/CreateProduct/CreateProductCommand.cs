@@ -7,11 +7,11 @@ public class CreateProductCommand : CreateProductInputModel, IRequest<ProductVie
     public long UserId { get; private set; }
 
     public CreateProductCommand(long userId, CreateProductInputModel inputModel) {
-        this.UserId = userId;
-        this.Name = inputModel.Name;
-        this.Description = inputModel.Description;
-        this.Price = inputModel.Price;
-        this.Condition = inputModel.Condition;
-        this.Medias = inputModel.Medias;
+        UserId = userId;
+        Name = inputModel.Name;
+        Description = inputModel.Description;
+        Price = inputModel.Price;
+        Condition = inputModel.Condition;
+        Medias = inputModel.Medias;
     }
 }

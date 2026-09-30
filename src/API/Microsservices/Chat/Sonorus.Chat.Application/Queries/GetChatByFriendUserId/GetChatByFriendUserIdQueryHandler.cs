@@ -12,9 +12,9 @@ public class GetChatByFriendUserIdQueryHandler(IChatRepository chatRepository, I
     private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
 
     public async Task<ChatViewModel> Handle(GetChatByFriendUserIdQuery request, CancellationToken cancellationToken) {
-        Core.Entities.Chat chatDb = await this._chatRepository.GetByFriendIdAsync(request.UserId, request.FriendId) ?? throw new ChatNotFoundException();
+        Core.Entities.Chat chatDb = await _chatRepository.GetByFriendIdAsync(request.UserId, request.FriendId) ?? throw new ChatNotFoundException();
 
-        using HttpClient userMShttpClient = this._httpClientFactory.CreateClient("API_GATEWAY");
+        using HttpClient userMShttpClient = _httpClientFactory.CreateClient("API_GATEWAY");
         IEnumerable<UserViewModel>? users = await userMShttpClient.GetFromJsonAsync<IEnumerable<UserViewModel>>($"users?{string.Join('&', chatDb.Participants.Select(userId => $"id={userId}"))}", cancellationToken: cancellationToken);
 
         ICollection<MessageViewModel> mappedMessages = [];

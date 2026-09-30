@@ -16,7 +16,7 @@ public class InterestsController(IMediator mediator) : ControllerBase {
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetAll() {
         GetAllInterestsQuery query = new();
-        IEnumerable<InterestViewModel> interests = await this._mediator.Send(query);
-        return this.Ok(interests);
+        IEnumerable<InterestViewModel> interests = await _mediator.Send(query);
+        return Ok(interests);
     }
 }

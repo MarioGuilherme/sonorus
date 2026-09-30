@@ -9,13 +9,13 @@ public class UpdateUserCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     public async Task<Unit> Handle(UpdateUserCommand request, CancellationToken cancellationToken) {
-        User user = await this._unitOfWork.Users.GetByIdTrackingAsync(request.UserId) ?? throw new AuthenticatedUserNoLongerExistException();
+        User user = await _unitOfWork.Users.GetByIdTrackingAsync(request.UserId) ?? throw new AuthenticatedUserNoLongerExistException();
 
         user.UpdateData(request.Fullname, request.Nickname, request.Email);
 
-        await this._unitOfWork.BeginTransactionAsync();
-        await this._unitOfWork.CompleteAsync();
-        await this._unitOfWork.CommitAsync();
+        await _unitOfWork.BeginTransactionAsync();
+        await _unitOfWork.CompleteAsync();
+        await _unitOfWork.CommitAsync();
 
         return Unit.Value;
     }

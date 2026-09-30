@@ -6,10 +6,10 @@ namespace Sonorus.Account.Infrastructure.Services;
 public class AzureStorageService(string connectionString, string containerName) : IFileStorage {
     private readonly BlobContainerClient _blobContainerClient = new(connectionString, containerName);
 
-    public async Task DeleteFileAsync(string fileName) => await this._blobContainerClient.DeleteBlobIfExistsAsync(fileName);
+    public async Task DeleteFileAsync(string fileName) => await _blobContainerClient.DeleteBlobIfExistsAsync(fileName);
 
     public async Task UploadOrUpdateFileAsync(string fileName, Stream stream) {
-        BlobClient blobClient = this._blobContainerClient.GetBlobClient(fileName);
+        BlobClient blobClient = _blobContainerClient.GetBlobClient(fileName);
         await blobClient.UploadAsync(stream, overwrite: true);
     }
 }

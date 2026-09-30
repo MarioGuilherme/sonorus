@@ -9,26 +9,26 @@ public class UnitOfWork(SonorusBusinessDbContext dbContext, IOpportunityReposito
 
     public IOpportunityRepository Opportunities => opportunities;
 
-    public Task<int> CompleteAsync() => this._dbContext.SaveChangesAsync();
+    public Task<int> CompleteAsync() => _dbContext.SaveChangesAsync();
 
-    public async Task BeginTransactionAsync() => this._transaction = await this._dbContext.Database.BeginTransactionAsync();
+    public async Task BeginTransactionAsync() => _transaction = await _dbContext.Database.BeginTransactionAsync();
 
     public async Task CommitAsync() {
         try {
-            await this._transaction!.CommitAsync();
+            await _transaction!.CommitAsync();
         } catch (Exception) {
-            await this._transaction!.RollbackAsync();
+            await _transaction!.RollbackAsync();
             throw;
         }
     }
 
     public void Dispose() {
-        this.Dispose(true);
+        Dispose(true);
         GC.SuppressFinalize(this);
     }
 
     protected virtual void Dispose(bool disposing) {
         if (disposing)
-            this._dbContext.Dispose();
+            _dbContext.Dispose();
     }
 }

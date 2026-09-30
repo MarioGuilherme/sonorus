@@ -5,9 +5,9 @@ namespace Sonorus.Account.Application.Validators;
 
 public class UpdatePasswordInputModelValidator : AbstractValidator<UpdatePasswordInputModel> {
     public UpdatePasswordInputModelValidator() {
-        this.RuleLevelCascadeMode = CascadeMode.Stop;
+        RuleLevelCascadeMode = CascadeMode.Stop;
 
-        this.RuleFor(user => user.Password)
+        RuleFor(user => user.Password)
             .NotNull().WithMessage("A senha precisa ser informada!")
             .MinimumLength(6).WithMessage("A senha precisa ter no mínimo 6 caracteres!");
     }

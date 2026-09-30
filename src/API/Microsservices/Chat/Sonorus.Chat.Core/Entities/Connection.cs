@@ -5,5 +5,5 @@ public class Connection(Guid id, string connectionId, long userId) {
     public string ConnectionId { get; private set; } = connectionId;
     public long UserId { get; private set; } = userId;
 
-    public void UpdateConnectionId(string connectionId) => this.ConnectionId = connectionId;
+    public void UpdateConnectionId(string connectionId) => ConnectionId = connectionId;
 }

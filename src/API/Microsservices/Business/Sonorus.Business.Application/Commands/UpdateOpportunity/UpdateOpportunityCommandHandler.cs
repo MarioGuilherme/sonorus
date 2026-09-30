@@ -14,7 +14,7 @@ public class UpdateOpportunityCommandHandler(IUnitOfWork unitOfWork, IHttpClient
     private readonly IMapper _mapper = mapper;
 
     public async Task<OpportunityViewModel> Handle(UpdateOpportunityCommand request, CancellationToken cancellationToken) {
-        Opportunity opportunityDb = await this._unitOfWork.Opportunities.GetByIdTrackingAsync(request.OpportunityId) ?? throw new OpportunityNotFoundException();
+        Opportunity opportunityDb = await _unitOfWork.Opportunities.GetByIdTrackingAsync(request.OpportunityId) ?? throw new OpportunityNotFoundException();
         
         if (opportunityDb.RecruiterId != request.UserId) throw new AuthenticatedUserAreNotOwnerOfOpportunityException();
 
@@ -28,14 +28,14 @@ public class UpdateOpportunityCommandHandler(IUnitOfWork unitOfWork, IHttpClient
             request.WorkTimeUnit
         );
 
-        await this._unitOfWork.BeginTransactionAsync();
-        await this._unitOfWork.CompleteAsync();
-        await this._unitOfWork.CommitAsync();
+        await _unitOfWork.BeginTransactionAsync();
+        await _unitOfWork.CompleteAsync();
+        await _unitOfWork.CommitAsync();
 
-        using HttpClient userMShttpClient = this._httpClientFactory.CreateClient("API_GATEWAY");
+        using HttpClient userMShttpClient = _httpClientFactory.CreateClient("API_GATEWAY");
         IEnumerable<UserViewModel>? users = await userMShttpClient.GetFromJsonAsync<IEnumerable<UserViewModel>>($"users?id={request.UserId}", cancellationToken: cancellationToken);
 
-        OpportunityViewModel opportunityViewModel = this._mapper.Map<OpportunityViewModel>(opportunityDb);
+        OpportunityViewModel opportunityViewModel = _mapper.Map<OpportunityViewModel>(opportunityDb);
         opportunityViewModel.Recruiter = users!.First();
 
         return opportunityViewModel;

@@ -20,21 +20,21 @@ public class CreateProductCommandHandler(IUnitOfWork unitOfWork, IFileStorage fi
 
         foreach (IFormFile file in request.Medias) {
             string mediaName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
-            await this._fileStorage.UploadOrUpdateFileAsync(mediaName, file.OpenReadStream());
+            await _fileStorage.UploadOrUpdateFileAsync(mediaName, file.OpenReadStream());
             product.Medias.Add(new(mediaName));
         }
-        await this._unitOfWork.Products.CreateProductAsync(product);
+        await _unitOfWork.Products.CreateProductAsync(product);
 
-        await this._unitOfWork.BeginTransactionAsync();
-        await this._unitOfWork.CompleteAsync();
-        await this._unitOfWork.CommitAsync();
+        await _unitOfWork.BeginTransactionAsync();
+        await _unitOfWork.CompleteAsync();
+        await _unitOfWork.CommitAsync();
 
-        using HttpClient userMShttpClient = this._httpClientFactory.CreateClient("API_GATEWAY");
+        using HttpClient userMShttpClient = _httpClientFactory.CreateClient("API_GATEWAY");
         IEnumerable<UserViewModel>? users = await userMShttpClient.GetFromJsonAsync<IEnumerable<UserViewModel>>(
             $"users?id={request.UserId}",
             cancellationToken: cancellationToken
         );
-        ProductViewModel productViewModel = this._mapper.Map<ProductViewModel>(product);
+        ProductViewModel productViewModel = _mapper.Map<ProductViewModel>(product);
         productViewModel.Seller = users!.First();
 
         return productViewModel;

@@ -12,7 +12,7 @@ public class GetAuthenticatedUserQueryHandler(IUnitOfWork unitOfWork, IMapper ma
     private readonly IMapper _mapper = mapper;
 
     public async Task<AuthenticatedUserViewModel> Handle(GetAuthenticatedUserQuery request, CancellationToken cancellationToken) {
-        User user = await this._unitOfWork.Users.GetByIdAsync(request.UserId) ?? throw new AuthenticatedUserNoLongerExistException();
-        return this._mapper.Map<AuthenticatedUserViewModel>(user);
+        User user = await _unitOfWork.Users.GetByIdAsync(request.UserId) ?? throw new AuthenticatedUserNoLongerExistException();
+        return _mapper.Map<AuthenticatedUserViewModel>(user);
     }
 }

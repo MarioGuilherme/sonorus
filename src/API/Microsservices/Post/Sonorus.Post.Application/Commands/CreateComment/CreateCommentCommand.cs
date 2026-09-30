@@ -8,8 +8,8 @@ public class CreateCommentCommand : CreateCommentInputModel, IRequest<CommentVie
     public long PostId { get; private set; }
 
     public CreateCommentCommand(long userId, long postId, CreateCommentInputModel inputModel) {
-        this.UserId = userId;
-        this.PostId = postId;
-        this.Content = inputModel.Content;
+        UserId = userId;
+        PostId = postId;
+        Content = inputModel.Content;
     }
 }

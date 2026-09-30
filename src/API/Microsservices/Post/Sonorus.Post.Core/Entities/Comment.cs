@@ -8,5 +8,5 @@ public class Comment(long userId, string content) {
     public DateTime CommentedAt { get; private set; }
     public ICollection<CommentLiker> CommentLikers { get; private set; } = [];
 
-    public void UpdateContent(string content) => this.Content = content;
+    public void UpdateContent(string content) => Content = content;
 }

@@ -11,7 +11,7 @@ public class GetAllInterestsQueryHandler(IMapper mapper, ICacheService cacheServ
     private readonly IMapper _mapper = mapper;
 
     public async Task<IEnumerable<InterestViewModel>> Handle(GetAllInterestsQuery request, CancellationToken cancellationToken) {
-        IEnumerable<Interest> interests = await this._cacheService.GetInterestsAsync();
-        return this._mapper.Map<IEnumerable<InterestViewModel>>(interests);
+        IEnumerable<Interest> interests = await _cacheService.GetInterestsAsync();
+        return _mapper.Map<IEnumerable<InterestViewModel>>(interests);
     }
 }

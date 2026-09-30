@@ -9,11 +9,11 @@ public class MemoryCacheService(IUnitOfWork unitOfWork, IMemoryCache memoryCache
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IMemoryCache _memoryCache = memoryCache;
 
-    public void SetInterests(IEnumerable<Interest> interests) => this._memoryCache.Set("INTERESTS", interests);
+    public void SetInterests(IEnumerable<Interest> interests) => _memoryCache.Set("INTERESTS", interests);
 
-    public Task<List<Interest>> GetInterestsAsync() => this._memoryCache.GetOrCreateAsync("INTERESTS", async entry => {
+    public Task<List<Interest>> GetInterestsAsync() => _memoryCache.GetOrCreateAsync("INTERESTS", async entry => {
         entry.SetPriority(CacheItemPriority.Normal);
         entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1);
-        return await this._unitOfWork.Interests.GetAllAsync();
+        return await _unitOfWork.Interests.GetAllAsync();
     })!;
 }

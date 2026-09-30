@@ -5,11 +5,11 @@ public class Media(string path) {
     public long ProductId { get; private set; }
     public Product Product { get; private set; } = null!;
     public string Path {
-        get => $"{Environment.GetEnvironmentVariable("BlobStorageURL")}/{this._path}";
-        private set => this._path = value;
+        get => $"{Environment.GetEnvironmentVariable("BlobStorageURL")}/{_path}";
+        private set => _path = value;
     }
     private string _path = path;
 
-    public override bool Equals(object? obj) => obj is Media media && this.MediaId == media.MediaId && this.ProductId == media.ProductId;
-    public override int GetHashCode() => HashCode.Combine(this.MediaId, this.ProductId);
+    public override bool Equals(object? obj) => obj is Media media && MediaId == media.MediaId && ProductId == media.ProductId;
+    public override int GetHashCode() => HashCode.Combine(MediaId, ProductId);
 }

@@ -11,7 +11,7 @@ public class GetUsersByIdQueryHandler(IUnitOfWork unitOfWork, IMapper mapper) : 
     private readonly IMapper _mapper = mapper;
 
     public async Task<IEnumerable<UserViewModel>> Handle(GetUsersByIdQuery request, CancellationToken cancellationToken) {
-        IEnumerable<User> users = await this._unitOfWork.Users.GetUsersByIdsAsync(request.UserIds);
-        return this._mapper.Map<IEnumerable<UserViewModel>>(users);
+        IEnumerable<User> users = await _unitOfWork.Users.GetUsersByIdsAsync(request.UserIds);
+        return _mapper.Map<IEnumerable<UserViewModel>>(users);
     }
 }

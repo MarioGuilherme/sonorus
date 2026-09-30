@@ -9,7 +9,7 @@ public class ToggleLikePostCommandHandler(IUnitOfWork unitOfWork) : IRequestHand
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     public async Task<long> Handle(ToggleLikePostCommand request, CancellationToken cancellationToken) {
-        Core.Entities.Post post = await this._unitOfWork.Posts.GetByIdWithPostLikersTrackingAsync(request.PostId) ?? throw new PostNotFoundException();
+        Core.Entities.Post post = await _unitOfWork.Posts.GetByIdWithPostLikersTrackingAsync(request.PostId) ?? throw new PostNotFoundException();
         PostLiker? postLiker = post.PostLikers.FirstOrDefault(post => post.UserId == request.UserId);
 
         if (postLiker is null)
@@ -17,9 +17,9 @@ public class ToggleLikePostCommandHandler(IUnitOfWork unitOfWork) : IRequestHand
         else
             post.PostLikers.Remove(postLiker);
 
-        await this._unitOfWork.BeginTransactionAsync();
-        await this._unitOfWork.CompleteAsync();
-        await this._unitOfWork.CommitAsync();
+        await _unitOfWork.BeginTransactionAsync();
+        await _unitOfWork.CompleteAsync();
+        await _unitOfWork.CommitAsync();
 
         return post.PostLikers.Count;
     }

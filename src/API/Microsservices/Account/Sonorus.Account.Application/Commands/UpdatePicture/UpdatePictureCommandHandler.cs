@@ -11,18 +11,18 @@ public class UpdatePictureCommandHandler(IUnitOfWork unitOfWork, IFileStorage fi
     private readonly IFileStorage _fileStorage = fileStorage;
 
     public async Task<string> Handle(UpdatePictureCommand request, CancellationToken cancellationToken) {
-        User user = await this._unitOfWork.Users.GetByIdTrackingAsync(request.UserId) ?? throw new AuthenticatedUserNoLongerExistException();
+        User user = await _unitOfWork.Users.GetByIdTrackingAsync(request.UserId) ?? throw new AuthenticatedUserNoLongerExistException();
 
         if (Path.GetFileName(user.Picture) == "defaultPicture.png") {
             string fileName = $"{Guid.NewGuid()}{Path.GetExtension(request.Picture.FileName)}";
             user.UpdatePicture(fileName);
 
-            await this._unitOfWork.BeginTransactionAsync();
-            await this._unitOfWork.CompleteAsync();
-            await this._unitOfWork.CommitAsync();
+            await _unitOfWork.BeginTransactionAsync();
+            await _unitOfWork.CompleteAsync();
+            await _unitOfWork.CommitAsync();
         }
 
-        await this._fileStorage.UploadOrUpdateFileAsync(Path.GetFileName(user.Picture), request.Picture.OpenReadStream());
+        await _fileStorage.UploadOrUpdateFileAsync(Path.GetFileName(user.Picture), request.Picture.OpenReadStream());
         return user.Picture;
     }
 }

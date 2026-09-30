@@ -22,8 +22,8 @@ public class OpportunitiesController(IMediator mediator) : ControllerBase {
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> GetAllWithQuery(string? name = default) {
         GetAllOpportunitiesByNameQuery getAllOpportunitiesQuery = new(name);
-        IEnumerable<OpportunityViewModel> opportunities = await this._mediator.Send(getAllOpportunitiesQuery);
-        return this.Ok(opportunities);
+        IEnumerable<OpportunityViewModel> opportunities = await _mediator.Send(getAllOpportunitiesQuery);
+        return Ok(opportunities);
     }
 
     [HttpPost]
@@ -32,9 +32,9 @@ public class OpportunitiesController(IMediator mediator) : ControllerBase {
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> Create(CreateOpportunityInputModel inputModel) {
-        CreateOpportunityCommand createOpportunityCommand = new(this.User.UserId(), inputModel);
-        OpportunityViewModel opportunity = await this._mediator.Send(createOpportunityCommand);
-        return this.Created(string.Empty, opportunity);
+        CreateOpportunityCommand createOpportunityCommand = new(User.UserId(), inputModel);
+        OpportunityViewModel opportunity = await _mediator.Send(createOpportunityCommand);
+        return Created(string.Empty, opportunity);
     }
 
     [HttpPatch("{opportunityId}")]
@@ -44,9 +44,9 @@ public class OpportunitiesController(IMediator mediator) : ControllerBase {
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> Update(long opportunityId, UpdateOpportunityInputModel inputModel) {
-        UpdateOpportunityCommand updateOpportunityCommand = new(this.User.UserId(), opportunityId, inputModel);
-        OpportunityViewModel opportunity =  await this._mediator.Send(updateOpportunityCommand);
-        return this.Ok(opportunity);
+        UpdateOpportunityCommand updateOpportunityCommand = new(User.UserId(), opportunityId, inputModel);
+        OpportunityViewModel opportunity =  await _mediator.Send(updateOpportunityCommand);
+        return Ok(opportunity);
     }
 
     [HttpDelete("{opportunityId}")]
@@ -55,8 +55,8 @@ public class OpportunitiesController(IMediator mediator) : ControllerBase {
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> DeleteById(long opportunityId) {
-        DeleteOpportunityCommand deleteOpportunityCommand = new(this.User.UserId(), opportunityId);
-        await this._mediator.Send(deleteOpportunityCommand);
-        return this.NoContent();
+        DeleteOpportunityCommand deleteOpportunityCommand = new(User.UserId(), opportunityId);
+        await _mediator.Send(deleteOpportunityCommand);
+        return NoContent();
     }
 }

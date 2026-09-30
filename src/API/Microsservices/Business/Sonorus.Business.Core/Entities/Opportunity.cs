@@ -15,12 +15,12 @@ public class Opportunity(long recruiterId, string name, string? bandName, string
     public DateTime AnnouncedAt { get; private set; }
 
     public void Update(string name, string? bandName, string? description, string experienceRequired, decimal payment, bool IsWork, WorkTimeUnit? WorkTimeUnit) {
-        this.Name = name;
-        this.BandName = bandName;
-        this.Description = description;
-        this.ExperienceRequired = experienceRequired;
-        this.Payment = payment;
-        this.IsWork = IsWork;
-        this.WorkTimeUnit = WorkTimeUnit;
+        Name = name;
+        BandName = bandName;
+        Description = description;
+        ExperienceRequired = experienceRequired;
+        Payment = payment;
+        IsWork = IsWork;
+        WorkTimeUnit = WorkTimeUnit;
     }
 }

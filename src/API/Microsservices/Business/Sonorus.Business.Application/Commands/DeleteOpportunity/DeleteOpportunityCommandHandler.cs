@@ -9,15 +9,15 @@ public class DeleteOpportunityCommandHandler(IUnitOfWork unitOfWork) : IRequestH
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     public async Task<Unit> Handle(DeleteOpportunityCommand request, CancellationToken cancellationToken) {
-        Opportunity opportunity = await this._unitOfWork.Opportunities.GetByIdTrackingAsync(request.OpportunityId) ?? throw new OpportunityNotFoundException();
+        Opportunity opportunity = await _unitOfWork.Opportunities.GetByIdTrackingAsync(request.OpportunityId) ?? throw new OpportunityNotFoundException();
 
         if (opportunity.RecruiterId != request.UserId) throw new AuthenticatedUserAreNotOwnerOfOpportunityException();
 
-        this._unitOfWork.Opportunities.Delete(opportunity);
+        _unitOfWork.Opportunities.Delete(opportunity);
 
-        await this._unitOfWork.BeginTransactionAsync();
-        await this._unitOfWork.CompleteAsync();
-        await this._unitOfWork.CommitAsync();
+        await _unitOfWork.BeginTransactionAsync();
+        await _unitOfWork.CompleteAsync();
+        await _unitOfWork.CommitAsync();
 
         return Unit.Value;
     }

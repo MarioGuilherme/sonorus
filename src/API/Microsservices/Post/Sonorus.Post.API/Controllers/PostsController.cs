@@ -27,9 +27,9 @@ public class PostsController(IMediator mediator) : ControllerBase {
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> GetPagePosts(bool contentByPreference, int offset = 0, int limit = 10) {
-        GetPagedPostsQuery getPagedPostsQuery = new(this.User.UserId(), this.HttpContext.AccessToken(), offset, limit, contentByPreference);
-        IEnumerable<PostViewModel> posts = await this._mediator.Send(getPagedPostsQuery);
-        return this.Ok(posts);
+        GetPagedPostsQuery getPagedPostsQuery = new(User.UserId(), HttpContext.AccessToken(), offset, limit, contentByPreference);
+        IEnumerable<PostViewModel> posts = await _mediator.Send(getPagedPostsQuery);
+        return Ok(posts);
     }
 
     [HttpPost]
@@ -37,9 +37,9 @@ public class PostsController(IMediator mediator) : ControllerBase {
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> CreatePost([FromForm] CreatePostInputModel inputModel) {
-        CreatePostCommand createPostCommand = new(this.User.UserId(), inputModel);
-        await this._mediator.Send(createPostCommand);
-        return this.NoContent();
+        CreatePostCommand createPostCommand = new(User.UserId(), inputModel);
+        await _mediator.Send(createPostCommand);
+        return NoContent();
     }
 
     [HttpPatch("{postId}")]
@@ -49,9 +49,9 @@ public class PostsController(IMediator mediator) : ControllerBase {
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> UpdatePost(long postId, [FromForm] UpdatePostInputModel inputModel) {
-        UpdatePostCommand updatePostCommand = new(this.User.UserId(), postId, inputModel);
-        await this._mediator.Send(updatePostCommand);
-        return this.NoContent();
+        UpdatePostCommand updatePostCommand = new(User.UserId(), postId, inputModel);
+        await _mediator.Send(updatePostCommand);
+        return NoContent();
     }
 
     [HttpDelete("{postId}")]
@@ -60,9 +60,9 @@ public class PostsController(IMediator mediator) : ControllerBase {
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> DeletePostById(long postId) {
-        DeletePostByIdCommand deletePostByIdCommand = new(this.User.UserId(), postId);
-        await this._mediator.Send(deletePostByIdCommand);
-        return this.NoContent();
+        DeletePostByIdCommand deletePostByIdCommand = new(User.UserId(), postId);
+        await _mediator.Send(deletePostByIdCommand);
+        return NoContent();
     }
 
     [HttpPatch("{postId}/likers")]
@@ -70,9 +70,9 @@ public class PostsController(IMediator mediator) : ControllerBase {
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> LikePost(long postId) {
-        ToggleLikePostCommand likePostCommand = new(this.User.UserId(), postId);
-        long totalLikes = await this._mediator.Send(likePostCommand);
-        return this.Ok(totalLikes);
+        ToggleLikePostCommand likePostCommand = new(User.UserId(), postId);
+        long totalLikes = await _mediator.Send(likePostCommand);
+        return Ok(totalLikes);
     }
 
     [HttpGet("{postId}/comments")]
@@ -81,9 +81,9 @@ public class PostsController(IMediator mediator) : ControllerBase {
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> GetAllCommentsByPostId(long postId) {
-        GetAllCommentsByPostIdQuery getAllCommentsByPostIdQuery = new(this.User.UserId(), postId);
-        IEnumerable<CommentViewModel> comments = await this._mediator.Send(getAllCommentsByPostIdQuery);
-        return this.Ok(comments);
+        GetAllCommentsByPostIdQuery getAllCommentsByPostIdQuery = new(User.UserId(), postId);
+        IEnumerable<CommentViewModel> comments = await _mediator.Send(getAllCommentsByPostIdQuery);
+        return Ok(comments);
     }
 
     [HttpPost("{postId}/comments")]
@@ -93,9 +93,9 @@ public class PostsController(IMediator mediator) : ControllerBase {
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> CreateComment(long postId, CreateCommentInputModel inputModel) {
-        CreateCommentCommand createCommentCommand = new(this.User.UserId(), postId, inputModel);
-        CommentViewModel comment = await this._mediator.Send(createCommentCommand);
-        return this.Created(string.Empty, comment);
+        CreateCommentCommand createCommentCommand = new(User.UserId(), postId, inputModel);
+        CommentViewModel comment = await _mediator.Send(createCommentCommand);
+        return Created(string.Empty, comment);
     }
 
     [HttpPatch("{postId}/comments/{commentId}")]
@@ -105,9 +105,9 @@ public class PostsController(IMediator mediator) : ControllerBase {
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> UpdateCommentById(long postId, long commentId, UpdateCommentInputModel inputModel) {
-        UpdateCommentCommand updateCommentCommand = new(this.User.UserId(), postId, commentId, inputModel);
-        await this._mediator.Send(updateCommentCommand);
-        return this.NoContent();
+        UpdateCommentCommand updateCommentCommand = new(User.UserId(), postId, commentId, inputModel);
+        await _mediator.Send(updateCommentCommand);
+        return NoContent();
     }
 
     [HttpDelete("{postId}/comments/{commentId}")]
@@ -116,9 +116,9 @@ public class PostsController(IMediator mediator) : ControllerBase {
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> DeleteCommentById(long postId, long commentId) {
-        DeleteCommentByIdCommand deleteCommentByIdCommand = new(this.User.UserId(), postId, commentId);
-        await this._mediator.Send(deleteCommentByIdCommand);
-        return this.NoContent();
+        DeleteCommentByIdCommand deleteCommentByIdCommand = new(User.UserId(), postId, commentId);
+        await _mediator.Send(deleteCommentByIdCommand);
+        return NoContent();
     }
 
     [HttpPatch("{postId}/comments/{commentId}/likers")]
@@ -126,8 +126,8 @@ public class PostsController(IMediator mediator) : ControllerBase {
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> LikeComment(long postId, long commentId) {
-        ToggleLikeCommentCommand likeCommentCommand = new(this.User.UserId(), postId, commentId);
-        long totalLikes = await this._mediator.Send(likeCommentCommand);
-        return this.Ok(totalLikes);
+        ToggleLikeCommentCommand likeCommentCommand = new(User.UserId(), postId, commentId);
+        long totalLikes = await _mediator.Send(likeCommentCommand);
+        return Ok(totalLikes);
     }
 }

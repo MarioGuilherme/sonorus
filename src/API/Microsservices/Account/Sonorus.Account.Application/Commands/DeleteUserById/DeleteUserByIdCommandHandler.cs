@@ -14,23 +14,23 @@ public class DeleteUserByIdCommandHandler(IUnitOfWork unitOfWork, IFileStorage f
     private readonly IMessageBroker _messageBroker = messageBroker;
 
     public async Task<Unit> Handle(DeleteUserByIdCommand request, CancellationToken cancellationToken) {
-        User user = await this._unitOfWork.Users.GetByIdTrackingAsync(request.UserId) ?? throw new AuthenticatedUserNoLongerExistException();
+        User user = await _unitOfWork.Users.GetByIdTrackingAsync(request.UserId) ?? throw new AuthenticatedUserNoLongerExistException();
 
-        await this._unitOfWork.RefreshTokens.DeleteAsync(user.RefreshToken);
-        this._unitOfWork.Users.Delete(user);
+        await _unitOfWork.RefreshTokens.DeleteAsync(user.RefreshToken);
+        _unitOfWork.Users.Delete(user);
 
-        if (user.Picture is not null) await this._fileStorage.DeleteFileAsync(user.Picture);
+        if (user.Picture is not null) await _fileStorage.DeleteFileAsync(user.Picture);
 
-        await this._unitOfWork.BeginTransactionAsync();
-        await this._unitOfWork.CompleteAsync();
-        await this._unitOfWork.CommitAsync();
+        await _unitOfWork.BeginTransactionAsync();
+        await _unitOfWork.CompleteAsync();
+        await _unitOfWork.CommitAsync();
 
         DeletedUserEvent deletedUserEvent = new(user.UserId);
         await Task.WhenAll([
-            this._messageBroker.SendMessageAsync<DeletedUserEvent>(deletedUserEvent, "deleted-users_microservice-business", cancellationToken),
-            this._messageBroker.SendMessageAsync<DeletedUserEvent>(deletedUserEvent, "deleted-users_microservice-chat", cancellationToken),
-            this._messageBroker.SendMessageAsync<DeletedUserEvent>(deletedUserEvent, "deleted-users_microservice-marketplace", cancellationToken),
-            this._messageBroker.SendMessageAsync<DeletedUserEvent>(deletedUserEvent, "deleted-users_microservice-posts", cancellationToken)
+            _messageBroker.SendMessageAsync<DeletedUserEvent>(deletedUserEvent, "deleted-users_microservice-business", cancellationToken),
+            _messageBroker.SendMessageAsync<DeletedUserEvent>(deletedUserEvent, "deleted-users_microservice-chat", cancellationToken),
+            _messageBroker.SendMessageAsync<DeletedUserEvent>(deletedUserEvent, "deleted-users_microservice-marketplace", cancellationToken),
+            _messageBroker.SendMessageAsync<DeletedUserEvent>(deletedUserEvent, "deleted-users_microservice-posts", cancellationToken)
         ]);
 
         return Unit.Value;

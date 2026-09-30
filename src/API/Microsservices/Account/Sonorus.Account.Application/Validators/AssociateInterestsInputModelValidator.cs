@@ -5,9 +5,9 @@ namespace Sonorus.Account.Application.Validators;
 
 public class AssociateInterestsInputModelValidator : AbstractValidator<AssociateCollectionOfInterestsInputModel> {
     public AssociateInterestsInputModelValidator() {
-        this.RuleLevelCascadeMode = CascadeMode.Stop;
+        RuleLevelCascadeMode = CascadeMode.Stop;
 
-        this.RuleFor(user => user.Interests)
+        RuleFor(user => user.Interests)
             .NotNull().NotEmpty().WithMessage("A lista de interesses precisa ser informada!")
             .ForEach(interest => {
                 interest.Must(i => i.InterestId != 0 || !string.IsNullOrEmpty(i.Key))

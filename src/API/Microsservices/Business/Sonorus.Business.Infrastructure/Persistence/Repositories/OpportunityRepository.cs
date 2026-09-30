@@ -9,20 +9,20 @@ public class OpportunityRepository(SonorusBusinessDbContext dbContext) : IOpport
     private readonly SonorusBusinessDbContext _dbContext = dbContext;
 
     public async Task CreateAsync(Opportunity opportunity) {
-        await this._dbContext.Opportunities.AddAsync(opportunity);
+        await _dbContext.Opportunities.AddAsync(opportunity);
     }
 
-    public void Delete(Opportunity opportunity) => this._dbContext.Opportunities.Remove(opportunity);
+    public void Delete(Opportunity opportunity) => _dbContext.Opportunities.Remove(opportunity);
 
     public void DeleteAllFromUserId(long userId) {
-        List<Opportunity> opportunities = [.. this._dbContext.Opportunities.Where(opportunity => opportunity.RecruiterId == userId)];
-        this._dbContext.Opportunities.RemoveRange(opportunities);
+        List<Opportunity> opportunities = [.. _dbContext.Opportunities.Where(opportunity => opportunity.RecruiterId == userId)];
+        _dbContext.Opportunities.RemoveRange(opportunities);
     }
 
-    public Task<List<Opportunity>> GetAllByNameAsync(string? name) => this._dbContext.Opportunities
+    public Task<List<Opportunity>> GetAllByNameAsync(string? name) => _dbContext.Opportunities
         .AsNoTracking()
         .Where(product => name == null || (name != null && product.Name.Contains(name)))
         .ToListAsync();
 
-    public Task<Opportunity?> GetByIdTrackingAsync(long opportunityId) => this._dbContext.Opportunities.FirstOrDefaultAsync(opportunity => opportunity.OpportunityId == opportunityId);
+    public Task<Opportunity?> GetByIdTrackingAsync(long opportunityId) => _dbContext.Opportunities.FirstOrDefaultAsync(opportunity => opportunity.OpportunityId == opportunityId);
 }

@@ -11,16 +11,16 @@ public class DeleteProductCommandHandler(IUnitOfWork unitOfWork, IFileStorage fi
     private readonly IFileStorage _fileStorage = fileStorage;
 
     public async Task<Unit> Handle(DeleteProductCommand request, CancellationToken cancellationToken) {
-        Product product = await this._unitOfWork.Products.GetByIdTrackingAsync(request.ProductId) ?? throw new ProductNotFoundException();
+        Product product = await _unitOfWork.Products.GetByIdTrackingAsync(request.ProductId) ?? throw new ProductNotFoundException();
 
         if (product.SellerId != request.UserId) throw new AuthenticatedUserAreNotOwnerOfProductException();
 
-        this._unitOfWork.Products.Delete(product);
-        foreach (Media media in product.Medias) await this._fileStorage.DeleteFileAsync(Path.GetFileName(media.Path));
+        _unitOfWork.Products.Delete(product);
+        foreach (Media media in product.Medias) await _fileStorage.DeleteFileAsync(Path.GetFileName(media.Path));
 
-        await this._unitOfWork.BeginTransactionAsync();
-        await this._unitOfWork.CompleteAsync();
-        await this._unitOfWork.CommitAsync();
+        await _unitOfWork.BeginTransactionAsync();
+        await _unitOfWork.CompleteAsync();
+        await _unitOfWork.CommitAsync();
 
         return Unit.Value;
     }

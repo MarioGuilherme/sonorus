@@ -13,10 +13,10 @@ public class DeletedUserSubscriber(IServiceProvider serviceProvider) : Backgroun
     private readonly ServiceBusProcessor _processor = serviceProvider.CreateScope().ServiceProvider.GetRequiredService<ServiceBusProcessor>();
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken) {
-        this._processor.ProcessMessageAsync += this.ProcessMessageAsync;
-        this._processor.ProcessErrorAsync += this.ProcessErrorAsync;
+        _processor.ProcessMessageAsync += ProcessMessageAsync;
+        _processor.ProcessErrorAsync += ProcessErrorAsync;
 
-        await this._processor.StartProcessingAsync(stoppingToken);
+        await _processor.StartProcessingAsync(stoppingToken);
     }
 
     public async Task ProcessMessageAsync(ProcessMessageEventArgs args) {
@@ -24,13 +24,13 @@ public class DeletedUserSubscriber(IServiceProvider serviceProvider) : Backgroun
 
         DeletedUserIdEvent deletedUserIdEvent = JsonSerializer.Deserialize<DeletedUserIdEvent>(jsonString)!;
 
-        await this.ProcessDeletedUserAsync(deletedUserIdEvent);
+        await ProcessDeletedUserAsync(deletedUserIdEvent);
 
         await args.CompleteMessageAsync(args.Message);
     }
 
     private async Task ProcessDeletedUserAsync(DeletedUserIdEvent deletedUserIdEvent) {
-        using IServiceScope scope = this._serviceProvider.CreateScope();
+        using IServiceScope scope = _serviceProvider.CreateScope();
         IConnectionRepository connectionRepository = scope.ServiceProvider.GetRequiredService<IConnectionRepository>();
         IChatRepository chatRepository = scope.ServiceProvider.GetRequiredService<IChatRepository>();
 

@@ -13,20 +13,20 @@ public class GetUserByLoginQueryHandler(IUnitOfWork unitOfWork, IAuthService aut
     private readonly IAuthService _authService = authService;
 
     public async Task<TokenViewModel> Handle(GetUserByLoginQuery request, CancellationToken cancellationToken) {
-        User user = await this._unitOfWork.Users.GetByLoginAsync(request.Login) ?? throw new UserNotFoundException();
+        User user = await _unitOfWork.Users.GetByLoginAsync(request.Login) ?? throw new UserNotFoundException();
 
         if (!Verify(request.Password, user.Password)) throw new UserNotFoundException();
 
-        string refreshTokenString = this._authService.GenerateRefreshToken();
+        string refreshTokenString = _authService.GenerateRefreshToken();
 
         RefreshToken refreshToken = new(user.UserId, refreshTokenString);
 
-        await this._unitOfWork.BeginTransactionAsync();
-        await this._unitOfWork.RefreshTokens.SaveAsync(refreshToken);
-        await this._unitOfWork.CompleteAsync();
-        await this._unitOfWork.CommitAsync();
+        await _unitOfWork.BeginTransactionAsync();
+        await _unitOfWork.RefreshTokens.SaveAsync(refreshToken);
+        await _unitOfWork.CompleteAsync();
+        await _unitOfWork.CommitAsync();
 
-        string accessToken = this._authService.GenerateToken(user);
+        string accessToken = _authService.GenerateToken(user);
 
         return new(accessToken, refreshTokenString);
     }

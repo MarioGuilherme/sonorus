@@ -9,7 +9,7 @@ public class ToggleLikeCommentCommandHandler(IUnitOfWork unitOfWork) : IRequestH
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     public async Task<long> Handle(ToggleLikeCommentCommand request, CancellationToken cancellationToken) {
-        Core.Entities.Post post = await this._unitOfWork.Posts.GetByIdWithFullDataTrackingAsync(request.PostId) ?? throw new PostNotFoundException();
+        Core.Entities.Post post = await _unitOfWork.Posts.GetByIdWithFullDataTrackingAsync(request.PostId) ?? throw new PostNotFoundException();
         Comment comment = post.Comments.FirstOrDefault(comment => comment.CommentId == request.CommentId) ?? throw new CommentNotFoundException();
         CommentLiker? commentLiker = comment.CommentLikers.FirstOrDefault(comment => comment.UserId == request.UserId);
 
@@ -18,10 +18,10 @@ public class ToggleLikeCommentCommandHandler(IUnitOfWork unitOfWork) : IRequestH
         else
             comment.CommentLikers.Remove(commentLiker);
 
-        await this._unitOfWork.BeginTransactionAsync();
-        await this._unitOfWork.CompleteAsync();
-        await this._unitOfWork.CommitAsync();
+        await _unitOfWork.BeginTransactionAsync();
+        await _unitOfWork.CompleteAsync();
+        await _unitOfWork.CommitAsync();
 
-        return await this._unitOfWork.Posts.GetTotalLikersOfCommentIdAsync(request.CommentId);
+        return await _unitOfWork.Posts.GetTotalLikersOfCommentIdAsync(request.CommentId);
     }
 }
