@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Sonorus.Marketplace.Application.ViewModels;
 using Sonorus.Marketplace.Core.Entities;
@@ -9,12 +8,11 @@ using System.Net.Http.Json;
 
 namespace Sonorus.Marketplace.Application.Commands.CreateProduct;
 
-public class CreateProductCommandHandler(IUnitOfWork unitOfWork, IFileStorage fileStorage, IHttpClientFactory httpClientFactory, IMapper mapper) : IRequestHandler<CreateProductCommand, ProductViewModel>
+public class CreateProductCommandHandler(IUnitOfWork unitOfWork, IFileStorage fileStorage, IHttpClientFactory httpClientFactory) : IRequestHandler<CreateProductCommand, ProductViewModel>
 {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IFileStorage _fileStorage = fileStorage;
     private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
-    private readonly IMapper _mapper = mapper;
 
     public async Task<ProductViewModel> Handle(CreateProductCommand request, CancellationToken cancellationToken)
     {
@@ -37,8 +35,16 @@ public class CreateProductCommandHandler(IUnitOfWork unitOfWork, IFileStorage fi
             $"users?id={request.UserId}",
             cancellationToken: cancellationToken
         );
-        ProductViewModel productViewModel = _mapper.Map<ProductViewModel>(product);
-        productViewModel.Seller = users!.First();
+        ProductViewModel productViewModel = new(product.ProductId,
+            product.Name,
+            product.Price,
+            product.Description,
+            product.Condition,
+            product.AnnouncedAt,
+            product.Medias.Select(m => new MediaViewModel(m.MediaId, m.Path)))
+        {
+            Seller = users!.First()
+        };
 
         return productViewModel;
     }

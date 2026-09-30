@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Sonorus.Marketplace.Application.ViewModels;
 using Sonorus.Marketplace.Core.Entities;
 using Sonorus.Marketplace.Infrastructure.Persistence;
@@ -7,11 +6,10 @@ using System.Net.Http.Json;
 
 namespace Sonorus.Marketplace.Application.Queries.GetAllProductsByName;
 
-public class GetAllProductsByNameQueryHandler(IUnitOfWork unitOfWork, IHttpClientFactory httpClientFactory, IMapper mapper) : IRequestHandler<GetAllProductsByNameQuery, IEnumerable<ProductViewModel>>
+public class GetAllProductsByNameQueryHandler(IUnitOfWork unitOfWork, IHttpClientFactory httpClientFactory) : IRequestHandler<GetAllProductsByNameQuery, IEnumerable<ProductViewModel>>
 {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
-    private readonly IMapper _mapper = mapper;
 
     public async Task<IEnumerable<ProductViewModel>> Handle(GetAllProductsByNameQuery request, CancellationToken cancellationToken)
     {
@@ -30,8 +28,17 @@ public class GetAllProductsByNameQueryHandler(IUnitOfWork unitOfWork, IHttpClien
         {
             UserViewModel? user = users!.FirstOrDefault(user => user.UserId == product.SellerId);
             if (user is null) continue;
-            ProductViewModel productViewModel = _mapper.Map<ProductViewModel>(product);
-            productViewModel.Seller = user;
+            ProductViewModel productViewModel = new(product.ProductId,
+                product.Name,
+                product.Price,
+                product.Description,
+                product.Condition,
+                product.AnnouncedAt,
+                product.Medias.Select(m => new MediaViewModel(m.MediaId, m.Path)))
+            {
+                Seller = user
+            };
+
             mappedProducts.Add(productViewModel);
         }
 
