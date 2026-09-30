@@ -1,20 +1,14 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Sonorus.Chat.Application.ViewModels;
 using Sonorus.Chat.Core.Repositories;
 using System.Net.Http.Json;
 
 namespace Sonorus.Chat.Application.Queries.GetAllChatsByUserId;
 
-public class GetAllChatsByUserIdQueryHandler(
-    IChatRepository chatRepository,
-    IHttpClientFactory httpClientFactory,
-    IMapper mapper
-) : IRequestHandler<GetAllChatsByUserIdQuery, IEnumerable<ChatViewModel>>
+public class GetAllChatsByUserIdQueryHandler(IChatRepository chatRepository, IHttpClientFactory httpClientFactory) : IRequestHandler<GetAllChatsByUserIdQuery, IEnumerable<ChatViewModel>>
 {
     private readonly IChatRepository _chatRepository = chatRepository;
     private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
-    private readonly IMapper _mapper = mapper;
 
     public async Task<IEnumerable<ChatViewModel>> Handle(GetAllChatsByUserIdQuery request, CancellationToken cancellationToken)
     {

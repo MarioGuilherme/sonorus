@@ -1,23 +1,17 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Sonorus.Chat.Core.Entities;
 using Sonorus.Chat.Core.Repositories;
 
 namespace Sonorus.Chat.Application.Commands.AddMessageToChat;
 
-public class AddMessageToChatCommandHandler(
-    IChatRepository chatRepository,
-    IConnectionRepository connectionRepository,
-    IMapper mapper
-) : IRequestHandler<AddMessageToChatCommand, IEnumerable<string>>
+public class AddMessageToChatCommandHandler(IChatRepository chatRepository, IConnectionRepository connectionRepository) : IRequestHandler<AddMessageToChatCommand, IEnumerable<string>>
 {
     private readonly IChatRepository _chatRepository = chatRepository;
     private readonly IConnectionRepository _connectionRepository = connectionRepository;
-    private readonly IMapper _mapper = mapper;
 
     public async Task<IEnumerable<string>> Handle(AddMessageToChatCommand request, CancellationToken cancellationToken)
     {
-        Message message = _mapper.Map<Message>(request);
+        Message message = new(request.Content, request.SentByUserId, request.SentAt);
 
         Core.Entities.Chat? chat = await _chatRepository.GetByIdAsync(request.ChatId);
 

@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using FluentValidation;
+﻿using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
 using Sonorus.Chat.Application.Commands.AddMessageToChat;
@@ -18,7 +17,6 @@ public static class ApplicationModule
         services
             .AddMediatR()
             .AddFluentValidation()
-            .AddAutoMapper()
             .AddSubscribers();
 
         return services;
@@ -36,18 +34,6 @@ public static class ApplicationModule
         services
             .AddFluentValidationAutoValidation(o => o.DisableDataAnnotationsValidation = true)
             .AddValidatorsFromAssemblyContaining<AddMessageToChatCommandValidator>();
-
-        return services;
-    }
-
-    private static IServiceCollection AddAutoMapper(this IServiceCollection services)
-    {
-        services.AddSingleton(new MapperConfiguration(config =>
-        {
-            config.CreateMap<AddMessageToChatCommand, Message>();
-            config.CreateMap<Core.Entities.Chat, ChatViewModel>();
-            config.CreateMap<Message, MessageViewModel>();
-        }).CreateMapper());
 
         return services;
     }
