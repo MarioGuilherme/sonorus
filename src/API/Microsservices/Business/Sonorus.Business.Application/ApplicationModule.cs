@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using FluentValidation;
+﻿using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
 using Sonorus.Business.Application.Commands.CreateOpportunity;
@@ -18,7 +17,6 @@ public static class ApplicationModule
         services
             .AddMediatR()
             .AddFluentValidation()
-            .AddAutoMapper()
             .AddSubscribers();
 
         return services;
@@ -36,17 +34,6 @@ public static class ApplicationModule
         services
             .AddFluentValidationAutoValidation(o => o.DisableDataAnnotationsValidation = true)
             .AddValidatorsFromAssemblyContaining<CreateOpportunityCommand>();
-
-        return services;
-    }
-
-    private static IServiceCollection AddAutoMapper(this IServiceCollection services)
-    {
-        services.AddSingleton(new MapperConfiguration(config =>
-        {
-            config.CreateMap<Opportunity, OpportunityViewModel>();
-            config.CreateMap<UpdateOpportunityCommand, Opportunity>();
-        }).CreateMapper());
 
         return services;
     }

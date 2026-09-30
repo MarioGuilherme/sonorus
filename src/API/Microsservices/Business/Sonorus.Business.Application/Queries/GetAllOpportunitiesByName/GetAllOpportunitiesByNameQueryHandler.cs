@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Sonorus.Business.Application.ViewModels;
 using Sonorus.Business.Core.Entities;
 using Sonorus.Business.Infrastructure.Persistence;
@@ -7,11 +6,10 @@ using System.Net.Http.Json;
 
 namespace Sonorus.Business.Application.Queries.GetAllOpportunitiesByName;
 
-public class GetAllOpportunitiesByNameQueryHandler(IUnitOfWork unitOfWork, IHttpClientFactory httpClientFactory, IMapper mapper) : IRequestHandler<GetAllOpportunitiesByNameQuery, IEnumerable<OpportunityViewModel>>
+public class GetAllOpportunitiesByNameQueryHandler(IUnitOfWork unitOfWork, IHttpClientFactory httpClientFactory) : IRequestHandler<GetAllOpportunitiesByNameQuery, IEnumerable<OpportunityViewModel>>
 {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
-    private readonly IMapper _mapper = mapper;
 
     public async Task<IEnumerable<OpportunityViewModel>> Handle(GetAllOpportunitiesByNameQuery request, CancellationToken cancellationToken)
     {
@@ -30,8 +28,18 @@ public class GetAllOpportunitiesByNameQueryHandler(IUnitOfWork unitOfWork, IHttp
         {
             UserViewModel? user = users!.FirstOrDefault(user => user.UserId == opportunity.RecruiterId);
             if (user is null) continue;
-            OpportunityViewModel opportunityViewModel = _mapper.Map<OpportunityViewModel>(opportunity);
-            opportunityViewModel.Recruiter = user;
+            OpportunityViewModel opportunityViewModel = new(opportunity.OpportunityId,
+                opportunity.Name,
+                opportunity.BandName,
+                opportunity.Description,
+                opportunity.ExperienceRequired,
+                opportunity.Payment,
+                opportunity.IsWork,
+                opportunity.WorkTimeUnit,
+                opportunity.AnnouncedAt)
+            {
+                Recruiter = user
+            };
             mappedOpportunities.Add(opportunityViewModel);
         }
 

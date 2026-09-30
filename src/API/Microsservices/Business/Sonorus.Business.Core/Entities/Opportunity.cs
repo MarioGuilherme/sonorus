@@ -15,7 +15,7 @@ public class Opportunity(long recruiterId, string name, string? bandName, string
     public WorkTimeUnit? WorkTimeUnit { get; private set; } = workTimeUnit;
     public DateTime AnnouncedAt { get; private set; }
 
-    public void Update(string name, string? bandName, string? description, string experienceRequired, decimal payment, bool IsWork, WorkTimeUnit? WorkTimeUnit)
+    public void Update(string name, string? bandName, string? description, string experienceRequired, decimal payment, bool isWork, WorkTimeUnit? workTimeUnit)
     {
         Name = name;
         BandName = bandName;
