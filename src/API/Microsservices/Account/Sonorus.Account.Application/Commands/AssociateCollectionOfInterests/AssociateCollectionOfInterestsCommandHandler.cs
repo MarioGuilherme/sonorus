@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Sonorus.Account.Core.Entities;
 using Sonorus.Account.Core.Exceptions;
 using Sonorus.Account.Core.Services;
@@ -7,16 +6,15 @@ using Sonorus.Account.Infrastructure.Persistence;
 
 namespace Sonorus.Account.Application.Commands.AssociateCollectionOfInterests;
 
-public class AssociateCollectionOfInterestsCommandHandler(IMapper mapper, ICacheService cacheService, IUnitOfWork unitOfWork) : IRequestHandler<AssociateCollectionOfInterestsCommand, Unit>
+public class AssociateCollectionOfInterestsCommandHandler(ICacheService cacheService, IUnitOfWork unitOfWork) : IRequestHandler<AssociateCollectionOfInterestsCommand, Unit>
 {
-    private readonly IMapper _mapper = mapper;
     private readonly ICacheService _cacheService = cacheService;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     public async Task<Unit> Handle(AssociateCollectionOfInterestsCommand request, CancellationToken cancellationToken)
     {
         User user = await _unitOfWork.Users.GetByIdTrackingAsync(request.UserId) ?? throw new AuthenticatedUserNoLongerExistException();
-        IEnumerable<Interest> interests = _mapper.Map<IEnumerable<Interest>>(request.Interests);
+        IEnumerable<Interest> interests = request.Interests.Select(i => new Interest(i.Key!, i.Value!, i.Type));
 
         user.Interests.Clear();
         foreach (Interest interest in interests)

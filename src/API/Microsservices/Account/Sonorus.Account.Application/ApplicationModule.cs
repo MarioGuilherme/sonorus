@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using FluentValidation;
+﻿using FluentValidation;
 using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,8 +17,7 @@ public static class ApplicationModule
     {
         services
             .AddMediatR()
-            .AddFluentValidation()
-            .AddAutoMapper();
+            .AddFluentValidation();
 
         return services;
     }
@@ -39,21 +37,6 @@ public static class ApplicationModule
         services
             .AddFluentValidationAutoValidation(o => o.DisableDataAnnotationsValidation = true)
             .AddValidatorsFromAssemblyContaining<GetUserByLoginQuery>();
-
-        return services;
-    }
-
-    private static IServiceCollection AddAutoMapper(this IServiceCollection services)
-    {
-        services.AddSingleton(new MapperConfiguration(config =>
-        {
-            config.CreateMap<CreateUserCommand, User>()
-                  .ConstructUsing(u => new(u.Fullname, u.Nickname, u.Email, u.Password));
-            config.CreateMap<InterestInputModel, Interest>();
-            config.CreateMap<Interest, InterestViewModel>();
-            config.CreateMap<User, UserViewModel>();
-            config.CreateMap<User, AuthenticatedUserViewModel>();
-        }).CreateMapper());
 
         return services;
     }

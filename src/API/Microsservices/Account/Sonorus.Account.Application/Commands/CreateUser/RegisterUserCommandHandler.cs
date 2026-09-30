@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Sonorus.Account.Application.ViewModels;
 using Sonorus.Account.Core.Entities;
 using Sonorus.Account.Core.Services;
@@ -7,15 +6,14 @@ using Sonorus.Account.Infrastructure.Persistence;
 
 namespace Sonorus.Account.Application.Commands.CreateUser;
 
-public class RegisterUserCommandHandler(IUnitOfWork unitOfWork, IAuthService authService, IMapper mapper) : IRequestHandler<CreateUserCommand, TokenViewModel>
+public class RegisterUserCommandHandler(IUnitOfWork unitOfWork, IAuthService authService) : IRequestHandler<CreateUserCommand, TokenViewModel>
 {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IAuthService _authService = authService;
-    private readonly IMapper _mapper = mapper;
 
     public async Task<TokenViewModel> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
-        User user = _mapper.Map<User>(request);
+        User user = new(request.Fullname, request.Nickname, request.Email, request.Password);
 
         await _unitOfWork.Users.RegisterAsync(user);
 
