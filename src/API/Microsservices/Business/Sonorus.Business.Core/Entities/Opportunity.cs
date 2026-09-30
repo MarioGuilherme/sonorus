@@ -22,7 +22,7 @@ public class Opportunity(long recruiterId, string name, string? bandName, string
         Description = description;
         ExperienceRequired = experienceRequired;
         Payment = payment;
-        IsWork = IsWork;
-        WorkTimeUnit = WorkTimeUnit;
+        IsWork = isWork;
+        WorkTimeUnit = workTimeUnit;
     }
 }
