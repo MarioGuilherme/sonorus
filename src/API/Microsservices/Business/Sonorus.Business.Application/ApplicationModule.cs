@@ -2,11 +2,8 @@
 using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
 using Sonorus.Business.Application.Commands.CreateOpportunity;
-using Sonorus.Business.Application.Commands.UpdateOpportunity;
 using Sonorus.Business.Application.Queries.GetAllOpportunitiesByName;
 using Sonorus.Business.Application.Subscribers;
-using Sonorus.Business.Application.ViewModels;
-using Sonorus.Business.Core.Entities;
 
 namespace Sonorus.Business.Application;
 

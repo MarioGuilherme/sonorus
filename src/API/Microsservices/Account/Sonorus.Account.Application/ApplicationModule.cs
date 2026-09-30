@@ -2,12 +2,10 @@
 using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using Sonorus.Account.Application.Commands.AssociateCollectionOfInterests;
 using Sonorus.Account.Application.Commands.CreateUser;
 using Sonorus.Account.Application.Commands.UpdateUser;
 using Sonorus.Account.Application.Queries.GetUserByLogin;
 using Sonorus.Account.Application.ViewModels;
-using Sonorus.Account.Core.Entities;
 
 namespace Sonorus.Account.Application;
 

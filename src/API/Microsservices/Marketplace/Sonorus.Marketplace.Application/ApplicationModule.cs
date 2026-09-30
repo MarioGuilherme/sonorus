@@ -4,8 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Sonorus.Marketplace.Application.Commands.DeleteProduct;
 using Sonorus.Marketplace.Application.Subscribers;
 using Sonorus.Marketplace.Application.Validators;
-using Sonorus.Marketplace.Application.ViewModels;
-using Sonorus.Marketplace.Core.Entities;
 
 namespace Sonorus.Marketplace.Application;
 

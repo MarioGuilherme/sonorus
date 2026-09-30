@@ -4,8 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Sonorus.Post.Application.Commands.ToggleLikePost;
 using Sonorus.Post.Application.Subscribers;
 using Sonorus.Post.Application.Validators;
-using Sonorus.Post.Application.ViewModels;
-using Sonorus.Post.Core.Entities;
 
 namespace Sonorus.Post.Application;
 

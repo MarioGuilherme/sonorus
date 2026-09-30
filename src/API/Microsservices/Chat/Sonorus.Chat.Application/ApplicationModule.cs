@@ -1,12 +1,9 @@
 ﻿using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
-using Sonorus.Chat.Application.Commands.AddMessageToChat;
 using Sonorus.Chat.Application.Queries.GetAllChatsByUserId;
 using Sonorus.Chat.Application.Subscribers;
 using Sonorus.Chat.Application.Validators;
-using Sonorus.Chat.Application.ViewModels;
-using Sonorus.Chat.Core.Entities;
 
 namespace Sonorus.Chat.Application;
 
