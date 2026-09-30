@@ -4,13 +4,16 @@ using Sonorus.Chat.Core.Repositories;
 
 namespace Sonorus.Chat.Application.Commands.RegisterConnectionOfUserId;
 
-public class RegisterConnectionOfUserIdCommandHandler(IConnectionRepository connectionRepository) : IRequestHandler<RegisterConnectionOfUserIdCommand, Unit> {
+public class RegisterConnectionOfUserIdCommandHandler(IConnectionRepository connectionRepository) : IRequestHandler<RegisterConnectionOfUserIdCommand, Unit>
+{
     private readonly IConnectionRepository _connectionRepository = connectionRepository;
 
-    public async Task<Unit> Handle(RegisterConnectionOfUserIdCommand request, CancellationToken cancellationToken) {
+    public async Task<Unit> Handle(RegisterConnectionOfUserIdCommand request, CancellationToken cancellationToken)
+    {
         Connection? connection = await _connectionRepository.GetByUserIdAsync(request.UserId);
 
-        if (connection is null) {
+        if (connection is null)
+        {
             await _connectionRepository.RegisterConnectionIdOfUserIdAsync(request.UserId, request.ConnectionId);
             return Unit.Value;
         }

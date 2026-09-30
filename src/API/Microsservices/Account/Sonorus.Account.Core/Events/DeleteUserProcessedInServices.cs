@@ -1,5 +1,6 @@
 ﻿namespace Sonorus.Account.Core.Events;
 
-public class DeleteUserProcessedInServices {
+public class DeleteUserProcessedInServices
+{
 
 }

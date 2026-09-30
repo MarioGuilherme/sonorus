@@ -9,16 +9,19 @@ using System.Net.Http.Json;
 
 namespace Sonorus.Marketplace.Application.Commands.CreateProduct;
 
-public class CreateProductCommandHandler(IUnitOfWork unitOfWork, IFileStorage fileStorage, IHttpClientFactory httpClientFactory, IMapper mapper) : IRequestHandler<CreateProductCommand, ProductViewModel> {
+public class CreateProductCommandHandler(IUnitOfWork unitOfWork, IFileStorage fileStorage, IHttpClientFactory httpClientFactory, IMapper mapper) : IRequestHandler<CreateProductCommand, ProductViewModel>
+{
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IFileStorage _fileStorage = fileStorage;
     private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
     private readonly IMapper _mapper = mapper;
 
-    public async Task<ProductViewModel> Handle(CreateProductCommand request, CancellationToken cancellationToken) {
+    public async Task<ProductViewModel> Handle(CreateProductCommand request, CancellationToken cancellationToken)
+    {
         Product product = new(request.UserId, request.Name, request.Description, request.Price, request.Condition);
 
-        foreach (IFormFile file in request.Medias) {
+        foreach (IFormFile file in request.Medias)
+        {
             string mediaName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
             await _fileStorage.UploadOrUpdateFileAsync(mediaName, file.OpenReadStream());
             product.Medias.Add(new(mediaName));

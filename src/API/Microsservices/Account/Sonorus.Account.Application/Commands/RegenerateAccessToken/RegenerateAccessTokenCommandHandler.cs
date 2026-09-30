@@ -7,11 +7,13 @@ using Sonorus.Account.Infrastructure.Persistence;
 
 namespace Sonorus.Account.Application.Commands.RegenerateAccessToken;
 
-public class RegenerateAccessTokenCommandHandler(IAuthService authService, IUnitOfWork unitOfWork) : IRequestHandler<RegenerateAccessTokenCommand, TokenViewModel> {
+public class RegenerateAccessTokenCommandHandler(IAuthService authService, IUnitOfWork unitOfWork) : IRequestHandler<RegenerateAccessTokenCommand, TokenViewModel>
+{
     private readonly IAuthService _authService = authService;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
-    public async Task<TokenViewModel> Handle(RegenerateAccessTokenCommand request, CancellationToken cancellationToken) {
+    public async Task<TokenViewModel> Handle(RegenerateAccessTokenCommand request, CancellationToken cancellationToken)
+    {
         string? savedRefreshToken = await _unitOfWork.RefreshTokens.GetByUserIdAsync(request.UserId);
 
         if (savedRefreshToken != request.RefreshToken) throw new RefreshTokenNotFoundByUserException();

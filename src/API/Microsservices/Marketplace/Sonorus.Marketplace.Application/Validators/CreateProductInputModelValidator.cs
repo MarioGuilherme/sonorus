@@ -3,10 +3,12 @@ using Sonorus.Marketplace.Application.Commands.CreateProduct;
 
 namespace Sonorus.Marketplace.Application.Validators;
 
-public class CreateProductInputModelValidator : AbstractValidator<CreateProductInputModel> {
+public class CreateProductInputModelValidator : AbstractValidator<CreateProductInputModel>
+{
     private readonly IEnumerable<string> _allowedExtensions = [".png", ".jpeg", ".jpg"];
 
-    public CreateProductInputModelValidator() {
+    public CreateProductInputModelValidator()
+    {
         RuleLevelCascadeMode = CascadeMode.Stop;
 
         RuleFor(p => p.Name)
@@ -29,7 +31,8 @@ public class CreateProductInputModelValidator : AbstractValidator<CreateProductI
             .Must(medias => medias != null && medias.Any())
             .WithMessage("É necessário anexar ao menos uma foto/vídeo!");
 
-        RuleForEach(p => p.Medias).ChildRules(medias => {
+        RuleForEach(p => p.Medias).ChildRules(medias =>
+        {
             medias.RuleFor(media => media)
                 .NotEmpty().WithMessage("A imagem precisa ser informada!")
                 .Must(file => _allowedExtensions.Contains(Path.GetExtension(file.FileName)))

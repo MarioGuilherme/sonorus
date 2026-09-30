@@ -4,8 +4,10 @@ using Sonorus.Account.Core.Entities;
 
 namespace Sonorus.Account.Infrastructure.Persistence.Configurations;
 
-public class UserConfiguration : IEntityTypeConfiguration<User> {
-    public void Configure(EntityTypeBuilder<User> builder) {
+public class UserConfiguration : IEntityTypeConfiguration<User>
+{
+    public void Configure(EntityTypeBuilder<User> builder)
+    {
         builder.HasKey(u => u.UserId);
 
         builder.HasIndex(u => u.Email).IsUnique();

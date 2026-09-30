@@ -1,20 +1,22 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Sonorus.Business.Core.Entities;
 using Sonorus.Business.Core.Repositories;
-using Sonorus.Business.Infrastructure.Persistence;
 
 namespace Sonorus.Business.Infrastructure.Persistence.Repositories;
 
-public class OpportunityRepository(SonorusBusinessDbContext dbContext) : IOpportunityRepository {
+public class OpportunityRepository(SonorusBusinessDbContext dbContext) : IOpportunityRepository
+{
     private readonly SonorusBusinessDbContext _dbContext = dbContext;
 
-    public async Task CreateAsync(Opportunity opportunity) {
+    public async Task CreateAsync(Opportunity opportunity)
+    {
         await _dbContext.Opportunities.AddAsync(opportunity);
     }
 
     public void Delete(Opportunity opportunity) => _dbContext.Opportunities.Remove(opportunity);
 
-    public void DeleteAllFromUserId(long userId) {
+    public void DeleteAllFromUserId(long userId)
+    {
         List<Opportunity> opportunities = [.. _dbContext.Opportunities.Where(opportunity => opportunity.RecruiterId == userId)];
         _dbContext.Opportunities.RemoveRange(opportunities);
     }

@@ -3,8 +3,10 @@ using Sonorus.Account.Application.Commands.UpdatePassword;
 
 namespace Sonorus.Account.Application.Validators;
 
-public class UpdatePasswordInputModelValidator : AbstractValidator<UpdatePasswordInputModel> {
-    public UpdatePasswordInputModelValidator() {
+public class UpdatePasswordInputModelValidator : AbstractValidator<UpdatePasswordInputModel>
+{
+    public UpdatePasswordInputModelValidator()
+    {
         RuleLevelCascadeMode = CascadeMode.Stop;
 
         RuleFor(user => user.Password)

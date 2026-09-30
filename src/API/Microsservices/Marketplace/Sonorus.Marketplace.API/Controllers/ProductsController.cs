@@ -13,14 +13,16 @@ namespace Sonorus.Marketplace.API.Controllers;
 [Authorize]
 [ApiController]
 [Route("api/v2/products")]
-public class ProductsController(IMediator mediator) : ControllerBase {
+public class ProductsController(IMediator mediator) : ControllerBase
+{
     private readonly IMediator _mediator = mediator;
 
     [HttpGet]
     [Produces("application/json")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult> GetAllWithQuery(string? name = default) {
+    public async Task<ActionResult> GetAllWithQuery(string? name = default)
+    {
         GetAllProductsByNameQuery getAllProductsByNameQuery = new(name);
         IEnumerable<ProductViewModel> products = await _mediator.Send(getAllProductsByNameQuery);
         return Ok(products);
@@ -31,7 +33,8 @@ public class ProductsController(IMediator mediator) : ControllerBase {
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult> Create(CreateProductInputModel inputModel) {
+    public async Task<ActionResult> Create(CreateProductInputModel inputModel)
+    {
         CreateProductCommand createProductCommand = new(User.UserId(), inputModel);
         ProductViewModel product = await _mediator.Send(createProductCommand);
         return Created(string.Empty, product);
@@ -43,7 +46,8 @@ public class ProductsController(IMediator mediator) : ControllerBase {
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult> Update(long productId, [FromForm] UpdateProductInputModel inputModel) {
+    public async Task<ActionResult> Update(long productId, [FromForm] UpdateProductInputModel inputModel)
+    {
         UpdateProductCommand updateProductCommand = new(User.UserId(), productId, inputModel);
         ProductViewModel product = await _mediator.Send(updateProductCommand);
         return Ok(product);
@@ -54,7 +58,8 @@ public class ProductsController(IMediator mediator) : ControllerBase {
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult> Delete(long productId) {
+    public async Task<ActionResult> Delete(long productId)
+    {
         DeleteProductCommand deleteProductCommand = new(User.UserId(), productId);
         await _mediator.Send(deleteProductCommand);
         return NoContent();

@@ -12,6 +12,7 @@ public record OpportunityViewModel(
     bool IsWork,
     WorkTimeUnit? WorkTimeUnit,
     DateTime AnnouncedAt
-) {
+)
+{
     public UserViewModel Recruiter { get; set; } = null!;
 }

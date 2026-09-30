@@ -7,12 +7,14 @@ using System.Net.Http.Json;
 
 namespace Sonorus.Marketplace.Application.Queries.GetAllProductsByName;
 
-public class GetAllProductsByNameQueryHandler(IUnitOfWork unitOfWork, IHttpClientFactory httpClientFactory, IMapper mapper) : IRequestHandler<GetAllProductsByNameQuery, IEnumerable<ProductViewModel>> {
+public class GetAllProductsByNameQueryHandler(IUnitOfWork unitOfWork, IHttpClientFactory httpClientFactory, IMapper mapper) : IRequestHandler<GetAllProductsByNameQuery, IEnumerable<ProductViewModel>>
+{
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
     private readonly IMapper _mapper = mapper;
 
-    public async Task<IEnumerable<ProductViewModel>> Handle(GetAllProductsByNameQuery request, CancellationToken cancellationToken) {
+    public async Task<IEnumerable<ProductViewModel>> Handle(GetAllProductsByNameQuery request, CancellationToken cancellationToken)
+    {
         IEnumerable<Product> products = await _unitOfWork.Products.GetAllByNameAsync(request.Name);
         if (!products.Any()) return [];
 
@@ -24,7 +26,8 @@ public class GetAllProductsByNameQueryHandler(IUnitOfWork unitOfWork, IHttpClien
         );
 
         ICollection<ProductViewModel> mappedProducts = [];
-        foreach (Product product in products) {
+        foreach (Product product in products)
+        {
             UserViewModel? user = users!.FirstOrDefault(user => user.UserId == product.SellerId);
             if (user is null) continue;
             ProductViewModel productViewModel = _mapper.Map<ProductViewModel>(product);

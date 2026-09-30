@@ -6,14 +6,17 @@ using Sonorus.Account.Infrastructure.Persistence;
 
 namespace Sonorus.Account.Application.Commands.UpdatePicture;
 
-public class UpdatePictureCommandHandler(IUnitOfWork unitOfWork, IFileStorage fileStorage) : IRequestHandler<UpdatePictureCommand, string> {
+public class UpdatePictureCommandHandler(IUnitOfWork unitOfWork, IFileStorage fileStorage) : IRequestHandler<UpdatePictureCommand, string>
+{
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IFileStorage _fileStorage = fileStorage;
 
-    public async Task<string> Handle(UpdatePictureCommand request, CancellationToken cancellationToken) {
+    public async Task<string> Handle(UpdatePictureCommand request, CancellationToken cancellationToken)
+    {
         User user = await _unitOfWork.Users.GetByIdTrackingAsync(request.UserId) ?? throw new AuthenticatedUserNoLongerExistException();
 
-        if (Path.GetFileName(user.Picture) == "defaultPicture.png") {
+        if (Path.GetFileName(user.Picture) == "defaultPicture.png")
+        {
             string fileName = $"{Guid.NewGuid()}{Path.GetExtension(request.Picture.FileName)}";
             user.UpdatePicture(fileName);
 

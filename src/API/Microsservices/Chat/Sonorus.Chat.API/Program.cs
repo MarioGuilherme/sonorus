@@ -1,7 +1,7 @@
 using Sonorus.Chat.API.ExceptionHandler;
+using Sonorus.Chat.API.Hubs;
 using Sonorus.Chat.Application;
 using Sonorus.Chat.Infrastructure;
-using Sonorus.Chat.API.Hubs;
 using Sonorus.SharedKernel;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -23,7 +23,8 @@ builder.Services.AddSharedSwaggerGen(webServiceName: "Chat");
 
 WebApplication app = builder.Build();
 
-if (app.Environment.IsDevelopment()) {
+if (app.Environment.IsDevelopment())
+{
     app.MapOpenApi();
     app.UseSwagger();
     app.UseSwaggerUI();

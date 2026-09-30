@@ -8,11 +8,13 @@ using static BCrypt.Net.BCrypt;
 
 namespace Sonorus.Account.Application.Queries.GetUserByLogin;
 
-public class GetUserByLoginQueryHandler(IUnitOfWork unitOfWork, IAuthService authService) : IRequestHandler<GetUserByLoginQuery, TokenViewModel> {
+public class GetUserByLoginQueryHandler(IUnitOfWork unitOfWork, IAuthService authService) : IRequestHandler<GetUserByLoginQuery, TokenViewModel>
+{
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IAuthService _authService = authService;
 
-    public async Task<TokenViewModel> Handle(GetUserByLoginQuery request, CancellationToken cancellationToken) {
+    public async Task<TokenViewModel> Handle(GetUserByLoginQuery request, CancellationToken cancellationToken)
+    {
         User user = await _unitOfWork.Users.GetByLoginAsync(request.Login) ?? throw new UserNotFoundException();
 
         if (!Verify(request.Password, user.Password)) throw new UserNotFoundException();

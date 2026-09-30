@@ -1,5 +1,6 @@
 ﻿namespace Sonorus.Business.Core.Exceptions;
 
-public class AuthenticatedUserAreNotOwnerOfOpportunityException : Exception {
+public class AuthenticatedUserAreNotOwnerOfOpportunityException : Exception
+{
     public AuthenticatedUserAreNotOwnerOfOpportunityException() : base() { }
 }

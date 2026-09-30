@@ -8,14 +8,16 @@ using System.Net.Http.Json;
 
 namespace Sonorus.Business.Application.Commands.UpdateOpportunity;
 
-public class UpdateOpportunityCommandHandler(IUnitOfWork unitOfWork, IHttpClientFactory httpClientFactory, IMapper mapper) : IRequestHandler<UpdateOpportunityCommand, OpportunityViewModel> {
+public class UpdateOpportunityCommandHandler(IUnitOfWork unitOfWork, IHttpClientFactory httpClientFactory, IMapper mapper) : IRequestHandler<UpdateOpportunityCommand, OpportunityViewModel>
+{
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
     private readonly IMapper _mapper = mapper;
 
-    public async Task<OpportunityViewModel> Handle(UpdateOpportunityCommand request, CancellationToken cancellationToken) {
+    public async Task<OpportunityViewModel> Handle(UpdateOpportunityCommand request, CancellationToken cancellationToken)
+    {
         Opportunity opportunityDb = await _unitOfWork.Opportunities.GetByIdTrackingAsync(request.OpportunityId) ?? throw new OpportunityNotFoundException();
-        
+
         if (opportunityDb.RecruiterId != request.UserId) throw new AuthenticatedUserAreNotOwnerOfOpportunityException();
 
         opportunityDb.Update(

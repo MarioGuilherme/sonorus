@@ -4,8 +4,10 @@ using Sonorus.Post.Core.Entities;
 
 namespace Sonorus.Post.Infrastructure.Persistence.Configurations;
 
-public class CommentConfiguration : IEntityTypeConfiguration<Comment> {
-    public void Configure(EntityTypeBuilder<Comment> builder) {
+public class CommentConfiguration : IEntityTypeConfiguration<Comment>
+{
+    public void Configure(EntityTypeBuilder<Comment> builder)
+    {
         builder.HasKey(c => c.CommentId);
 
         builder.Property(c => c.Content).HasMaxLength(100);

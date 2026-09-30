@@ -8,16 +8,19 @@ using System.Net.Http.Json;
 
 namespace Sonorus.Post.Application.Queries.GetPagedPosts;
 
-public class GetPagedPostsQueryHandler(IUnitOfWork unitOfWork, IHttpClientFactory httpClientFactory, IMapper mapper) : IRequestHandler<GetPagedPostsQuery, IEnumerable<PostViewModel>> {
+public class GetPagedPostsQueryHandler(IUnitOfWork unitOfWork, IHttpClientFactory httpClientFactory, IMapper mapper) : IRequestHandler<GetPagedPostsQuery, IEnumerable<PostViewModel>>
+{
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
     private readonly IMapper _mapper = mapper;
 
-    public async Task<IEnumerable<PostViewModel>> Handle(GetPagedPostsQuery request, CancellationToken cancellationToken) {
+    public async Task<IEnumerable<PostViewModel>> Handle(GetPagedPostsQuery request, CancellationToken cancellationToken)
+    {
         using HttpClient userMShttpClient = _httpClientFactory.CreateClient("API_GATEWAY");
         userMShttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", request.AccessToken);
 
-        if (!request.ContentByPreference) {
+        if (!request.ContentByPreference)
+        {
             List<Core.Entities.Post> posts = await _unitOfWork.Posts.GetPagedPostsAsync(request.Offset, request.Limit);
 
             if (posts.Count == 0) return [];
@@ -34,7 +37,8 @@ public class GetPagedPostsQueryHandler(IUnitOfWork unitOfWork, IHttpClientFactor
 
             await Task.WhenAll([authors, allInterests]);
 
-            foreach (Core.Entities.Post post in posts) {
+            foreach (Core.Entities.Post post in posts)
+            {
                 UserViewModel? author = authors.Result!.FirstOrDefault(user => user.UserId == post.UserId);
                 if (author is null) continue;
                 PostViewModel postViewModel = new(
@@ -45,12 +49,14 @@ public class GetPagedPostsQueryHandler(IUnitOfWork unitOfWork, IHttpClientFactor
                     post.Comments.Count,
                     post.Tablature,
                     post.Medias.Select(_mapper.Map<MediaViewModel>)
-                ) {
+                )
+                {
                     Author = author,
                     IsLikedByMe = post.PostLikers.Any(post => post.UserId == request.UserId)
                 };
 
-                foreach (PostInterest postInterest in post.PostInterests) {
+                foreach (PostInterest postInterest in post.PostInterests)
+                {
                     InterestViewModel interestViewModel = allInterests.Result!.First(interest => interest.InterestId == postInterest.InterestId);
                     postViewModel.Interests.Add(interestViewModel);
                 }
@@ -59,7 +65,9 @@ public class GetPagedPostsQueryHandler(IUnitOfWork unitOfWork, IHttpClientFactor
             }
 
             return mappedPosts;
-        } else {
+        }
+        else
+        {
             List<InterestViewModel>? myInterests = await userMShttpClient.GetFromJsonAsync<List<InterestViewModel>>("users/me/interests", cancellationToken: cancellationToken);
             List<Core.Entities.Post> posts = await _unitOfWork.Posts.GetPagedPostsAsync(request.Offset, request.Limit, myInterests!.Select(interest => interest.InterestId));
 
@@ -77,7 +85,8 @@ public class GetPagedPostsQueryHandler(IUnitOfWork unitOfWork, IHttpClientFactor
 
             await Task.WhenAll([authors, allInterests]);
 
-            foreach (Core.Entities.Post post in posts) {
+            foreach (Core.Entities.Post post in posts)
+            {
                 UserViewModel? author = authors.Result!.FirstOrDefault(user => user.UserId == post.UserId);
                 if (author is null) continue;
                 PostViewModel postViewModel = new(
@@ -88,12 +97,14 @@ public class GetPagedPostsQueryHandler(IUnitOfWork unitOfWork, IHttpClientFactor
                     post.Comments.Count,
                     post.Tablature,
                     _mapper.Map<IEnumerable<MediaViewModel>>(post.Medias)
-                ) {
+                )
+                {
                     Author = author,
                     IsLikedByMe = post.PostLikers.Any(post => post.UserId == request.UserId)
                 };
 
-                foreach (PostInterest postInterest in post.PostInterests) {
+                foreach (PostInterest postInterest in post.PostInterests)
+                {
                     InterestViewModel interestViewModel = allInterests.Result!.First(interest => interest.InterestId == postInterest.InterestId);
                     postViewModel.Interests.Add(interestViewModel);
                 }

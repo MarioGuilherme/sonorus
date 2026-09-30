@@ -5,10 +5,12 @@ using Sonorus.Account.Infrastructure.Persistence;
 
 namespace Sonorus.Account.Application.Commands.DisassociateInterest;
 
-public class DisassociateInterestCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<DisassociateInterestCommand, Unit> {
+public class DisassociateInterestCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<DisassociateInterestCommand, Unit>
+{
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
-    public async Task<Unit> Handle(DisassociateInterestCommand request, CancellationToken cancellationToken) {
+    public async Task<Unit> Handle(DisassociateInterestCommand request, CancellationToken cancellationToken)
+    {
         User user = await _unitOfWork.Users.GetByIdTrackingAsync(request.UserId) ?? throw new AuthenticatedUserNoLongerExistException();
         Interest interest = user.Interests.FirstOrDefault(interest => interest.InterestId == request.InterestId) ?? throw new InterestNotFoundException();
 

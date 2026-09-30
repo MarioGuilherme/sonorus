@@ -2,7 +2,8 @@
 
 namespace Sonorus.Marketplace.Core.Repositories;
 
-public interface IProductRepository {
+public interface IProductRepository
+{
     Task CreateProductAsync(Product product);
     void Delete(Product product);
     IEnumerable<string> DeleteAllFromUserId(long userId);

@@ -7,12 +7,14 @@ using System.Net.Http.Json;
 
 namespace Sonorus.Business.Application.Commands.CreateOpportunity;
 
-public class CreateOpportunityCommandHandler(IUnitOfWork unitOfWork, IHttpClientFactory httpClientFactory, IMapper mapper) : IRequestHandler<CreateOpportunityCommand, OpportunityViewModel> {
+public class CreateOpportunityCommandHandler(IUnitOfWork unitOfWork, IHttpClientFactory httpClientFactory, IMapper mapper) : IRequestHandler<CreateOpportunityCommand, OpportunityViewModel>
+{
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
     private readonly IMapper _mapper = mapper;
 
-    public async Task<OpportunityViewModel> Handle(CreateOpportunityCommand request, CancellationToken cancellationToken) {
+    public async Task<OpportunityViewModel> Handle(CreateOpportunityCommand request, CancellationToken cancellationToken)
+    {
         Opportunity opportunity = new(
             request.UserId,
             request.Name,

@@ -7,12 +7,14 @@ using System.Net.Http.Json;
 
 namespace Sonorus.Business.Application.Queries.GetAllOpportunitiesByName;
 
-public class GetAllOpportunitiesByNameQueryHandler(IUnitOfWork unitOfWork, IHttpClientFactory httpClientFactory, IMapper mapper) : IRequestHandler<GetAllOpportunitiesByNameQuery, IEnumerable<OpportunityViewModel>> {
+public class GetAllOpportunitiesByNameQueryHandler(IUnitOfWork unitOfWork, IHttpClientFactory httpClientFactory, IMapper mapper) : IRequestHandler<GetAllOpportunitiesByNameQuery, IEnumerable<OpportunityViewModel>>
+{
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
     private readonly IMapper _mapper = mapper;
 
-    public async Task<IEnumerable<OpportunityViewModel>> Handle(GetAllOpportunitiesByNameQuery request, CancellationToken cancellationToken) {
+    public async Task<IEnumerable<OpportunityViewModel>> Handle(GetAllOpportunitiesByNameQuery request, CancellationToken cancellationToken)
+    {
         IEnumerable<Opportunity> opportunities = await _unitOfWork.Opportunities.GetAllByNameAsync(request.Name);
         if (!opportunities.Any()) return [];
 
@@ -24,7 +26,8 @@ public class GetAllOpportunitiesByNameQueryHandler(IUnitOfWork unitOfWork, IHttp
         );
 
         ICollection<OpportunityViewModel> mappedOpportunities = [];
-        foreach (Opportunity opportunity in opportunities) {
+        foreach (Opportunity opportunity in opportunities)
+        {
             UserViewModel? user = users!.FirstOrDefault(user => user.UserId == opportunity.RecruiterId);
             if (user is null) continue;
             OpportunityViewModel opportunityViewModel = _mapper.Map<OpportunityViewModel>(opportunity);

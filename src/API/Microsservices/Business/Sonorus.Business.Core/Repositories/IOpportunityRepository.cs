@@ -2,7 +2,8 @@
 
 namespace Sonorus.Business.Core.Repositories;
 
-public interface IOpportunityRepository {
+public interface IOpportunityRepository
+{
     Task CreateAsync(Opportunity opportunity);
     void Delete(Opportunity opportunity);
     void DeleteAllFromUserId(long userId);

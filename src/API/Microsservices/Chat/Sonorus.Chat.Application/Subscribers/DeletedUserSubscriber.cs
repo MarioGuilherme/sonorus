@@ -8,18 +8,21 @@ using System.Text.Json;
 
 namespace Sonorus.Chat.Application.Subscribers;
 
-public class DeletedUserSubscriber(IServiceProvider serviceProvider) : BackgroundService {
+public class DeletedUserSubscriber(IServiceProvider serviceProvider) : BackgroundService
+{
     private readonly IServiceProvider _serviceProvider = serviceProvider;
     private readonly ServiceBusProcessor _processor = serviceProvider.CreateScope().ServiceProvider.GetRequiredService<ServiceBusProcessor>();
 
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken) {
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
         _processor.ProcessMessageAsync += ProcessMessageAsync;
         _processor.ProcessErrorAsync += ProcessErrorAsync;
 
         await _processor.StartProcessingAsync(stoppingToken);
     }
 
-    public async Task ProcessMessageAsync(ProcessMessageEventArgs args) {
+    public async Task ProcessMessageAsync(ProcessMessageEventArgs args)
+    {
         string jsonString = args.Message.Body.ToString();
 
         DeletedUserIdEvent deletedUserIdEvent = JsonSerializer.Deserialize<DeletedUserIdEvent>(jsonString)!;
@@ -29,7 +32,8 @@ public class DeletedUserSubscriber(IServiceProvider serviceProvider) : Backgroun
         await args.CompleteMessageAsync(args.Message);
     }
 
-    private async Task ProcessDeletedUserAsync(DeletedUserIdEvent deletedUserIdEvent) {
+    private async Task ProcessDeletedUserAsync(DeletedUserIdEvent deletedUserIdEvent)
+    {
         using IServiceScope scope = _serviceProvider.CreateScope();
         IConnectionRepository connectionRepository = scope.ServiceProvider.GetRequiredService<IConnectionRepository>();
         IChatRepository chatRepository = scope.ServiceProvider.GetRequiredService<IChatRepository>();
@@ -39,8 +43,10 @@ public class DeletedUserSubscriber(IServiceProvider serviceProvider) : Backgroun
 
         if (connection is not null) await connectionRepository.DeleteAsync(connection);
 
-        foreach (Core.Entities.Chat chat in chats) {
-            if (chat.Participants.Count() == 2) {
+        foreach (Core.Entities.Chat chat in chats)
+        {
+            if (chat.Participants.Count() == 2)
+            {
                 await chatRepository.DeleteAsync(chat);
                 continue;
             }
@@ -52,7 +58,8 @@ public class DeletedUserSubscriber(IServiceProvider serviceProvider) : Backgroun
         }
     }
 
-    private Task ProcessErrorAsync(ProcessErrorEventArgs args) {
+    private Task ProcessErrorAsync(ProcessErrorEventArgs args)
+    {
         Console.WriteLine($"Erro no Service Bus: {args.Exception.Message}");
         return Task.CompletedTask;
     }

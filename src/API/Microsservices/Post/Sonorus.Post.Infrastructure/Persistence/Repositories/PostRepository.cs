@@ -5,14 +5,17 @@ using Sonorus.Post.Core.Repositories;
 
 namespace Sonorus.Post.Infrastructure.Persistence.Repositories;
 
-public class PostRepository(SonorusPostDbContext context) : IPostRepository {
+public class PostRepository(SonorusPostDbContext context) : IPostRepository
+{
     private readonly SonorusPostDbContext _dbContext = context;
 
-    public async Task CreatePostAsync(Core.Entities.Post post) {
+    public async Task CreatePostAsync(Core.Entities.Post post)
+    {
         await _dbContext.Posts.AddAsync(post);
     }
 
-    public void Delete(Core.Entities.Post post) {
+    public void Delete(Core.Entities.Post post)
+    {
         foreach (Comment comment in post.Comments) _dbContext.CommentsLikers.RemoveRange(comment.CommentLikers);
 
         _dbContext.Medias.RemoveRange(post.Medias);
@@ -23,7 +26,8 @@ public class PostRepository(SonorusPostDbContext context) : IPostRepository {
         _dbContext.Posts.Remove(post);
     }
 
-    public IEnumerable<string> DeleteAllFromUserId(long userId) {
+    public IEnumerable<string> DeleteAllFromUserId(long userId)
+    {
         List<Core.Entities.Post> posts = [.. _dbContext.Posts
             .Include(post => post.Medias)
             .Include(post => post.PostInterests)
@@ -32,7 +36,8 @@ public class PostRepository(SonorusPostDbContext context) : IPostRepository {
             .ThenInclude(comment => comment.CommentLikers)
             .Where(post => post.UserId == userId)];
 
-        foreach (Core.Entities.Post post in posts) {
+        foreach (Core.Entities.Post post in posts)
+        {
             foreach (Comment comment in post.Comments) _dbContext.CommentsLikers.RemoveRange(comment.CommentLikers);
             _dbContext.Medias.RemoveRange(post.Medias);
             _dbContext.PostsInterests.RemoveRange(post.PostInterests);
@@ -45,7 +50,8 @@ public class PostRepository(SonorusPostDbContext context) : IPostRepository {
         return posts.SelectMany(p => p.Medias.Select(m => m.Path));
     }
 
-    public void DeleteCommentFromPost(Core.Entities.Post post, Comment comment) {
+    public void DeleteCommentFromPost(Core.Entities.Post post, Comment comment)
+    {
         _dbContext.CommentsLikers.RemoveRange(comment.CommentLikers);
         _dbContext.Comments.Remove(comment);
     }
@@ -69,7 +75,8 @@ public class PostRepository(SonorusPostDbContext context) : IPostRepository {
         .Include(post => post.PostLikers)
         .FirstOrDefaultAsync(post => post.PostId == postId);
 
-    public async Task<List<Core.Entities.Post>> GetPagedPostsAsync(int offset, int limit, IEnumerable<long>? interestsIds = default) {
+    public async Task<List<Core.Entities.Post>> GetPagedPostsAsync(int offset, int limit, IEnumerable<long>? interestsIds = default)
+    {
         IIncludableQueryable<Core.Entities.Post, ICollection<Comment>> query = _dbContext.Posts
             .AsNoTracking()
             .Include(post => post.Medias)
@@ -97,7 +104,8 @@ public class PostRepository(SonorusPostDbContext context) : IPostRepository {
         .FirstOrDefaultAsync(comment => comment.CommentId == commentId)
     )?.CommentLikers.Count ?? 0;
 
-    public void UpdatePost(Core.Entities.Post postForm, IEnumerable<Media> mediasToRemove) {
+    public void UpdatePost(Core.Entities.Post postForm, IEnumerable<Media> mediasToRemove)
+    {
         _dbContext.Medias.RemoveRange(mediasToRemove);
         foreach (PostInterest postInterest in postForm.PostInterests)
             _dbContext.Attach(postInterest);

@@ -2,7 +2,8 @@
 
 namespace Sonorus.Business.Core.Entities;
 
-public class Opportunity(long recruiterId, string name, string? bandName, string? description, string experienceRequired, decimal payment, bool isWork, WorkTimeUnit? workTimeUnit) {
+public class Opportunity(long recruiterId, string name, string? bandName, string? description, string experienceRequired, decimal payment, bool isWork, WorkTimeUnit? workTimeUnit)
+{
     public long OpportunityId { get; private set; }
     public long RecruiterId { get; private set; } = recruiterId;
     public string Name { get; private set; } = name;
@@ -14,7 +15,8 @@ public class Opportunity(long recruiterId, string name, string? bandName, string
     public WorkTimeUnit? WorkTimeUnit { get; private set; } = workTimeUnit;
     public DateTime AnnouncedAt { get; private set; }
 
-    public void Update(string name, string? bandName, string? description, string experienceRequired, decimal payment, bool IsWork, WorkTimeUnit? WorkTimeUnit) {
+    public void Update(string name, string? bandName, string? description, string experienceRequired, decimal payment, bool IsWork, WorkTimeUnit? WorkTimeUnit)
+    {
         Name = name;
         BandName = bandName;
         Description = description;

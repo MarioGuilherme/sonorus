@@ -9,17 +9,20 @@ public class AddMessageToChatCommandHandler(
     IChatRepository chatRepository,
     IConnectionRepository connectionRepository,
     IMapper mapper
-) : IRequestHandler<AddMessageToChatCommand, IEnumerable<string>> {
+) : IRequestHandler<AddMessageToChatCommand, IEnumerable<string>>
+{
     private readonly IChatRepository _chatRepository = chatRepository;
     private readonly IConnectionRepository _connectionRepository = connectionRepository;
     private readonly IMapper _mapper = mapper;
 
-    public async Task<IEnumerable<string>> Handle(AddMessageToChatCommand request, CancellationToken cancellationToken) {
+    public async Task<IEnumerable<string>> Handle(AddMessageToChatCommand request, CancellationToken cancellationToken)
+    {
         Message message = _mapper.Map<Message>(request);
 
         Core.Entities.Chat? chat = await _chatRepository.GetByIdAsync(request.ChatId);
 
-        if (chat is not null) {
+        if (chat is not null)
+        {
             chat!.Messages.Add(message);
             await _chatRepository.UpdateAsync(chat);
             return await _connectionRepository.GetConnectionIdByParticipantsIdAsync(chat.Participants.Where(p => p != request.SentByUserId));

@@ -2,7 +2,8 @@
 
 namespace Sonorus.Post.Infrastructure.Persistence;
 
-public interface IUnitOfWork : IDisposable {
+public interface IUnitOfWork : IDisposable
+{
     IPostRepository Posts { get; }
     Task<int> CompleteAsync();
     Task BeginTransactionAsync();

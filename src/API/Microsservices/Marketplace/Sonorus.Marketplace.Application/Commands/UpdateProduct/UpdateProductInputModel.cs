@@ -3,7 +3,8 @@ using Sonorus.Marketplace.Core.Enums;
 
 namespace Sonorus.Marketplace.Application.Commands.UpdateProduct;
 
-public class UpdateProductInputModel {
+public class UpdateProductInputModel
+{
     public string Name { get; set; } = null!;
     public string? Description { get; set; }
     public decimal Price { get; set; }

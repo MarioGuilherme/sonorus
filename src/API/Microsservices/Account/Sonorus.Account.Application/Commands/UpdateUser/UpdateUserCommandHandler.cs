@@ -5,10 +5,12 @@ using Sonorus.Account.Infrastructure.Persistence;
 
 namespace Sonorus.Account.Application.Commands.UpdateUser;
 
-public class UpdateUserCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<UpdateUserCommand, Unit> {
+public class UpdateUserCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<UpdateUserCommand, Unit>
+{
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
-    public async Task<Unit> Handle(UpdateUserCommand request, CancellationToken cancellationToken) {
+    public async Task<Unit> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+    {
         User user = await _unitOfWork.Users.GetByIdTrackingAsync(request.UserId) ?? throw new AuthenticatedUserNoLongerExistException();
 
         user.UpdateData(request.Fullname, request.Nickname, request.Email);

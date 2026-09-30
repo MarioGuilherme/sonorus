@@ -1,6 +1,7 @@
 ﻿namespace Sonorus.Post.Core.Entities;
 
-public class Post(long userId, string? content, string? tablature) {
+public class Post(long userId, string? content, string? tablature)
+{
     public long PostId { get; private set; }
     public long UserId { get; private set; } = userId;
     public string? Content { get; private set; } = content;
@@ -11,7 +12,8 @@ public class Post(long userId, string? content, string? tablature) {
     public ICollection<Comment> Comments { get; private set; } = [];
     public ICollection<PostInterest> PostInterests { get; private set; } = [];
 
-    public void Update(string? content, string? tablature) {
+    public void Update(string? content, string? tablature)
+    {
         Content = content;
         Tablature = tablature;
     }

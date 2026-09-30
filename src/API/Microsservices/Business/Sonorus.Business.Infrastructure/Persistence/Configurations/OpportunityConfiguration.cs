@@ -1,11 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Sonorus.Business.Core.Entities;
 
 namespace Sonorus.Business.Infrastructure.Persistence.Configurations;
 
-public class OpportunityConfiguration : IEntityTypeConfiguration<Opportunity> {
-    public void Configure(EntityTypeBuilder<Opportunity> builder) {
+public class OpportunityConfiguration : IEntityTypeConfiguration<Opportunity>
+{
+    public void Configure(EntityTypeBuilder<Opportunity> builder)
+    {
         builder.HasKey(o => o.OpportunityId);
 
         builder.Property(o => o.RecruiterId).HasMaxLength(50);

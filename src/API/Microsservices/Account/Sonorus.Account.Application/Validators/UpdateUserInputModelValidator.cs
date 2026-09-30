@@ -3,8 +3,10 @@ using Sonorus.Account.Application.Commands.UpdateUser;
 
 namespace Sonorus.Account.Application.Validators;
 
-public class UpdateUserInputModelValidator : AbstractValidator<UpdateUserInputModel> {
-    public UpdateUserInputModelValidator() {
+public class UpdateUserInputModelValidator : AbstractValidator<UpdateUserInputModel>
+{
+    public UpdateUserInputModelValidator()
+    {
         RuleLevelCascadeMode = CascadeMode.Stop;
 
         RuleFor(user => user.Fullname)

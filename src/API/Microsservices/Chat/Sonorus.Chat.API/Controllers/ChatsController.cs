@@ -10,7 +10,8 @@ namespace Sonorus.Chat.API.Controllers;
 
 [ApiController]
 [Route("api/v2")]
-public class ChatsController(IMediator mediator) : ControllerBase {
+public class ChatsController(IMediator mediator) : ControllerBase
+{
     private readonly IMediator _mediator = mediator;
 
     [Authorize]
@@ -18,7 +19,8 @@ public class ChatsController(IMediator mediator) : ControllerBase {
     [Produces("application/json")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult> GetAll() {
+    public async Task<ActionResult> GetAll()
+    {
         GetAllChatsByUserIdQuery getAllChatsByUserIdQuery = new(User.UserId());
         IEnumerable<ChatViewModel> chats = await _mediator.Send(getAllChatsByUserIdQuery);
         return Ok(chats);
@@ -30,7 +32,8 @@ public class ChatsController(IMediator mediator) : ControllerBase {
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult> GetByFriendId(long friendId) {
+    public async Task<ActionResult> GetByFriendId(long friendId)
+    {
         GetChatByFriendUserIdQuery getChatByFriend = new(User.UserId(), friendId);
         ChatViewModel chat = await _mediator.Send(getChatByFriend);
         return Ok(chat);

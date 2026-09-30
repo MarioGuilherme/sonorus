@@ -4,11 +4,14 @@ using Sonorus.Account.Core.Repositories;
 
 namespace Sonorus.Account.Infrastructure.Persistence.Repositories;
 
-public class RefreshTokenRepository(SonorusAccountDbContext dbContext) : IRefreshTokenRepository {
+public class RefreshTokenRepository(SonorusAccountDbContext dbContext) : IRefreshTokenRepository
+{
     private readonly SonorusAccountDbContext _dbContext = dbContext;
 
-    public async Task DeleteAsync(RefreshToken refreshToken) {
-        if (refreshToken.RefreshTokenId is 0) {
+    public async Task DeleteAsync(RefreshToken refreshToken)
+    {
+        if (refreshToken.RefreshTokenId is 0)
+        {
             RefreshToken refreshTokenDb = await _dbContext.RefreshTokens.FirstAsync(rt => rt.UserId == refreshToken.UserId && rt.Token == refreshToken.Token);
             _dbContext.RefreshTokens.Remove(refreshTokenDb);
             return;
@@ -20,7 +23,8 @@ public class RefreshTokenRepository(SonorusAccountDbContext dbContext) : IRefres
         .AsNoTracking()
         .FirstOrDefaultAsync(rt => rt.UserId == userId))?.Token;
 
-    public async Task SaveAsync(RefreshToken refreshToken) {
+    public async Task SaveAsync(RefreshToken refreshToken)
+    {
         IEnumerable<RefreshToken> oldRefreshTokensOfThisUser = await _dbContext.RefreshTokens.Where(rt => rt.UserId == refreshToken.UserId).ToListAsync();
         _dbContext.RefreshTokens.RemoveRange(oldRefreshTokensOfThisUser);
         await _dbContext.RefreshTokens.AddAsync(refreshToken);

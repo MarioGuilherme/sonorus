@@ -4,7 +4,8 @@ using Sonorus.Account.Core.Repositories;
 
 namespace Sonorus.Account.Infrastructure.Persistence.Repositories;
 
-public class InterestRepository(SonorusAccountDbContext dbContext) : IInterestRepository {
+public class InterestRepository(SonorusAccountDbContext dbContext) : IInterestRepository
+{
     private readonly SonorusAccountDbContext _dbContext = dbContext;
 
     public async Task AddAsync(Interest interest) => await _dbContext.Interests.AddAsync(interest);

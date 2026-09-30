@@ -4,10 +4,12 @@ using System.Text.Json;
 
 namespace Sonorus.Account.Infrastructure.MessageBroker;
 
-public class AzureServiceBus(ServiceBusClient serviceBusClient) : IMessageBroker {
+public class AzureServiceBus(ServiceBusClient serviceBusClient) : IMessageBroker
+{
     private readonly ServiceBusClient _serviceBusClient = serviceBusClient;
 
-    public async Task SendMessageAsync<T>(T message, string queueName, CancellationToken cancellationToken) {
+    public async Task SendMessageAsync<T>(T message, string queueName, CancellationToken cancellationToken)
+    {
         string body = JsonSerializer.Serialize(message);
         ServiceBusMessage serviceBusMessage = new(body);
         ServiceBusSender serviceBusSender = _serviceBusClient.CreateSender(queueName);

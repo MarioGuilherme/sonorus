@@ -4,19 +4,23 @@ using Sonorus.Marketplace.Core.Repositories;
 
 namespace Sonorus.Marketplace.Infrastructure.Persistence.Repositories;
 
-public class ProductRepository(SonorusMarketplaceDbContext dbContext) : IProductRepository {
+public class ProductRepository(SonorusMarketplaceDbContext dbContext) : IProductRepository
+{
     private readonly SonorusMarketplaceDbContext _dbContext = dbContext;
 
-    public async Task CreateProductAsync(Product product) {
+    public async Task CreateProductAsync(Product product)
+    {
         await _dbContext.Products.AddAsync(product);
     }
 
-    public void Delete(Product product) {
+    public void Delete(Product product)
+    {
         _dbContext.Medias.RemoveRange(product.Medias);
         _dbContext.Products.Remove(product);
     }
 
-    public IEnumerable<string> DeleteAllFromUserId(long userId) {
+    public IEnumerable<string> DeleteAllFromUserId(long userId)
+    {
         IQueryable<Product> products = _dbContext.Products.Where(product => product.SellerId == userId);
 
         _dbContext.Medias.RemoveRange(products.SelectMany(product => product.Medias));

@@ -2,7 +2,8 @@
 
 namespace Sonorus.Account.Infrastructure.Persistence;
 
-public interface IUnitOfWork : IDisposable {
+public interface IUnitOfWork : IDisposable
+{
     IInterestRepository Interests { get; }
     IRefreshTokenRepository RefreshTokens { get; }
     IUserRepository Users { get; }

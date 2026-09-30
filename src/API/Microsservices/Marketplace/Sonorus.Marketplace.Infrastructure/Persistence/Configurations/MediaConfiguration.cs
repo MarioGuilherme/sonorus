@@ -1,11 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Sonorus.Marketplace.Core.Entities;
 
 namespace Sonorus.Marketplace.Infrastructure.Persistence.Configurations;
 
-public class MediaConfiguration : IEntityTypeConfiguration<Media> {
-    public void Configure(EntityTypeBuilder<Media> builder) {
+public class MediaConfiguration : IEntityTypeConfiguration<Media>
+{
+    public void Configure(EntityTypeBuilder<Media> builder)
+    {
         builder.HasKey(m => m.MediaId);
 
         builder.Property(m => m.Path).HasMaxLength(41);

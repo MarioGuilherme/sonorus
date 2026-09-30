@@ -8,12 +8,14 @@ using System.Net.Http.Json;
 
 namespace Sonorus.Post.Application.Queries.GetAllCommentsByPostId;
 
-public class GetAllCommentsByPostIdQueryHandler(IUnitOfWork unitOfWork, IHttpClientFactory httpClientFactory, IMapper mapper) : IRequestHandler<GetAllCommentsByPostIdQuery, IEnumerable<CommentViewModel>> {
+public class GetAllCommentsByPostIdQueryHandler(IUnitOfWork unitOfWork, IHttpClientFactory httpClientFactory, IMapper mapper) : IRequestHandler<GetAllCommentsByPostIdQuery, IEnumerable<CommentViewModel>>
+{
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
     private readonly IMapper _mapper = mapper;
 
-    public async Task<IEnumerable<CommentViewModel>> Handle(GetAllCommentsByPostIdQuery request, CancellationToken cancellationToken) {
+    public async Task<IEnumerable<CommentViewModel>> Handle(GetAllCommentsByPostIdQuery request, CancellationToken cancellationToken)
+    {
         IEnumerable<Comment> comments = await _unitOfWork.Posts.GetAllCommentsByPostIdAsync(request.PostId) ?? throw new PostNotFoundException();
         if (!comments.Any()) return [];
 
@@ -25,7 +27,8 @@ public class GetAllCommentsByPostIdQueryHandler(IUnitOfWork unitOfWork, IHttpCli
         );
 
         ICollection<CommentViewModel> mappedComments = [];
-        foreach (Comment comment in comments) {
+        foreach (Comment comment in comments)
+        {
             UserViewModel? author = users!.FirstOrDefault(user => user.UserId == comment.UserId);
             if (author is null) continue;
             CommentViewModel commentViewModel = new(
@@ -33,7 +36,8 @@ public class GetAllCommentsByPostIdQueryHandler(IUnitOfWork unitOfWork, IHttpCli
                 comment.CommentLikers.Count,
                 comment.CommentedAt,
                 comment.Content
-            ) {
+            )
+            {
                 Author = author,
                 IsLikedByMe = comment.CommentLikers.Any(post => post.UserId == request.UserId)
             };

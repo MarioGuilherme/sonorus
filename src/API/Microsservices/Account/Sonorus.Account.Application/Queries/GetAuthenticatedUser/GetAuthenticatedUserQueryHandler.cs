@@ -7,11 +7,13 @@ using Sonorus.Account.Infrastructure.Persistence;
 
 namespace Sonorus.Account.Application.Queries.GetAuthenticatedUser;
 
-public class GetAuthenticatedUserQueryHandler(IUnitOfWork unitOfWork, IMapper mapper) : IRequestHandler<GetAuthenticatedUserQuery, AuthenticatedUserViewModel> {
+public class GetAuthenticatedUserQueryHandler(IUnitOfWork unitOfWork, IMapper mapper) : IRequestHandler<GetAuthenticatedUserQuery, AuthenticatedUserViewModel>
+{
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IMapper _mapper = mapper;
 
-    public async Task<AuthenticatedUserViewModel> Handle(GetAuthenticatedUserQuery request, CancellationToken cancellationToken) {
+    public async Task<AuthenticatedUserViewModel> Handle(GetAuthenticatedUserQuery request, CancellationToken cancellationToken)
+    {
         User user = await _unitOfWork.Users.GetByIdAsync(request.UserId) ?? throw new AuthenticatedUserNoLongerExistException();
         return _mapper.Map<AuthenticatedUserViewModel>(user);
     }

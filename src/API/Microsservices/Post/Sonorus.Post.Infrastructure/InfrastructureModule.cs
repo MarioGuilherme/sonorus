@@ -15,8 +15,10 @@ using System.Text;
 
 namespace Sonorus.Post.Infrastructure;
 
-public static class InfrastructureModule {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration) {
+public static class InfrastructureModule
+{
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    {
         services
             .AddMessageBroker(configuration)
             .AddApiGateway(configuration)
@@ -29,7 +31,8 @@ public static class InfrastructureModule {
         return services;
     }
 
-    private static IServiceCollection AddMessageBroker(this IServiceCollection services, IConfiguration configuration) {
+    private static IServiceCollection AddMessageBroker(this IServiceCollection services, IConfiguration configuration)
+    {
         string connectionString = configuration.GetConnectionString("AzureServiceBus")!;
 
         ServiceBusClient serviceBusClient = new(connectionString);
@@ -39,13 +42,15 @@ public static class InfrastructureModule {
         return services;
     }
 
-    private static IServiceCollection AddApiGateway(this IServiceCollection services, IConfiguration configuration) {
+    private static IServiceCollection AddApiGateway(this IServiceCollection services, IConfiguration configuration)
+    {
         services.AddHttpClient("API_GATEWAY", c => c.BaseAddress = new Uri(configuration["ApiGateway:Url"]!));
 
         return services;
     }
 
-    private static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration) {
+    private static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
+    {
         string connectionString = configuration.GetConnectionString("SonorusPostDb")!;
 
         services.AddDbContext<SonorusPostDbContext>(options => options.UseSqlServer(connectionString));
@@ -53,17 +58,21 @@ public static class InfrastructureModule {
         return services;
     }
 
-    private static IServiceCollection AddRepositories(this IServiceCollection services) {
+    private static IServiceCollection AddRepositories(this IServiceCollection services)
+    {
         services.AddScoped<IPostRepository, PostRepository>();
 
         return services;
     }
 
-    private static IServiceCollection AddAuthentication(this IServiceCollection services, IConfiguration configuration) {
+    private static IServiceCollection AddAuthentication(this IServiceCollection services, IConfiguration configuration)
+    {
         services
             .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options => {
-                options.TokenValidationParameters = new TokenValidationParameters {
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateLifetime = true,
@@ -77,10 +86,12 @@ public static class InfrastructureModule {
         return services;
     }
 
-    private static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration) {
+    private static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
+    {
         Environment.SetEnvironmentVariable("BlobStorageURL", $"{configuration["BlobStorage:URL"]!}/{configuration["BlobStorage:Container"]!}");
 
-        services.AddSingleton<IFileStorage, AzureStorageService>(_ => {
+        services.AddSingleton<IFileStorage, AzureStorageService>(_ =>
+        {
             string connectionString = configuration["BlobStorage:ConnectionString"]!;
             string containerName = configuration["BlobStorage:Container"]!;
             BlobContainerClient blobContainerClient = new(connectionString, containerName);
@@ -91,7 +102,8 @@ public static class InfrastructureModule {
         return services;
     }
 
-    private static IServiceCollection AddUnitOfWork(this IServiceCollection services) {
+    private static IServiceCollection AddUnitOfWork(this IServiceCollection services)
+    {
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         return services;

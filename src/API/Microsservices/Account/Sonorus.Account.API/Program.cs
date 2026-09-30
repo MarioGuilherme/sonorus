@@ -31,7 +31,8 @@ if ((await context.Database.GetPendingMigrationsAsync()).Any())
     await context.Database.MigrateAsync();
 #endregion
 
-if (app.Environment.IsDevelopment()) {
+if (app.Environment.IsDevelopment())
+{
     app.MapOpenApi();
     app.UseSwagger();
     app.UseSwaggerUI();

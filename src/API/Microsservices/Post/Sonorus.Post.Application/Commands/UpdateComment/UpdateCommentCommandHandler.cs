@@ -5,10 +5,12 @@ using Sonorus.Post.Infrastructure.Persistence;
 
 namespace Sonorus.Post.Application.Commands.UpdateComment;
 
-public class UpdateCommentCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<UpdateCommentCommand, Unit> {
+public class UpdateCommentCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<UpdateCommentCommand, Unit>
+{
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
-    public async Task<Unit> Handle(UpdateCommentCommand request, CancellationToken cancellationToken) {
+    public async Task<Unit> Handle(UpdateCommentCommand request, CancellationToken cancellationToken)
+    {
         Core.Entities.Post post = await _unitOfWork.Posts.GetByIdWithFullDataTrackingAsync(request.PostId) ?? throw new PostNotFoundException();
         Comment comment = post.Comments.FirstOrDefault(c => c.CommentId == request.CommentId) ?? throw new CommentNotFoundException();
 

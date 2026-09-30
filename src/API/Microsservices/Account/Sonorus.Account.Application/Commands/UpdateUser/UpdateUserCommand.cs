@@ -7,7 +7,8 @@ public class UpdateUserCommand(long userId, UpdateUserInputModel inputModel) : U
     inputModel.Fullname,
     inputModel.Nickname,
     inputModel.Email
-), IRequest<Unit> {
+), IRequest<Unit>
+{
     public long UserId { get; private set; } = userId;
     public IEnumerable<IFormFile> Medias { get; private set; } = [];
 }

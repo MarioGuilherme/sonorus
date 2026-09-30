@@ -1,11 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Sonorus.Post.Core.Entities;
 
 namespace Sonorus.Post.Infrastructure.Persistence.Configurations;
 
-public class PostConfiguration : IEntityTypeConfiguration<Core.Entities.Post> {
-    public void Configure(EntityTypeBuilder<Core.Entities.Post> builder) {
+public class PostConfiguration : IEntityTypeConfiguration<Core.Entities.Post>
+{
+    public void Configure(EntityTypeBuilder<Core.Entities.Post> builder)
+    {
         builder.HasKey(p => p.PostId);
 
         builder.Property(p => p.Content).HasMaxLength(300);

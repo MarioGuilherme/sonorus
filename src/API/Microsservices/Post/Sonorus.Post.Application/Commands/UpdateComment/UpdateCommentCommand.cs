@@ -2,12 +2,14 @@
 
 namespace Sonorus.Post.Application.Commands.UpdateComment;
 
-public class UpdateCommentCommand : UpdateCommentInputModel, IRequest<Unit> {
+public class UpdateCommentCommand : UpdateCommentInputModel, IRequest<Unit>
+{
     public long UserId { get; private set; }
     public long PostId { get; private set; }
     public long CommentId { get; private set; }
 
-    public UpdateCommentCommand(long userId, long postId, long commentId, UpdateCommentInputModel inputModel) {
+    public UpdateCommentCommand(long userId, long postId, long commentId, UpdateCommentInputModel inputModel)
+    {
         UserId = userId;
         PostId = postId;
         CommentId = commentId;

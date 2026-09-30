@@ -11,7 +11,8 @@ public class UpdateOpportunityCommand(long userId, long opportunityId, UpdateOpp
     inputModel.Payment,
     inputModel.IsWork,
     inputModel.WorkTimeUnit
-), IRequest<OpportunityViewModel> {
+), IRequest<OpportunityViewModel>
+{
     public long UserId { get; private set; } = userId;
     public long OpportunityId { get; private set; } = opportunityId;
 }

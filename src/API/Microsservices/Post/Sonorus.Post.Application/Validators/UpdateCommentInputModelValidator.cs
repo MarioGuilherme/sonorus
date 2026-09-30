@@ -3,8 +3,10 @@ using Sonorus.Post.Application.Commands.UpdateComment;
 
 namespace Sonorus.Post.Application.Validators;
 
-public class UpdateCommentInputModelValidator : AbstractValidator<UpdateCommentInputModel> {
-    public UpdateCommentInputModelValidator() {
+public class UpdateCommentInputModelValidator : AbstractValidator<UpdateCommentInputModel>
+{
+    public UpdateCommentInputModelValidator()
+    {
         RuleLevelCascadeMode = CascadeMode.Stop;
 
         RuleFor(c => c.Content)

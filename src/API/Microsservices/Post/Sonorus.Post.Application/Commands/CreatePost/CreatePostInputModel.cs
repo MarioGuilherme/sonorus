@@ -2,7 +2,8 @@
 
 namespace Sonorus.Post.Application.Commands.CreatePost;
 
-public class CreatePostInputModel {
+public class CreatePostInputModel
+{
     public string? Content { get; set; }
     public string? Tablature { get; set; }
     public IEnumerable<IFormFile> Medias { get; set; } = [];

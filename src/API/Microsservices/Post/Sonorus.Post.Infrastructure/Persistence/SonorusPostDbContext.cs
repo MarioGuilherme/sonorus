@@ -4,7 +4,8 @@ using System.Reflection;
 
 namespace Sonorus.Post.Infrastructure.Persistence;
 
-public class SonorusPostDbContext(DbContextOptions<SonorusPostDbContext> options) : DbContext(options) {
+public class SonorusPostDbContext(DbContextOptions<SonorusPostDbContext> options) : DbContext(options)
+{
     public DbSet<Core.Entities.Post> Posts { get; set; }
     public DbSet<Media> Medias { get; set; }
     public DbSet<Comment> Comments { get; set; }

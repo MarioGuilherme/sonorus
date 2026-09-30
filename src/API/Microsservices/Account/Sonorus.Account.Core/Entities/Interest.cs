@@ -2,7 +2,8 @@
 
 namespace Sonorus.Account.Core.Entities;
 
-public class Interest(string key, string value, InterestType type) {
+public class Interest(string key, string value, InterestType type)
+{
     public long InterestId { get; private set; }
     public string Key { get; private set; } = key;
     public string Value { get; private set; } = value;

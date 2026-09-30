@@ -4,7 +4,8 @@ using System.Reflection;
 
 namespace Sonorus.Marketplace.Infrastructure.Persistence;
 
-public class SonorusMarketplaceDbContext(DbContextOptions<SonorusMarketplaceDbContext> options) : DbContext(options) {
+public class SonorusMarketplaceDbContext(DbContextOptions<SonorusMarketplaceDbContext> options) : DbContext(options)
+{
     public DbSet<Product> Products { get; set; }
     public DbSet<Media> Medias { get; set; }
 

@@ -13,8 +13,10 @@ using System.Text;
 
 namespace Sonorus.Chat.Infrastructure;
 
-public static class InfrastructureModule {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration) {
+public static class InfrastructureModule
+{
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    {
         services
             .AddMessageBroker(configuration)
             .AddApiGateway(configuration)
@@ -25,7 +27,8 @@ public static class InfrastructureModule {
         return services;
     }
 
-    private static IServiceCollection AddMessageBroker(this IServiceCollection services, IConfiguration configuration) {
+    private static IServiceCollection AddMessageBroker(this IServiceCollection services, IConfiguration configuration)
+    {
         string connectionString = configuration.GetConnectionString("AzureServiceBus")!;
 
         ServiceBusClient serviceBusClient = new(connectionString);
@@ -35,13 +38,15 @@ public static class InfrastructureModule {
         return services;
     }
 
-    private static IServiceCollection AddApiGateway(this IServiceCollection services, IConfiguration configuration) {
+    private static IServiceCollection AddApiGateway(this IServiceCollection services, IConfiguration configuration)
+    {
         services.AddHttpClient("API_GATEWAY", c => c.BaseAddress = new Uri(configuration["ApiGateway:Url"]!));
 
         return services;
     }
 
-    private static IServiceCollection AddNoSQL(this IServiceCollection services, IConfiguration configuration) {
+    private static IServiceCollection AddNoSQL(this IServiceCollection services, IConfiguration configuration)
+    {
         string databaseName = configuration["AzureCosmoDB:DatabaseName"]!;
         string connectionString = configuration["AzureCosmoDB:ConnectionString"]!;
 
@@ -54,29 +59,36 @@ public static class InfrastructureModule {
         return services;
     }
 
-    private static IServiceCollection AddRepositories(this IServiceCollection services) {
+    private static IServiceCollection AddRepositories(this IServiceCollection services)
+    {
         services.AddScoped<IChatRepository, ChatRepository>();
         services.AddScoped<IConnectionRepository, ConnectionRepository>();
 
         return services;
     }
 
-    private static IServiceCollection AddAuthentication(this IServiceCollection services, IConfiguration configuration) {
+    private static IServiceCollection AddAuthentication(this IServiceCollection services, IConfiguration configuration)
+    {
         services
             .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options => {
-                options.Events = new JwtBearerEvents {
-                    OnMessageReceived = context => {
+            .AddJwtBearer(options =>
+            {
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
                         StringValues accessToken = context.Request.Query["access_token"];
                         PathString path = context.HttpContext.Request.Path;
-                        if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/chatHub")) {
+                        if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/chatHub"))
+                        {
                             context.Token = accessToken;
                         }
                         return Task.CompletedTask;
                     }
                 };
 
-                options.TokenValidationParameters = new TokenValidationParameters {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateLifetime = true,

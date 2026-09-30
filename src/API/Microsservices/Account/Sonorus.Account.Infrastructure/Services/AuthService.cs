@@ -9,24 +9,28 @@ using System.Text;
 
 namespace Sonorus.Account.Infrastructure.Services;
 
-public class AuthService(IConfiguration configuration) : IAuthService {
+public class AuthService(IConfiguration configuration) : IAuthService
+{
     private readonly IConfiguration _configuration = configuration;
 
-    public string GenerateRefreshToken() {
+    public string GenerateRefreshToken()
+    {
         byte[] randomNumber = new byte[32];
         using RandomNumberGenerator rng = RandomNumberGenerator.Create();
         rng.GetBytes(randomNumber);
         return Convert.ToBase64String(randomNumber);
     }
 
-    public string GenerateToken(User user) {
+    public string GenerateToken(User user)
+    {
         string issuer = _configuration["Jwt:Issuer"]!;
         string audience = _configuration["Jwt:Audience"]!;
         string key = _configuration["Jwt:Secret"]!;
 
         SymmetricSecurityKey securityKey = new(Encoding.UTF8.GetBytes(key));
         JwtSecurityTokenHandler tokenHandler = new();
-        SecurityTokenDescriptor tokenDescriptor = new() {
+        SecurityTokenDescriptor tokenDescriptor = new()
+        {
             Audience = audience,
             Issuer = issuer,
             Expires = DateTime.UtcNow.AddHours(1),
@@ -44,9 +48,11 @@ public class AuthService(IConfiguration configuration) : IAuthService {
         return tokenHandler.WriteToken(token);
     }
 
-    public string GenerateToken(IEnumerable<Claim> claims) {
+    public string GenerateToken(IEnumerable<Claim> claims)
+    {
         JwtSecurityTokenHandler tokenHandler = new();
-        SecurityTokenDescriptor tokenDescriptor = new() {
+        SecurityTokenDescriptor tokenDescriptor = new()
+        {
             Expires = DateTime.UtcNow.AddHours(1),
             Subject = new ClaimsIdentity(claims),
             SigningCredentials = new(

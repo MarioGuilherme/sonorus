@@ -7,12 +7,14 @@ using Sonorus.Account.Infrastructure.Persistence;
 
 namespace Sonorus.Account.Application.Commands.CreateUser;
 
-public class RegisterUserCommandHandler(IUnitOfWork unitOfWork, IAuthService authService, IMapper mapper) : IRequestHandler<CreateUserCommand, TokenViewModel> {
+public class RegisterUserCommandHandler(IUnitOfWork unitOfWork, IAuthService authService, IMapper mapper) : IRequestHandler<CreateUserCommand, TokenViewModel>
+{
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IAuthService _authService = authService;
     private readonly IMapper _mapper = mapper;
 
-    public async Task<TokenViewModel> Handle(CreateUserCommand request, CancellationToken cancellationToken) {
+    public async Task<TokenViewModel> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+    {
         User user = _mapper.Map<User>(request);
 
         await _unitOfWork.Users.RegisterAsync(user);

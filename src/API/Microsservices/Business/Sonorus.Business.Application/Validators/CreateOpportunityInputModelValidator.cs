@@ -3,8 +3,10 @@ using Sonorus.Business.Application.Commands.CreateOpportunity;
 
 namespace Sonorus.Business.Application.Validators;
 
-public class CreateOpportunityInputModelValidator : AbstractValidator<CreateOpportunityInputModel> {
-    public CreateOpportunityInputModelValidator() {
+public class CreateOpportunityInputModelValidator : AbstractValidator<CreateOpportunityInputModel>
+{
+    public CreateOpportunityInputModelValidator()
+    {
         RuleLevelCascadeMode = CascadeMode.Stop;
 
         RuleFor(o => o.Name)

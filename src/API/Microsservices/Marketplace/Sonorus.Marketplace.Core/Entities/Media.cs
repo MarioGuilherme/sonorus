@@ -1,10 +1,12 @@
 ﻿namespace Sonorus.Marketplace.Core.Entities;
 
-public class Media(string path) {
+public class Media(string path)
+{
     public long MediaId { get; private set; }
     public long ProductId { get; private set; }
     public Product Product { get; private set; } = null!;
-    public string Path {
+    public string Path
+    {
         get => $"{Environment.GetEnvironmentVariable("BlobStorageURL")}/{_path}";
         private set => _path = value;
     }

@@ -7,13 +7,15 @@ using Sonorus.Post.Infrastructure.Persistence;
 
 namespace Sonorus.Post.Application.Commands.CreateComment;
 
-public class CreateCommentCommandHandler(IUnitOfWork unitOfWork, IMapper mapper) : IRequestHandler<CreateCommentCommand, CommentViewModel> {
+public class CreateCommentCommandHandler(IUnitOfWork unitOfWork, IMapper mapper) : IRequestHandler<CreateCommentCommand, CommentViewModel>
+{
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IMapper _mapper = mapper;
 
-    public async Task<CommentViewModel> Handle(CreateCommentCommand request, CancellationToken cancellationToken) {
+    public async Task<CommentViewModel> Handle(CreateCommentCommand request, CancellationToken cancellationToken)
+    {
         Core.Entities.Post post = await _unitOfWork.Posts.GetByIdWithFullDataTrackingAsync(request.PostId) ?? throw new PostNotFoundException();
-        
+
         if (post.UserId != request.UserId) throw new AuthenticatedUserAreNotOwnerOfPostException();
 
         Comment comment = new(request.UserId, request.Content);

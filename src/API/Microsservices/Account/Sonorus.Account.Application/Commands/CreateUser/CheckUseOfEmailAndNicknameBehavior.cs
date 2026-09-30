@@ -5,10 +5,12 @@ using Sonorus.Account.Infrastructure.Persistence;
 
 namespace Sonorus.Account.Application.Commands.CreateUser;
 
-public class CheckUseOfEmailAndNicknameBehavior(IUnitOfWork unitOfWork) : IPipelineBehavior<CreateUserCommand, TokenViewModel> {
+public class CheckUseOfEmailAndNicknameBehavior(IUnitOfWork unitOfWork) : IPipelineBehavior<CreateUserCommand, TokenViewModel>
+{
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
-    public async Task<TokenViewModel> Handle(CreateUserCommand request, RequestHandlerDelegate<TokenViewModel> next, CancellationToken cancellationToken) {
+    public async Task<TokenViewModel> Handle(CreateUserCommand request, RequestHandlerDelegate<TokenViewModel> next, CancellationToken cancellationToken)
+    {
         if (await _unitOfWork.Users.EmailInUseInAsync(request.Email)) throw new EmailAlreadyInUseException();
         if (await _unitOfWork.Users.NicknameIsInUseAsync(request.Nickname)) throw new NicknameAlreadyInUseException();
 

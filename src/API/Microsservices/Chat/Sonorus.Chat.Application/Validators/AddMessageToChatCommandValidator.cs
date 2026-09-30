@@ -3,8 +3,10 @@ using Sonorus.Chat.Application.Commands.AddMessageToChat;
 
 namespace Sonorus.Chat.Application.Validators;
 
-public class AddMessageToChatCommandValidator : AbstractValidator<AddMessageToChatCommand> {
-    public AddMessageToChatCommandValidator() {
+public class AddMessageToChatCommandValidator : AbstractValidator<AddMessageToChatCommand>
+{
+    public AddMessageToChatCommandValidator()
+    {
         RuleLevelCascadeMode = CascadeMode.Stop;
 
         RuleFor(m => m.SentByUserId)
@@ -14,7 +16,8 @@ public class AddMessageToChatCommandValidator : AbstractValidator<AddMessageToCh
             .Must(participants => participants is not null || participants?.Count() >= 2)
             .WithMessage("O número de participantes da conversa deve ser de pelo menos duas pessoas!");
 
-        RuleForEach(m => m.Participants).ChildRules(participants => {
+        RuleForEach(m => m.Participants).ChildRules(participants =>
+        {
             participants.RuleFor(participantId => participantId)
                 .NotEmpty().WithMessage("O identificador do participante da conversa não é válido!");
         });

@@ -4,13 +4,16 @@ using System.Text.RegularExpressions;
 
 namespace Sonorus.Account.Application.Validators;
 
-public partial class GetUserByLoginQueryValidator : AbstractValidator<GetUserByLoginQuery> {
-    public GetUserByLoginQueryValidator() {
+public partial class GetUserByLoginQueryValidator : AbstractValidator<GetUserByLoginQuery>
+{
+    public GetUserByLoginQueryValidator()
+    {
         RuleLevelCascadeMode = CascadeMode.Stop;
 
         RuleFor(user => user.Login)
             .NotEmpty().WithMessage("O seu e-mail ou apelido precisa ser informado!")
-            .Must(value => {
+            .Must(value =>
+            {
                 EmailValidator emailValidator = new();
                 bool isEmail = emailValidator.Validate(value).IsValid;
                 bool isNickname = NicknamePattern().IsMatch(value);
@@ -23,7 +26,8 @@ public partial class GetUserByLoginQueryValidator : AbstractValidator<GetUserByL
             .MinimumLength(6).WithMessage("A senha precisa ter no mínimo 6 caracteres!");
     }
 
-    public class EmailValidator : AbstractValidator<string> {
+    public class EmailValidator : AbstractValidator<string>
+    {
         public EmailValidator() => RuleFor(x => x).EmailAddress();
     }
 

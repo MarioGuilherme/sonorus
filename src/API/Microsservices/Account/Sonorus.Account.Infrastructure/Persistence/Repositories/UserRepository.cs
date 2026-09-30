@@ -4,10 +4,12 @@ using Sonorus.Account.Core.Repositories;
 
 namespace Sonorus.Account.Infrastructure.Persistence.Repositories;
 
-public class UserRepository(SonorusAccountDbContext dbContext) : IUserRepository {
+public class UserRepository(SonorusAccountDbContext dbContext) : IUserRepository
+{
     private readonly SonorusAccountDbContext _dbContext = dbContext;
 
-    public void Delete(User user) {
+    public void Delete(User user)
+    {
         user.Interests.Clear();
         _dbContext.Users.Remove(user);
     }
@@ -33,7 +35,8 @@ public class UserRepository(SonorusAccountDbContext dbContext) : IUserRepository
         .Where(user => userIds.Contains(user.UserId))
         .ToListAsync();
 
-    public async Task RegisterAsync(User user) {
+    public async Task RegisterAsync(User user)
+    {
         await _dbContext.Users.AddAsync(user);
     }
 

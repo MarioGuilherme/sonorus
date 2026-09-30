@@ -2,7 +2,8 @@
 
 namespace Sonorus.Account.Core.Repositories;
 
-public interface IUserRepository {
+public interface IUserRepository
+{
     void Delete(User user);
     Task<bool> EmailInUseInAsync(string email, long userId = 0);
     Task<User?> GetByIdAsync(long userId);

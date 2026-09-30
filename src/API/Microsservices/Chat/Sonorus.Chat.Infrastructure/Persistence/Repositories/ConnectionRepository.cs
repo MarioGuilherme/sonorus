@@ -5,12 +5,14 @@ using Sonorus.Chat.Infrastructure.Persistence.AntiCorruption;
 
 namespace Sonorus.Chat.Infrastructure.Persistence.Repositories;
 
-public class ConnectionRepository(Database database) : IConnectionRepository {
+public class ConnectionRepository(Database database) : IConnectionRepository
+{
     private readonly Container _container = database.CreateContainerIfNotExistsAsync("Connections", "/userId").GetAwaiter().GetResult()!;
 
     public Task DeleteAsync(Connection connection) => _container.DeleteItemAsync<CosmosConnection>(connection.Id.ToString(), new(connection.UserId));
 
-    public async Task<Connection?> GetByUserIdAsync(long userId) {
+    public async Task<Connection?> GetByUserIdAsync(long userId)
+    {
         QueryDefinition queryDefinition = new(@$"SELECT c.id, c.connectionId, c.userId FROM c WHERE c.userId = {userId}");
         using FeedIterator<CosmosConnection> connectionsIterator = _container.GetItemQueryIterator<CosmosConnection>(queryDefinition);
         FeedResponse<CosmosConnection> response = await connectionsIterator.ReadNextAsync();
@@ -21,7 +23,8 @@ public class ConnectionRepository(Database database) : IConnectionRepository {
         return new Connection(new(cosmosConnection.Id), cosmosConnection.ConnectionId, cosmosConnection.UserId);
     }
 
-    public async Task<ICollection<string>> GetConnectionIdByParticipantsIdAsync(IEnumerable<long> participants) {
+    public async Task<ICollection<string>> GetConnectionIdByParticipantsIdAsync(IEnumerable<long> participants)
+    {
         QueryDefinition queryDefinition = new(@$"
             SELECT c.connectionId FROM c
             WHERE {string.Join(" OR ", participants.Select(userId => $"c.userId = {userId}"))}
@@ -29,7 +32,8 @@ public class ConnectionRepository(Database database) : IConnectionRepository {
         FeedIterator<CosmosConnection> connectionsIterator = _container.GetItemQueryIterator<CosmosConnection>(queryDefinition);
         ICollection<string> connectionsIds = [];
 
-        while (connectionsIterator.HasMoreResults) {
+        while (connectionsIterator.HasMoreResults)
+        {
             FeedResponse<CosmosConnection> response = await connectionsIterator.ReadNextAsync();
 
             foreach (CosmosConnection cosmosConnection in response)
@@ -39,13 +43,15 @@ public class ConnectionRepository(Database database) : IConnectionRepository {
         return connectionsIds;
     }
 
-    public Task RegisterConnectionIdOfUserIdAsync(long userId, string connectionId) => _container.CreateItemAsync(new CosmosConnection {
+    public Task RegisterConnectionIdOfUserIdAsync(long userId, string connectionId) => _container.CreateItemAsync(new CosmosConnection
+    {
         Id = Guid.NewGuid().ToString(),
         UserId = userId,
         ConnectionId = connectionId
     });
 
-    public Task UpdateAsync(Connection connection) => _container.ReplaceItemAsync(new CosmosConnection {
+    public Task UpdateAsync(Connection connection) => _container.ReplaceItemAsync(new CosmosConnection
+    {
         Id = connection.Id.ToString(),
         UserId = connection.UserId,
         ConnectionId = connection.ConnectionId

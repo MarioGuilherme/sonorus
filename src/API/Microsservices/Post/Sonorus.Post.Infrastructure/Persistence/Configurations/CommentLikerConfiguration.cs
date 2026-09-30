@@ -4,8 +4,10 @@ using Sonorus.Post.Core.Entities;
 
 namespace Sonorus.Post.Infrastructure.Persistence.Configurations;
 
-public class CommentLikerConfiguration : IEntityTypeConfiguration<CommentLiker> {
-    public void Configure(EntityTypeBuilder<CommentLiker> builder) {
+public class CommentLikerConfiguration : IEntityTypeConfiguration<CommentLiker>
+{
+    public void Configure(EntityTypeBuilder<CommentLiker> builder)
+    {
         builder.HasKey(cl => new { cl.CommentId, cl.UserId });
 
         builder

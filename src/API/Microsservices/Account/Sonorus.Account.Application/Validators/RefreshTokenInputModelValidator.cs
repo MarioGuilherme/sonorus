@@ -3,8 +3,10 @@ using Sonorus.Account.Application.Commands.RegenerateAccessToken;
 
 namespace Sonorus.Account.Application.Validators;
 
-public class RefreshTokenInputModelValidator : AbstractValidator<RefreshTokenInputModel> {
-    public RefreshTokenInputModelValidator() {
+public class RefreshTokenInputModelValidator : AbstractValidator<RefreshTokenInputModel>
+{
+    public RefreshTokenInputModelValidator()
+    {
         RuleLevelCascadeMode = CascadeMode.Stop;
 
         RuleFor(rt => rt.RefreshToken)

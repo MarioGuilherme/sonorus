@@ -3,8 +3,10 @@ using Sonorus.Account.Application.Commands.AssociateCollectionOfInterests;
 
 namespace Sonorus.Account.Application.Validators;
 
-public class InterestInputModelValidator : AbstractValidator<InterestInputModel> {
-    public InterestInputModelValidator() {
+public class InterestInputModelValidator : AbstractValidator<InterestInputModel>
+{
+    public InterestInputModelValidator()
+    {
         RuleLevelCascadeMode = CascadeMode.Stop;
 
         RuleFor(i => i.InterestId)

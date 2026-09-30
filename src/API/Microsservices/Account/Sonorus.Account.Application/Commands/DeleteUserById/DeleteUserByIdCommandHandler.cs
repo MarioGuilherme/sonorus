@@ -8,12 +8,14 @@ using Sonorus.Account.Infrastructure.Persistence;
 
 namespace Sonorus.Account.Application.Commands.DeleteUserById;
 
-public class DeleteUserByIdCommandHandler(IUnitOfWork unitOfWork, IFileStorage fileStorage, IMessageBroker messageBroker) : IRequestHandler<DeleteUserByIdCommand, Unit> {
+public class DeleteUserByIdCommandHandler(IUnitOfWork unitOfWork, IFileStorage fileStorage, IMessageBroker messageBroker) : IRequestHandler<DeleteUserByIdCommand, Unit>
+{
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IFileStorage _fileStorage = fileStorage;
     private readonly IMessageBroker _messageBroker = messageBroker;
 
-    public async Task<Unit> Handle(DeleteUserByIdCommand request, CancellationToken cancellationToken) {
+    public async Task<Unit> Handle(DeleteUserByIdCommand request, CancellationToken cancellationToken)
+    {
         User user = await _unitOfWork.Users.GetByIdTrackingAsync(request.UserId) ?? throw new AuthenticatedUserNoLongerExistException();
 
         await _unitOfWork.RefreshTokens.DeleteAsync(user.RefreshToken);

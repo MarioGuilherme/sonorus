@@ -5,10 +5,12 @@ using Sonorus.Post.Infrastructure.Persistence;
 
 namespace Sonorus.Post.Application.Commands.ToggleLikePost;
 
-public class ToggleLikePostCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<ToggleLikePostCommand, long> {
+public class ToggleLikePostCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<ToggleLikePostCommand, long>
+{
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
-    public async Task<long> Handle(ToggleLikePostCommand request, CancellationToken cancellationToken) {
+    public async Task<long> Handle(ToggleLikePostCommand request, CancellationToken cancellationToken)
+    {
         Core.Entities.Post post = await _unitOfWork.Posts.GetByIdWithPostLikersTrackingAsync(request.PostId) ?? throw new PostNotFoundException();
         PostLiker? postLiker = post.PostLikers.FirstOrDefault(post => post.UserId == request.UserId);
 

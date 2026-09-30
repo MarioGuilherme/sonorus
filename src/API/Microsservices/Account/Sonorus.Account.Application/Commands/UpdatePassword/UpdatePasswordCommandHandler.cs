@@ -5,10 +5,12 @@ using Sonorus.Account.Infrastructure.Persistence;
 
 namespace Sonorus.Account.Application.Commands.UpdatePassword;
 
-public class UpdatePasswordCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<UpdatePasswordCommand, Unit> {
+public class UpdatePasswordCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<UpdatePasswordCommand, Unit>
+{
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
-    public async Task<Unit> Handle(UpdatePasswordCommand request, CancellationToken cancellationToken) {
+    public async Task<Unit> Handle(UpdatePasswordCommand request, CancellationToken cancellationToken)
+    {
         User user = await _unitOfWork.Users.GetByIdTrackingAsync(request.UserId) ?? throw new AuthenticatedUserNoLongerExistException();
 
         user.UpdatePassword(request.Password);

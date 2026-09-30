@@ -6,11 +6,13 @@ using Sonorus.Marketplace.Infrastructure.Persistence;
 
 namespace Sonorus.Marketplace.Application.Commands.DeleteProduct;
 
-public class DeleteProductCommandHandler(IUnitOfWork unitOfWork, IFileStorage fileStorage) : IRequestHandler<DeleteProductCommand, Unit> {
+public class DeleteProductCommandHandler(IUnitOfWork unitOfWork, IFileStorage fileStorage) : IRequestHandler<DeleteProductCommand, Unit>
+{
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IFileStorage _fileStorage = fileStorage;
 
-    public async Task<Unit> Handle(DeleteProductCommand request, CancellationToken cancellationToken) {
+    public async Task<Unit> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
+    {
         Product product = await _unitOfWork.Products.GetByIdTrackingAsync(request.ProductId) ?? throw new ProductNotFoundException();
 
         if (product.SellerId != request.UserId) throw new AuthenticatedUserAreNotOwnerOfProductException();

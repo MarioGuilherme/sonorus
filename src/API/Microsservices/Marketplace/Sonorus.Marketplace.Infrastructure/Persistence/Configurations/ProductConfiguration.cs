@@ -1,11 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Sonorus.Marketplace.Core.Entities;
 
 namespace Sonorus.Marketplace.Infrastructure.Persistence.Configurations;
 
-public class ProductConfiguration : IEntityTypeConfiguration<Product> {
-    public void Configure(EntityTypeBuilder<Product> builder) {
+public class ProductConfiguration : IEntityTypeConfiguration<Product>
+{
+    public void Configure(EntityTypeBuilder<Product> builder)
+    {
         builder.HasKey(p => p.ProductId);
 
         builder.Property(p => p.Name)

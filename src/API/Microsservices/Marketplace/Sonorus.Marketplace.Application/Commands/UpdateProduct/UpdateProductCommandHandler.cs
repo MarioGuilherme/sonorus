@@ -10,18 +10,21 @@ using System.Net.Http.Json;
 
 namespace Sonorus.Marketplace.Application.Commands.UpdateProduct;
 
-public class UpdateProductCommandHandler(IUnitOfWork unitOfWork, IHttpClientFactory httpClientFactory, IFileStorage fileStorage, IMapper mapper) : IRequestHandler<UpdateProductCommand, ProductViewModel> {
+public class UpdateProductCommandHandler(IUnitOfWork unitOfWork, IHttpClientFactory httpClientFactory, IFileStorage fileStorage, IMapper mapper) : IRequestHandler<UpdateProductCommand, ProductViewModel>
+{
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
     private readonly IFileStorage _fileStorage = fileStorage;
     private readonly IMapper _mapper = mapper;
 
-    public async Task<ProductViewModel> Handle(UpdateProductCommand request, CancellationToken cancellationToken) {
+    public async Task<ProductViewModel> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
+    {
         Product productDb = await _unitOfWork.Products.GetByIdTrackingAsync(request.ProductId) ?? throw new ProductNotFoundException();
 
         if (productDb.SellerId != request.UserId) throw new AuthenticatedUserAreNotOwnerOfProductException();
 
-        foreach (IFormFile file in request.NewMedias) {
+        foreach (IFormFile file in request.NewMedias)
+        {
             string mediaName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
             await _fileStorage.UploadOrUpdateFileAsync(mediaName, file.OpenReadStream());
             productDb.Medias.Add(new(mediaName));

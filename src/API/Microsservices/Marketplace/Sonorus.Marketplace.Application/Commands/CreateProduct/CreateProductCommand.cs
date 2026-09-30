@@ -3,10 +3,12 @@ using Sonorus.Marketplace.Application.ViewModels;
 
 namespace Sonorus.Marketplace.Application.Commands.CreateProduct;
 
-public class CreateProductCommand : CreateProductInputModel, IRequest<ProductViewModel> {
+public class CreateProductCommand : CreateProductInputModel, IRequest<ProductViewModel>
+{
     public long UserId { get; private set; }
 
-    public CreateProductCommand(long userId, CreateProductInputModel inputModel) {
+    public CreateProductCommand(long userId, CreateProductInputModel inputModel)
+    {
         UserId = userId;
         Name = inputModel.Name;
         Description = inputModel.Description;

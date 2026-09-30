@@ -2,7 +2,8 @@
 
 namespace Sonorus.Chat.Infrastructure.Persistence.AntiCorruption;
 
-public class CosmosChat {
+public class CosmosChat
+{
     [JsonProperty("id")]
     public string Id { get; set; } = null!;
     [JsonProperty("chatId")]

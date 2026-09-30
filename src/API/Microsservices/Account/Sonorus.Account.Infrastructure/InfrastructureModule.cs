@@ -17,8 +17,10 @@ using System.Text;
 
 namespace Sonorus.Account.Infrastructure;
 
-public static class InfrastructureModule {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration) {
+public static class InfrastructureModule
+{
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    {
         services
             .AddMessageBroker(configuration)
             .AddPersistence(configuration)
@@ -31,7 +33,8 @@ public static class InfrastructureModule {
         return services;
     }
 
-    private static IServiceCollection AddMessageBroker(this IServiceCollection services, IConfiguration configuration) {
+    private static IServiceCollection AddMessageBroker(this IServiceCollection services, IConfiguration configuration)
+    {
         string connectionString = configuration.GetConnectionString("AzureServiceBus")!;
 
         services.AddSingleton(_ => new ServiceBusClient(connectionString));
@@ -40,7 +43,8 @@ public static class InfrastructureModule {
         return services;
     }
 
-    private static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration) {
+    private static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
+    {
         string connectionString = configuration.GetConnectionString("SonorusAccountDb")!;
 
         services.AddDbContext<SonorusAccountDbContext>(options => options.UseSqlServer(connectionString));
@@ -48,7 +52,8 @@ public static class InfrastructureModule {
         return services;
     }
 
-    private static IServiceCollection AddRepositories(this IServiceCollection services) {
+    private static IServiceCollection AddRepositories(this IServiceCollection services)
+    {
         services.AddScoped<IInterestRepository, InterestRepository>();
         services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
@@ -56,18 +61,22 @@ public static class InfrastructureModule {
         return services;
     }
 
-    private static IServiceCollection AddCacheService(this IServiceCollection services) {
+    private static IServiceCollection AddCacheService(this IServiceCollection services)
+    {
         services.AddMemoryCache();
         services.AddScoped<ICacheService, MemoryCacheService>();
 
         return services;
     }
 
-    private static IServiceCollection AddAuthentication(this IServiceCollection services, IConfiguration configuration) {
+    private static IServiceCollection AddAuthentication(this IServiceCollection services, IConfiguration configuration)
+    {
         services
             .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options => {
-                options.TokenValidationParameters = new TokenValidationParameters {
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateLifetime = true,
@@ -83,10 +92,12 @@ public static class InfrastructureModule {
         return services;
     }
 
-    private static IServiceCollection AddFileStorage(this IServiceCollection services, IConfiguration configuration) {
+    private static IServiceCollection AddFileStorage(this IServiceCollection services, IConfiguration configuration)
+    {
         Environment.SetEnvironmentVariable("BlobStorageURL", $"{configuration["BlobStorage:URL"]!}/{configuration["BlobStorage:Container"]!}");
 
-        services.AddSingleton<IFileStorage, AzureStorageService>(_ => {
+        services.AddSingleton<IFileStorage, AzureStorageService>(_ =>
+        {
             string connectionString = configuration["BlobStorage:ConnectionString"]!;
             string containerName = configuration["BlobStorage:Container"]!;
             BlobContainerClient blobContainerClient = new(connectionString, containerName);
@@ -97,7 +108,8 @@ public static class InfrastructureModule {
         return services;
     }
 
-    private static IServiceCollection AddUnitOfWork(this IServiceCollection services) {
+    private static IServiceCollection AddUnitOfWork(this IServiceCollection services)
+    {
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         return services;

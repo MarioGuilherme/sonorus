@@ -2,7 +2,8 @@
 
 namespace Sonorus.Post.Core.Repositories;
 
-public interface IPostRepository {
+public interface IPostRepository
+{
     Task CreatePostAsync(Entities.Post post);
     void Delete(Entities.Post post);
     IEnumerable<string> DeleteAllFromUserId(long userId);

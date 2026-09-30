@@ -1,6 +1,7 @@
 ﻿namespace Sonorus.Account.Core.Enums;
 
-public enum InterestType : byte {
+public enum InterestType : byte
+{
     Band,
     Artist,
     MusicalGenre,

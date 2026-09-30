@@ -6,11 +6,13 @@ using Sonorus.Post.Infrastructure.Persistence;
 
 namespace Sonorus.Post.Application.Commands.DeletePostById;
 
-public class DeletePostByIdCommandHandler(IUnitOfWork unitOfWork, IFileStorage fileStorage) : IRequestHandler<DeletePostByIdCommand, Unit> {
+public class DeletePostByIdCommandHandler(IUnitOfWork unitOfWork, IFileStorage fileStorage) : IRequestHandler<DeletePostByIdCommand, Unit>
+{
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IFileStorage _fileStorage = fileStorage;
 
-    public async Task<Unit> Handle(DeletePostByIdCommand request, CancellationToken cancellationToken) {
+    public async Task<Unit> Handle(DeletePostByIdCommand request, CancellationToken cancellationToken)
+    {
         Core.Entities.Post post = await _unitOfWork.Posts.GetByIdWithFullDataTrackingAsync(request.PostId) ?? throw new PostNotFoundException();
 
         if (post.UserId != request.UserId) throw new AuthenticatedUserAreNotOwnerOfPostException();

@@ -1,6 +1,7 @@
 ﻿namespace Sonorus.Post.Core.Entities;
 
-public class Comment(long userId, string content) {
+public class Comment(long userId, string content)
+{
     public long CommentId { get; private set; }
     public long PostId { get; private set; }
     public long UserId { get; private set; } = userId;

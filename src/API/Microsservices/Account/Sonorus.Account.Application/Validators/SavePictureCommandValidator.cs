@@ -3,10 +3,12 @@ using Sonorus.Account.Application.Commands.UpdatePicture;
 
 namespace Sonorus.Account.Application.Validators;
 
-public class SavePictureCommandValidator : AbstractValidator<UpdatePictureCommand> {
+public class SavePictureCommandValidator : AbstractValidator<UpdatePictureCommand>
+{
     private readonly IEnumerable<string> _allowedExtensions = [".png", ".jpeg", ".jpg"];
 
-    public SavePictureCommandValidator() {
+    public SavePictureCommandValidator()
+    {
         RuleLevelCascadeMode = CascadeMode.Stop;
 
         RuleFor(picture => picture.Picture)

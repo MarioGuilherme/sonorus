@@ -2,7 +2,8 @@
 
 namespace Sonorus.Marketplace.Core.Entities;
 
-public class Product(long sellerId, string name, string? description, decimal price, ConditionType condition) {
+public class Product(long sellerId, string name, string? description, decimal price, ConditionType condition)
+{
     public long ProductId { get; private set; }
     public long SellerId { get; private set; } = sellerId;
     public string Name { get; private set; } = name;
@@ -12,7 +13,8 @@ public class Product(long sellerId, string name, string? description, decimal pr
     public DateTime AnnouncedAt { get; private set; }
     public ICollection<Media> Medias { get; private set; } = [];
 
-    public void Update(string name, decimal price, string? description, ConditionType condition) {
+    public void Update(string name, decimal price, string? description, ConditionType condition)
+    {
         Name = name;
         Price = price;
         Description = description;

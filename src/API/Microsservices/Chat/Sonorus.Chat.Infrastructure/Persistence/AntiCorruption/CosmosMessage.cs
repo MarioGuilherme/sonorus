@@ -2,7 +2,8 @@
 
 namespace Sonorus.Chat.Infrastructure.Persistence.AntiCorruption;
 
-public class CosmosMessage {
+public class CosmosMessage
+{
     [JsonProperty("content")]
     public string Content { get; set; } = null!;
     [JsonProperty("sentByUserId")]

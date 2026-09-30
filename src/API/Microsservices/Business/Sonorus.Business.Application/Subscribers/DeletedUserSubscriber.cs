@@ -7,18 +7,21 @@ using System.Text.Json;
 
 namespace Sonorus.Business.Application.Subscribers;
 
-public class DeletedUserSubscriber(IServiceProvider serviceProvider) : BackgroundService {
+public class DeletedUserSubscriber(IServiceProvider serviceProvider) : BackgroundService
+{
     private readonly IServiceProvider _serviceProvider = serviceProvider;
     private readonly ServiceBusProcessor _processor = serviceProvider.CreateScope().ServiceProvider.GetRequiredService<ServiceBusProcessor>();
 
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken) {
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
         _processor.ProcessMessageAsync += ProcessMessageAsync;
         _processor.ProcessErrorAsync += ProcessErrorAsync;
 
         await _processor.StartProcessingAsync(stoppingToken);
     }
 
-    public async Task ProcessMessageAsync(ProcessMessageEventArgs args) {
+    public async Task ProcessMessageAsync(ProcessMessageEventArgs args)
+    {
         string jsonString = args.Message.Body.ToString();
 
         DeletedUserIdEvent deletedUserIdEvent = JsonSerializer.Deserialize<DeletedUserIdEvent>(jsonString)!;
@@ -28,7 +31,8 @@ public class DeletedUserSubscriber(IServiceProvider serviceProvider) : Backgroun
         await args.CompleteMessageAsync(args.Message);
     }
 
-    private async Task ProcessDeletedUserAsync(DeletedUserIdEvent deletedUserIdEvent) {
+    private async Task ProcessDeletedUserAsync(DeletedUserIdEvent deletedUserIdEvent)
+    {
         using IServiceScope scope = _serviceProvider.CreateScope();
         IUnitOfWork unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
         unitOfWork.Opportunities.DeleteAllFromUserId(deletedUserIdEvent.UserId);
@@ -38,7 +42,8 @@ public class DeletedUserSubscriber(IServiceProvider serviceProvider) : Backgroun
         await unitOfWork.CommitAsync();
     }
 
-    private Task ProcessErrorAsync(ProcessErrorEventArgs args) {
+    private Task ProcessErrorAsync(ProcessErrorEventArgs args)
+    {
         Console.WriteLine($"Erro no Service Bus: {args.Exception.Message}");
         return Task.CompletedTask;
     }

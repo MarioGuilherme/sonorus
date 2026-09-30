@@ -3,10 +3,12 @@ using Sonorus.Marketplace.Application.Commands.UpdateProduct;
 
 namespace Sonorus.Marketplace.Application.Validators;
 
-public class UpdateProductInputModelValidator : AbstractValidator<UpdateProductInputModel> {
+public class UpdateProductInputModelValidator : AbstractValidator<UpdateProductInputModel>
+{
     private readonly IEnumerable<string> _allowedExtensions = [".png", ".jpeg", ".jpg"];
 
-    public UpdateProductInputModelValidator() {
+    public UpdateProductInputModelValidator()
+    {
         RuleLevelCascadeMode = CascadeMode.Stop;
 
         RuleFor(p => p.Name)
@@ -25,7 +27,8 @@ public class UpdateProductInputModelValidator : AbstractValidator<UpdateProductI
             .NotNull().WithMessage("A condição do produto é obrigatória!")
             .IsInEnum().WithMessage("A condição do produto deve ser um valor válido!");
 
-        RuleForEach(p => p.NewMedias).ChildRules(medias => {
+        RuleForEach(p => p.NewMedias).ChildRules(medias =>
+        {
             medias.RuleFor(media => media)
                 .NotEmpty().WithMessage("A imagem precisa ser informada!")
                 .Must(file => _allowedExtensions.Contains(Path.GetExtension(file.FileName)))
@@ -34,7 +37,8 @@ public class UpdateProductInputModelValidator : AbstractValidator<UpdateProductI
                 .WithMessage("O tamanho do arquivo não pode exceder 5MB!");
         });
 
-        RuleForEach(p => p.MediasToRemove).ChildRules(mediasToRemove => {
+        RuleForEach(p => p.MediasToRemove).ChildRules(mediasToRemove =>
+        {
             mediasToRemove.RuleFor(mediaId => mediaId)
                 .NotEmpty().WithMessage("O identificador da imagem a ser excluída precisa ser informada!")
                 .GreaterThan(0).WithMessage("O identificador da imagem a ser excluída está inválido!");

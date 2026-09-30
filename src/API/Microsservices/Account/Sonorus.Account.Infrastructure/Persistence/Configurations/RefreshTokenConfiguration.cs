@@ -4,8 +4,10 @@ using Sonorus.Account.Core.Entities;
 
 namespace Sonorus.Account.Infrastructure.Persistence.Configurations;
 
-public class RefreshTokenConfiguration : IEntityTypeConfiguration<RefreshToken> {
-    public void Configure(EntityTypeBuilder<RefreshToken> builder) {
+public class RefreshTokenConfiguration : IEntityTypeConfiguration<RefreshToken>
+{
+    public void Configure(EntityTypeBuilder<RefreshToken> builder)
+    {
         builder.HasKey(rt => rt.RefreshTokenId);
 
         builder.Property(rt => rt.Token).HasMaxLength(45);

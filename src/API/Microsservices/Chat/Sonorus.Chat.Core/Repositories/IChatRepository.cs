@@ -2,7 +2,8 @@
 
 namespace Sonorus.Chat.Core.Repositories;
 
-public interface IChatRepository {
+public interface IChatRepository
+{
     Task<Entities.Chat> AddMessageToChatAsync(Guid chatId, Message message);
     Task CreateAsync(Entities.Chat chat);
     Task DeleteAsync(Entities.Chat chat);

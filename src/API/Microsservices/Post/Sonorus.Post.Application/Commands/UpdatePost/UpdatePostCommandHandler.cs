@@ -7,14 +7,17 @@ using Sonorus.Post.Infrastructure.Persistence;
 
 namespace Sonorus.Post.Application.Commands.UpdatePost;
 
-public class UpdatePostCommandHandler(IUnitOfWork unitOfWork, IFileStorage fileStorage) : IRequestHandler<UpdatePostCommand, Unit> {
+public class UpdatePostCommandHandler(IUnitOfWork unitOfWork, IFileStorage fileStorage) : IRequestHandler<UpdatePostCommand, Unit>
+{
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IFileStorage _fileStorage = fileStorage;
 
-    public async Task<Unit> Handle(UpdatePostCommand request, CancellationToken cancellationToken) {
+    public async Task<Unit> Handle(UpdatePostCommand request, CancellationToken cancellationToken)
+    {
         Core.Entities.Post postDb = await _unitOfWork.Posts.GetByIdWithFullDataTrackingAsync(request.PostId) ?? throw new PostNotFoundException();
 
-        foreach (IFormFile file in request.NewMedias) {
+        foreach (IFormFile file in request.NewMedias)
+        {
             string mediaName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
             await _fileStorage.UploadOrUpdateFileAsync(mediaName, file.OpenReadStream());
             postDb.Medias.Add(new(mediaName));

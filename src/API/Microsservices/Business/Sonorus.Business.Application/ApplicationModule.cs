@@ -11,8 +11,10 @@ using Sonorus.Business.Core.Entities;
 
 namespace Sonorus.Business.Application;
 
-public static class ApplicationModule {
-    public static IServiceCollection AddApplication(this IServiceCollection services) {
+public static class ApplicationModule
+{
+    public static IServiceCollection AddApplication(this IServiceCollection services)
+    {
         services
             .AddMediatR()
             .AddFluentValidation()
@@ -22,13 +24,15 @@ public static class ApplicationModule {
         return services;
     }
 
-    private static IServiceCollection AddMediatR(this IServiceCollection services) {
+    private static IServiceCollection AddMediatR(this IServiceCollection services)
+    {
         services.AddMediatR(config => config.RegisterServicesFromAssemblyContaining<GetAllOpportunitiesByNameQuery>());
 
         return services;
     }
 
-    private static IServiceCollection AddFluentValidation(this IServiceCollection services) {
+    private static IServiceCollection AddFluentValidation(this IServiceCollection services)
+    {
         services
             .AddFluentValidationAutoValidation(o => o.DisableDataAnnotationsValidation = true)
             .AddValidatorsFromAssemblyContaining<CreateOpportunityCommand>();
@@ -36,8 +40,10 @@ public static class ApplicationModule {
         return services;
     }
 
-    private static IServiceCollection AddAutoMapper(this IServiceCollection services) {
-        services.AddSingleton(new MapperConfiguration(config => {
+    private static IServiceCollection AddAutoMapper(this IServiceCollection services)
+    {
+        services.AddSingleton(new MapperConfiguration(config =>
+        {
             config.CreateMap<Opportunity, OpportunityViewModel>();
             config.CreateMap<UpdateOpportunityCommand, Opportunity>();
         }).CreateMapper());
@@ -45,7 +51,8 @@ public static class ApplicationModule {
         return services;
     }
 
-    private static IServiceCollection AddSubscribers(this IServiceCollection services) {
+    private static IServiceCollection AddSubscribers(this IServiceCollection services)
+    {
         services.AddHostedService<DeletedUserSubscriber>();
 
         return services;

@@ -4,24 +4,31 @@ using Microsoft.OpenApi.Models;
 
 namespace Sonorus.SharedKernel;
 
-public static class SwaggerConfig {
-    public static void AddSharedSwaggerGen(this IServiceCollection services, string webServiceName) {
-        services.AddSwaggerGen(c => {
-            c.SwaggerDoc("v1", new() {
+public static class SwaggerConfig
+{
+    public static void AddSharedSwaggerGen(this IServiceCollection services, string webServiceName)
+    {
+        services.AddSwaggerGen(c =>
+        {
+            c.SwaggerDoc("v1", new()
+            {
                 Title = $"Sonorus - {webServiceName} API",
                 Description = "Developed by Mário Guilherme de Andrade Rodrigues",
                 Version = "v1",
-                Contact = new() {
+                Contact = new()
+                {
                     Name = "Mário Guilherme de Andrade Rodrigues",
                     Email = "marioguilhermedev@gmail.com"
                 },
-                License = new() {
+                License = new()
+                {
                     Name = "MIT",
                     Url = new("https://opensource.org/licenses/MIT")
                 }
             });
 
-            c.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new() {
+            c.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new()
+            {
                 Name = "Authorization",
                 Type = SecuritySchemeType.ApiKey,
                 Scheme = JwtBearerDefaults.AuthenticationScheme,

@@ -2,7 +2,8 @@
 
 namespace Sonorus.Business.Application.Commands.UpdateOpportunity;
 
-public class UpdateOpportunityInputModel(string name, string? bandName, string? description, string experienceRequired, decimal payment, bool isWork, WorkTimeUnit? workTimeUnit) {
+public class UpdateOpportunityInputModel(string name, string? bandName, string? description, string experienceRequired, decimal payment, bool isWork, WorkTimeUnit? workTimeUnit)
+{
     public string Name { get; private set; } = name;
     public string? BandName { get; private set; } = bandName;
     public string? Description { get; private set; } = description;

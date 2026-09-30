@@ -3,8 +3,10 @@ using Sonorus.Account.Application.Commands.CreateUser;
 
 namespace Sonorus.Account.Application.Validators;
 
-public class RegisterUserCommandValidator : AbstractValidator<CreateUserCommand> {
-    public RegisterUserCommandValidator() {
+public class RegisterUserCommandValidator : AbstractValidator<CreateUserCommand>
+{
+    public RegisterUserCommandValidator()
+    {
         RuleLevelCascadeMode = CascadeMode.Stop;
 
         RuleFor(user => user.Fullname)

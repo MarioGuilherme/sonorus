@@ -11,6 +11,7 @@ public class CreateOpportunityCommand(long userId, CreateOpportunityInputModel i
     inputModel.Payment,
     inputModel.IsWork,
     inputModel.WorkTimeUnit
-), IRequest<OpportunityViewModel> {
+), IRequest<OpportunityViewModel>
+{
     public long UserId { get; private set; } = userId;
 }

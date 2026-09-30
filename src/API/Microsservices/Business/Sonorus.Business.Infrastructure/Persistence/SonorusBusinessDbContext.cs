@@ -4,7 +4,8 @@ using System.Reflection;
 
 namespace Sonorus.Business.Infrastructure.Persistence;
 
-public class SonorusBusinessDbContext(DbContextOptions<SonorusBusinessDbContext> options) : DbContext(options) {
+public class SonorusBusinessDbContext(DbContextOptions<SonorusBusinessDbContext> options) : DbContext(options)
+{
     public DbSet<Opportunity> Opportunities { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) => modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

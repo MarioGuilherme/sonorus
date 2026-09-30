@@ -8,7 +8,8 @@ public record PostViewModel(
     long TotalComments,
     string? Tablature,
     IEnumerable<MediaViewModel> Medias
-) {
+)
+{
     public UserViewModel Author { get; set; } = null!;
     public bool IsLikedByMe { get; set; }
     public ICollection<InterestViewModel> Interests { get; set; } = [];

@@ -10,6 +10,7 @@ public record ProductViewModel(
     ConditionType Condition,
     DateTime AnnouncedAt,
     IEnumerable<MediaViewModel> Medias
-) {
+)
+{
     public UserViewModel Seller { get; set; } = null!;
 };

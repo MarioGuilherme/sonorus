@@ -3,10 +3,12 @@ using Sonorus.Post.Application.Commands.CreatePost;
 
 namespace Sonorus.Post.Application.Validators;
 
-public class CreatePostInputModelValidator : AbstractValidator<CreatePostInputModel> {
+public class CreatePostInputModelValidator : AbstractValidator<CreatePostInputModel>
+{
     private readonly IEnumerable<string> _allowedExtensions = [".png", ".jpeg", ".jpg"];
 
-    public CreatePostInputModelValidator() {
+    public CreatePostInputModelValidator()
+    {
         RuleLevelCascadeMode = CascadeMode.Stop;
 
         RuleFor(p => p.Content)
@@ -17,7 +19,8 @@ public class CreatePostInputModelValidator : AbstractValidator<CreatePostInputMo
             .MaximumLength(8000).WithMessage("A tablatura não pode ultrapassar 8000 caracteres!")
             .When(p => p.Tablature is not null);
 
-        RuleForEach(p => p.Medias).ChildRules(medias => {
+        RuleForEach(p => p.Medias).ChildRules(medias =>
+        {
             medias.RuleFor(media => media)
                 .Must(file => _allowedExtensions.Contains(Path.GetExtension(file.FileName)))
                 .WithMessage("O tipo de arquivo deve ser png, jpeg ou jpg!")
@@ -25,7 +28,8 @@ public class CreatePostInputModelValidator : AbstractValidator<CreatePostInputMo
                 .WithMessage("O tamanho do arquivo não pode exceder 5MB!");
         });
 
-        RuleForEach(p => p.InterestsIds).ChildRules(interests => {
+        RuleForEach(p => p.InterestsIds).ChildRules(interests =>
+        {
             interests.RuleFor(interest => interest)
                 .GreaterThan(0).WithMessage("O identificador do interesse está inválido!");
         });

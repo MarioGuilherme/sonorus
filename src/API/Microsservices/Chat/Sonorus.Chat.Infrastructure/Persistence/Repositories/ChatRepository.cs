@@ -5,17 +5,20 @@ using Sonorus.Chat.Infrastructure.Persistence.AntiCorruption;
 
 namespace Sonorus.Chat.Infrastructure.Persistence.Repositories;
 
-public class ChatRepository(Database database) : IChatRepository {
+public class ChatRepository(Database database) : IChatRepository
+{
     private readonly Container _container = database.CreateContainerIfNotExistsAsync("Chats", "/chatId").GetAwaiter().GetResult()!;
 
-    public async Task<Core.Entities.Chat> AddMessageToChatAsync(Guid chatId, Message message) {
+    public async Task<Core.Entities.Chat> AddMessageToChatAsync(Guid chatId, Message message)
+    {
         QueryDefinition queryDefinition = new(@$"SELECT c.messages FROM c WHERE c.chatId = '{chatId}'");
 
         FeedIterator<CosmosChat> chatsIterator = _container.GetItemQueryIterator<CosmosChat>(queryDefinition);
         FeedResponse<CosmosChat> response = await chatsIterator.ReadNextAsync();
         CosmosChat chat = response.First();
 
-        chat.Messages.Add(new() {
+        chat.Messages.Add(new()
+        {
             Content = message.Content,
             SentAt = message.SentAt,
             SentByUserId = message.SentByUserId
@@ -31,11 +34,14 @@ public class ChatRepository(Database database) : IChatRepository {
         );
     }
 
-    public async Task CreateAsync(Core.Entities.Chat chat) {
-        await _container.CreateItemAsync<CosmosChat>(new() {
+    public async Task CreateAsync(Core.Entities.Chat chat)
+    {
+        await _container.CreateItemAsync<CosmosChat>(new()
+        {
             Id = chat.Id.ToString(),
             ChatId = chat.ChatId.ToString(),
-            Messages = chat.Messages.Select(message => new CosmosMessage {
+            Messages = chat.Messages.Select(message => new CosmosMessage
+            {
                 Content = message.Content,
                 SentByUserId = message.SentByUserId,
                 SentAt = message.SentAt
@@ -46,12 +52,14 @@ public class ChatRepository(Database database) : IChatRepository {
 
     public Task DeleteAsync(Core.Entities.Chat chat) => _container.DeleteItemAsync<CosmosChat>(chat.Id.ToString(), new(chat.ChatId.ToString()));
 
-    public async Task<IEnumerable<Core.Entities.Chat>> GetAllChatByUserIdAsync(long userId) {
+    public async Task<IEnumerable<Core.Entities.Chat>> GetAllChatByUserIdAsync(long userId)
+    {
         QueryDefinition queryDefinition = new($"SELECT c.id, c.chatId, c.participants, ARRAY_SLICE(c.messages, -1) AS messages FROM c WHERE ARRAY_CONTAINS(c.participants, {userId})");
         FeedIterator<CosmosChat> chatsIterator = _container.GetItemQueryIterator<CosmosChat>(queryDefinition);
         ICollection<Core.Entities.Chat> chats = [];
 
-        while (chatsIterator.HasMoreResults) {
+        while (chatsIterator.HasMoreResults)
+        {
             FeedResponse<CosmosChat> response = await chatsIterator.ReadNextAsync();
 
             foreach (CosmosChat cosmosChat in response)
@@ -66,7 +74,8 @@ public class ChatRepository(Database database) : IChatRepository {
         return chats;
     }
 
-    public async Task<IEnumerable<Message>?> GetAllMessagesByChatIdAsync(Guid chatId) {
+    public async Task<IEnumerable<Message>?> GetAllMessagesByChatIdAsync(Guid chatId)
+    {
         QueryDefinition queryDefinition = new($"SELECT c.messages FROM c WHERE c.chatId = '{chatId}'");
         FeedIterator<CosmosChat> chatIterator = _container.GetItemQueryIterator<CosmosChat>(queryDefinition);
         FeedResponse<CosmosChat> response = await chatIterator.ReadNextAsync();
@@ -86,7 +95,8 @@ public class ChatRepository(Database database) : IChatRepository {
         return messages;
     }
 
-    public async Task<Core.Entities.Chat?> GetByFriendIdAsync(long userId, long friendId) {
+    public async Task<Core.Entities.Chat?> GetByFriendIdAsync(long userId, long friendId)
+    {
         QueryDefinition queryDefinition = new($"SELECT c.id, c.chatId, c.messages, c.participants FROM c WHERE ARRAY_CONTAINS(c.participants, {userId}) AND ARRAY_CONTAINS(c.participants, {friendId})");
         FeedIterator<CosmosChat> chatsIterator = _container.GetItemQueryIterator<CosmosChat>(queryDefinition);
         FeedResponse<CosmosChat> response = await chatsIterator.ReadNextAsync();
@@ -102,7 +112,8 @@ public class ChatRepository(Database database) : IChatRepository {
         );
     }
 
-    public async Task<Core.Entities.Chat?> GetByIdAsync(Guid chatId) {
+    public async Task<Core.Entities.Chat?> GetByIdAsync(Guid chatId)
+    {
         QueryDefinition queryDefinition = new($"SELECT c.id, c.messages, c.participants FROM c WHERE c.chatId = '{chatId}'");
         FeedIterator<CosmosChat> chatsIterator = _container.GetItemQueryIterator<CosmosChat>(queryDefinition);
         FeedResponse<CosmosChat> response = await chatsIterator.ReadNextAsync();
@@ -119,7 +130,8 @@ public class ChatRepository(Database database) : IChatRepository {
         );
     }
 
-    public async Task<ICollection<string>> GetConnectionIdByParticipantsIdAsync(IEnumerable<long> participants) {
+    public async Task<ICollection<string>> GetConnectionIdByParticipantsIdAsync(IEnumerable<long> participants)
+    {
         QueryDefinition queryDefinition = new(@$"
             SELECT c.connectionId
             FROM c WHERE ARRAY_CONTAINS(c.userId, [{string.Join(',', participants)}])
@@ -127,7 +139,8 @@ public class ChatRepository(Database database) : IChatRepository {
         FeedIterator<CosmosConnection> connectionsIterator = _container.GetItemQueryIterator<CosmosConnection>(queryDefinition);
         ICollection<string> connectionsIds = [];
 
-        while (connectionsIterator.HasMoreResults) {
+        while (connectionsIterator.HasMoreResults)
+        {
             FeedResponse<CosmosConnection> response = await connectionsIterator.ReadNextAsync();
 
             foreach (CosmosConnection cosmosConnection in response)
@@ -137,10 +150,12 @@ public class ChatRepository(Database database) : IChatRepository {
         return connectionsIds;
     }
 
-    public Task UpdateAsync(Core.Entities.Chat chat) => _container.ReplaceItemAsync(new CosmosChat {
+    public Task UpdateAsync(Core.Entities.Chat chat) => _container.ReplaceItemAsync(new CosmosChat
+    {
         ChatId = chat.ChatId.ToString(),
         Id = chat.Id.ToString(),
-        Messages = chat.Messages.Select(message => new CosmosMessage {
+        Messages = chat.Messages.Select(message => new CosmosMessage
+        {
             Content = message.Content,
             SentByUserId = message.SentByUserId,
             SentAt = message.SentAt
