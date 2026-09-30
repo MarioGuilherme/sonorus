@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Sonorus.Post.Application.ViewModels;
 using Sonorus.Post.Core.Entities;
 using Sonorus.Post.Infrastructure.Persistence;
@@ -8,11 +7,10 @@ using System.Net.Http.Json;
 
 namespace Sonorus.Post.Application.Queries.GetPagedPosts;
 
-public class GetPagedPostsQueryHandler(IUnitOfWork unitOfWork, IHttpClientFactory httpClientFactory, IMapper mapper) : IRequestHandler<GetPagedPostsQuery, IEnumerable<PostViewModel>>
+public class GetPagedPostsQueryHandler(IUnitOfWork unitOfWork, IHttpClientFactory httpClientFactory) : IRequestHandler<GetPagedPostsQuery, IEnumerable<PostViewModel>>
 {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
-    private readonly IMapper _mapper = mapper;
 
     public async Task<IEnumerable<PostViewModel>> Handle(GetPagedPostsQuery request, CancellationToken cancellationToken)
     {
@@ -48,7 +46,7 @@ public class GetPagedPostsQueryHandler(IUnitOfWork unitOfWork, IHttpClientFactor
                     post.PostLikers.Count,
                     post.Comments.Count,
                     post.Tablature,
-                    post.Medias.Select(_mapper.Map<MediaViewModel>)
+                    post.Medias.Select(m => new MediaViewModel(m.MediaId, m.Path))
                 )
                 {
                     Author = author,
@@ -96,7 +94,7 @@ public class GetPagedPostsQueryHandler(IUnitOfWork unitOfWork, IHttpClientFactor
                     post.PostLikers.Count,
                     post.Comments.Count,
                     post.Tablature,
-                    _mapper.Map<IEnumerable<MediaViewModel>>(post.Medias)
+                    post.Medias.Select(m => new MediaViewModel(m.MediaId, m.Path))
                 )
                 {
                     Author = author,

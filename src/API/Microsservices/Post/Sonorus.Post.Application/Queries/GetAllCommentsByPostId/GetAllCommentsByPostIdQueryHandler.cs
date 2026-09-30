@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Sonorus.Post.Application.ViewModels;
 using Sonorus.Post.Core.Entities;
 using Sonorus.Post.Core.Exceptions;
@@ -8,11 +7,10 @@ using System.Net.Http.Json;
 
 namespace Sonorus.Post.Application.Queries.GetAllCommentsByPostId;
 
-public class GetAllCommentsByPostIdQueryHandler(IUnitOfWork unitOfWork, IHttpClientFactory httpClientFactory, IMapper mapper) : IRequestHandler<GetAllCommentsByPostIdQuery, IEnumerable<CommentViewModel>>
+public class GetAllCommentsByPostIdQueryHandler(IUnitOfWork unitOfWork, IHttpClientFactory httpClientFactory) : IRequestHandler<GetAllCommentsByPostIdQuery, IEnumerable<CommentViewModel>>
 {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
-    private readonly IMapper _mapper = mapper;
 
     public async Task<IEnumerable<CommentViewModel>> Handle(GetAllCommentsByPostIdQuery request, CancellationToken cancellationToken)
     {

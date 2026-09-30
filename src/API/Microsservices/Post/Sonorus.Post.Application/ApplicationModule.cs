@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using FluentValidation;
+﻿using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
 using Sonorus.Post.Application.Commands.ToggleLikePost;
@@ -17,7 +16,6 @@ public static class ApplicationModule
         services
             .AddMediatR()
             .AddFluentValidation()
-            .AddAutoMapper()
             .AddSubscribers();
 
         return services;
@@ -35,16 +33,6 @@ public static class ApplicationModule
         services
             .AddFluentValidationAutoValidation(o => o.DisableDataAnnotationsValidation = true)
             .AddValidatorsFromAssemblyContaining<CreatePostInputModelValidator>();
-
-        return services;
-    }
-
-    private static IServiceCollection AddAutoMapper(this IServiceCollection services)
-    {
-        services.AddSingleton(new MapperConfiguration(config =>
-        {
-            config.CreateMap<Media, MediaViewModel>();
-        }).CreateMapper());
 
         return services;
     }

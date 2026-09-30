@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Sonorus.Post.Application.ViewModels;
 using Sonorus.Post.Core.Entities;
 using Sonorus.Post.Core.Exceptions;
@@ -7,10 +6,9 @@ using Sonorus.Post.Infrastructure.Persistence;
 
 namespace Sonorus.Post.Application.Commands.CreateComment;
 
-public class CreateCommentCommandHandler(IUnitOfWork unitOfWork, IMapper mapper) : IRequestHandler<CreateCommentCommand, CommentViewModel>
+public class CreateCommentCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<CreateCommentCommand, CommentViewModel>
 {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
-    private readonly IMapper _mapper = mapper;
 
     public async Task<CommentViewModel> Handle(CreateCommentCommand request, CancellationToken cancellationToken)
     {
